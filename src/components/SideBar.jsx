@@ -23,10 +23,10 @@ const items = [
     <a href="https://ant.design" target="_blank" rel="noopener noreferrer">
       Ant Design
     </a>,
-    "link",
+    "link3",
     <LinkOutlined />
   ),
-  getItem(<Link to="/">Logout</Link>, "link", <LogoutOutlined />),
+  getItem(<Link to="/">Logout</Link>, "link2", <LogoutOutlined />),
 ];
 const App = () => {
   return (
