@@ -1,17 +1,19 @@
-// Import the functions you need from the SDKs you need
+
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import {getFirestore} from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD6LkmVDmvKDJ2yMcLa5zY2w4HiJx4slvM",
-  authDomain: "ncc-cadet-management.firebaseapp.com",
-  projectId: "ncc-cadet-management",
-  storageBucket: "ncc-cadet-management.appspot.com",
-  messagingSenderId: "499997837033",
-  appId: "1:499997837033:web:e0705c86200b023e9a9278",
-  measurementId: "G-CLV9N3WER0",
+  apiKey: "AIzaSyCAg6cWE3raoftbVNoyIqTumlaozjI2S04",
+  authDomain: "ncc-manage.firebaseapp.com",
+  databaseURL: "https://ncc-manage-default-rtdb.firebaseio.com",
+  projectId: "ncc-manage",
+  storageBucket: "ncc-manage.appspot.com",
+  messagingSenderId: "377008618778",
+  appId: "1:377008618778:web:b24c33f8cc7ae5c0a400a3",
+  measurementId: "G-15Q0HF7E4D"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+export const database = getFirestore(app);
