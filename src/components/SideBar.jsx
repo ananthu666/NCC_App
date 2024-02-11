@@ -28,12 +28,12 @@ const items = [
   ),
   getItem(<Link to="/">Logout</Link>, "link2", <LogoutOutlined />),
 ];
-const App = () => {
+const SideBar = () => {
   return (
     <>
       <Menu
         style={{
-          width: 256,
+          width: "12vw",
           height: "100vh",
         }}
         defaultSelectedKeys={["1"]}
@@ -45,4 +45,4 @@ const App = () => {
     </>
   );
 };
-export default App;
+export default SideBar;

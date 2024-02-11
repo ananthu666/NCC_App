@@ -32,7 +32,7 @@ function App() {
         </div>
       ) : (
         <div className="items-center min-h-screen bg-gray-100">
-          <HashRouter>
+          {/* <HashRouter>
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/home" element={<Home />} />
@@ -40,8 +40,8 @@ function App() {
               <Route path="/newreg" element={<CadetReg />} />
               <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
-          </HashRouter>
-          {/* <BrowserRouter>
+          </HashRouter> */}
+          <BrowserRouter>
             <Routes>
               <Route path="/" element={<Login />} />
               <Route path="/home" element={<Home />} />
@@ -49,7 +49,7 @@ function App() {
               <Route path="/newreg" element={<CadetReg />} />
               <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
-          </BrowserRouter> */}
+          </BrowserRouter>
         </div>
       )}
     </>
