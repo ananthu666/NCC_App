@@ -12,14 +12,21 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
 
   async function getCadets(db = database) {
-    const citiesCol = collection(db, "cadets");
-    const citySnapshot = await getDocs(citiesCol);
-    const cityList = citySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    const cadetsData = [];
+    const querySnapshot = await getDocs(collection(db, "cadets"));
+    querySnapshot.forEach((doc) => {
+     // doc.data() is never undefined for query doc snapshots
+     console.log(doc.id, " => ", doc.data());
+    });
 
-    return cityList;
+   //  querySnapshot.forEach((doc) => {
+   //    const cadet = {
+   //    id: doc.id,
+   //    ...doc.data()
+   //  };
+   //  cadetsData.push(cadet);
+   // });
+    return cadetsData;
   }
 
   async function fetchCadets() {
@@ -34,7 +41,7 @@ const Home = () => {
   }
 
   async function addCadet(db = database) {
-    await setDoc(doc(db, "cadets", "KL27SDN111968"),{
+    await setDoc(doc(db, "cadets", "UP27SDN111968"),{
       "college": "College of Engineering, Tvpm",
       "dateOfBirth": "04-12-2001",
       "dateOfDischarge": "31-03-2024",
@@ -64,10 +71,10 @@ const Home = () => {
 }
 
   useEffect(() => {
-    fetchCadets();
+    
     //addCadet();
-    updateCadet();
-    console.log(cadets);
+    //updateCadet();
+    fetchCadets();
   }, []);
 
 
