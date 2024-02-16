@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Flex, Table, Input, Select } from "antd";
+import { Button, Flex, Table, Input, Select,Popconfirm } from "antd";
 import { useState, useEffect } from "react";
 import { DeleteFilled } from "@ant-design/icons";
 
@@ -12,12 +12,13 @@ function Tablegrid({ data, loading }) {
 
   const { Search } = Input;
 
+  const handleDelete=(id)=>{
+    console.log("Deleted" , id)
+
+  }
+
   const applyFilters = (cadetList) => {
-    // Filter by campus if any campus is selected
     if (selectedCamps.length) {
-      // cadetList = cadetList.filter((cadet) =>
-      //   selectedCamps.includes(cadet.detailsOfCampsAttended)
-      // );
       cadetList = cadetList.filter((cadet) =>
         selectedCamps.some((camp) =>
           cadet.detailsOfCampsAttended.includes(camp)
@@ -25,14 +26,12 @@ function Tablegrid({ data, loading }) {
       );
     }
 
-    // Filter by college if any college is selected
     if (selectedCollege.length) {
       cadetList = cadetList.filter((cadet) =>
         selectedCollege.includes(cadet.college)
       );
     }
 
-    // Filter by rank if any rank is selected
     if (selectedRank.length) {
       cadetList = cadetList.filter((cadet) =>
         selectedRank.includes(cadet.rank)
@@ -67,132 +66,186 @@ function Tablegrid({ data, loading }) {
     { label: "NC1", value: "NC1" },
     { label: "LC", value: "LC" },
   ];
-  const colleges = [
-    {
-      label: "College of Engineering, Tvmp",
-      value: "College of Engineering, Tvpm",
-    },
-    {
-      label: "College of Agriculture, Vellayani",
-      value: "College of Agriculture, Vellayani",
-    },
-    {
-      label: "Mar Ivanios College, Nalanchira",
-      value: "Mar Ivanios College, Nalanchira",
-    },
-    {
-      label: "St. Xavier's College, Thumba",
-      value: "St. Xavier's College, Thumba",
-    },
-    {
-      label: "Mahatma Gandhi College, Tvpm",
-      value: "Mahatma Gandhi College, Tvpm",
-    },
-  ];
 
-  const columns = [
-    {
-      title: "Full Name",
-      dataIndex: "name",
-      key: "name",
-      fixed: "left",
-      width: 200,
-      sorter: (a, b) => a.name.localeCompare(b.name),
-    },
-    {
-      title: "College",
-      dataIndex: "college",
-      key: "college",
-      width: 230,
-    },
-    {
-      title: "Date of Birth",
-      dataIndex: "dateOfBirth",
-      key: "dateOfBirth",
-    },
-    {
-      title: "Date of Discharge",
-      dataIndex: "dateOfDischarge",
-      key: "dateOfDischarge",
-    },
-    {
-      title: "Date of Enrolment",
-      dataIndex: "dateOfEnrolment",
-      key: "dateOfEnrolment",
-    },
-    {
-      title: "Date of Passing Certificate B Exam",
-      dataIndex: "dateOfPassingCertificateBExam",
-      key: "dateOfPassingCertificateBExam",
-      width: 150,
-    },
-    {
-      title: "Details of Camps Attended",
-      dataIndex: "detailsOfCampsAttended",
-      key: "detailsOfCampsAttended",
-      width: 200,
-      render: (details) => details.join(", "),
-    },
-    {
-      title: "Father's Name",
-      dataIndex: "father'sName",
-      key: "father'sName",
-      width: 180,
-    },
-    {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      width: 120,
-    },
-    {
-      title: "Rank",
-      dataIndex: "rank",
-      key: "rank",
-      filteredValue: [searchText],
-      onFilter: (value, record) =>
-        String(record.name).toLowerCase().startsWith(value.toLowerCase()) ||
-        String(record.college).toLowerCase().startsWith(value.toLowerCase()) ||
-        String(record.dateOfBirth)
-          .toLowerCase()
-          .startsWith(value.toLowerCase()) ||
-        String(record.dateOfDischarge)
-          .toLowerCase()
-          .startsWith(value.toLowerCase()) ||
-        String(record.dateOfEnrolment)
-          .toLowerCase()
-          .startsWith(value.toLowerCase()) ||
-        String(record.dateOfPassingCertificateBExam)
-          .toLowerCase()
-          .startsWith(value.toLowerCase()) ||
-        (record.detailsOfCampsAttended &&
-          record.detailsOfCampsAttended
-            .join(", ")
-            .toLowerCase()
-            .startsWith(value.toLowerCase())) ||
-        String(record.fatherName)
-          .toLowerCase()
-          .startsWith(value.toLowerCase()) ||
-        String(record.id).toLowerCase().startsWith(value.toLowerCase()),
-    },
-    {
-      title: "Action",
-      key: "operation",
-      fixed: "right",
-      width: 150,
-      render: () => (
-        <Flex justify="center" gap={"middle"}>
-          <Button className="bg-blue-600 text-white">Edit</Button>
-          <Button danger icon={<DeleteFilled />} />
-        </Flex>
-      ),
-    },
+  const colleges = [
+    { label: "College of Engineering, Tvmp", value: "College of Engineering, Tvpm" },
+    { label: "College of Agriculture, Vellayani", value: "College of Agriculture, Vellayani" },
+    { label: "Mar Ivanios College, Nalanchira", value: "Mar Ivanios College, Nalanchira" },
+    { label: "St. Xavier's College, Thumba", value: "St. Xavier's College, Thumba" },
+    { label: "Mahatma Gandhi College, Tvpm", value: "Mahatma Gandhi College, Tvpm" },
   ];
+const columns = [
+   {
+    title: "ID",
+    dataIndex: "id",
+    key: "id",
+    width: 140,
+    fixed:"left",
+    sorter: (a, b) => a.name.localeCompare(b.name),
+  },
+  {
+    title: "Cadet Name",
+    dataIndex: "name",
+    key: "name",
+    fixed: "left",
+    width: 200,
+    sorter: (a, b) => a.name.localeCompare(b.name),
+  },
+  {
+    title: "College",
+    dataIndex: "college",
+    key: "college",
+    width: 230,
+  },
+  {
+    title: "Date of Birth",
+    dataIndex: "dateOfBirth",
+    key: "dateOfBirth",
+  },
+  {
+    title: "Address",
+    dataIndex: "address",
+    key: "address",
+    width: 200,
+  },
+  {
+    title: "Bank Account Holder's Name",
+    dataIndex: "bankAccountHolderName",
+    key: "bankAccountHolderName",
+    width: 200,
+  },
+  {
+    title: "Blood Group",
+    dataIndex: "bloodGroup",
+    key: "bloodGroup",
+  },
+  {
+    title: "Bank Account Number",
+    dataIndex: "bankAccountNumber",
+    key: "bankAccountNumber",
+    width: 250,
+  },
+  {
+    title: "Height",
+    dataIndex: "height",
+    key: "height",
+    width: 250,
+  },
+  {
+    title: "Category",
+    dataIndex: "category",
+    key: "category",
+  },
+  {
+    title: "Division",
+    dataIndex: "division",
+    key: "division",
+  },
+  {
+    title: "Email",
+    dataIndex: "email",
+    key: "email",
+  },
+  {
+    title: "Gender",
+    dataIndex: "gender",
+    key: "gender",
+  },
+  {
+    title: "IFSC Code",
+    dataIndex: "ifscCode",
+    key: "ifscCode",
+  },
+  {
+    title: "Identification Mark",
+    dataIndex: "identificationMark",
+    key: "identificationMark",
+    width: 130,
+  },
+  {
+    title: "Mother’s Name",
+    dataIndex: "motherName",
+    key: "motherName",
+    width: 130,
+  },
+  {
+    title: "Date of Enrolment",
+    dataIndex: "dateOfEnrolment",
+    key: "dateOfEnrolment",
+    width: 130,
+  },
+  {
+    title: "Year",
+    dataIndex: "year",
+    key: "year",
+  },
+  {
+    title: "Father's Name",
+    dataIndex: "fatherName",
+    key: "fatherName",
+    width: 180,
+  },
+ 
+  {
+    title: "Rank",
+    dataIndex: "rank",
+    key: "rank",
+    width: 170,
+  },
+  {
+    filteredValue: [searchText],
+    onFilter: (value, record) =>
+      String(record.name).toLowerCase().includes(value.toLowerCase()) ||
+      String(record.college).toLowerCase().includes(value.toLowerCase()) ||
+      String(record.dateOfBirth).toLowerCase().includes(value.toLowerCase()) ||
+      String(record.address).toLowerCase().includes(value.toLowerCase()) ||
+      String(record.bankAccountHolderName).toLowerCase().includes(value.toLowerCase()) ||
+      String(record.bloodGroup).toLowerCase().includes(value.toLowerCase()) ||
+      String(record.bankAccountNumber).toLowerCase().includes(value.toLowerCase()) ||
+      String(record.height).toLowerCase().includes(value.toLowerCase()) ||
+      String(record.category).toLowerCase().includes(value.toLowerCase()) ||
+      String(record.division).toLowerCase().includes(value.toLowerCase()) ||
+      String(record.email).toLowerCase().includes(value.toLowerCase()) ||
+      String(record.gender).toLowerCase().includes(value.toLowerCase()) ||
+      String(record.ifscCode).toLowerCase().includes(value.toLowerCase()) ||
+      String(record.identificationMark).toLowerCase().includes(value.toLowerCase()) ||
+      String(record.motherName).toLowerCase().includes(value.toLowerCase()) ||
+      String(record.dateOfEnrolment).toLowerCase().includes(value.toLowerCase()) ||
+      String(record.year).toLowerCase().includes(value.toLowerCase()) ||
+      String(record.fatherName).toLowerCase().includes(value.toLowerCase()) ||
+      String(record.id).toLowerCase().includes(value.toLowerCase()),
+  },
+  {
+    title: "Action",
+    key: "operation",
+    fixed: "right",
+    width: 150,
+    render: (_, record) => (
+      <Flex justify="center" gap={"middle"}>
+        <Button className="bg-blue-600 text-white">Edit</Button>
+        <Popconfirm
+          title="Sure to delete?"
+          onConfirm={() => handleDelete(record.id)}
+          okButtonProps={{
+            style: {
+              backgroundColor: "red",
+              color: "white",
+            },
+          }}
+        >
+          <Button danger icon={<DeleteFilled />} />
+        </Popconfirm>
+      </Flex>
+    ),
+  },
+];
+
 
   const filterData = () => {
     let temp = applyFilters(data);
     setFilteredData(temp);
   };
+
   useEffect(() => {
     filterData();
   }, [data, selectedCamps, selectedCollege, selectedRank]);
@@ -215,9 +268,6 @@ function Tablegrid({ data, loading }) {
           allowClear
           placeholder="Search to Select"
           optionFilterProp="children"
-          filterOption={(input, option) =>
-            (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
-          }
           filterSort={(optionA, optionB) =>
             (optionA?.label ?? "")
               .toLowerCase()
@@ -235,7 +285,7 @@ function Tablegrid({ data, loading }) {
           options={ranks}
         />
         <Search
-          placeholder="input search text"
+          placeholder="Input search text"
           className="self-end mr-3 py-4"
           onChange={(e) => setSearchText(e.target.value)}
           onSearch={onSearch}
@@ -245,10 +295,11 @@ function Tablegrid({ data, loading }) {
         />
       </div>
       <Table
+      rowKey="id"
         columns={columns}
         dataSource={filteredData}
         scroll={{
-          x: 2000,
+          x: 3000,
           y: 550,
         }}
         pagination={{
