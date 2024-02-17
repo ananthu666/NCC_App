@@ -83,7 +83,14 @@ const Home = () => {
     <>
       <div className="flex justify-between items-start">
         <SideBar />
-        <div className="flex flex-1 justify-center items-center py-2 px-2 my-2 ">
+        <div className="relative   flex flex-1 justify-center items-center py-2 px-2 my-2 ">
+          <img
+            src="/NCC.png"
+            className="absolute z-5 inset-0 mx-auto my-auto h-2/5 opacity-10"
+            draggable="false"
+            alt=""
+          />
+
           <Table data={cadets} loading={loading} />
         </div>
       </div>

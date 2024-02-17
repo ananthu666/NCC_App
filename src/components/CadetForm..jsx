@@ -56,6 +56,14 @@ const CadetForm = () => {
         scrollToFirstError
         className="flex px-8 gap-2 justify-around"
       >
+        <div className="bg_logo">
+          <img
+            src="/NCC.png"
+            className="absolute inset-0 mx-auto my-auto h-2/5 opacity-10"
+            draggable="false"
+            alt=""
+          />
+        </div>
         <Col>
           <Form.Item name="id" label="ID" rules={[{ required: true }]}>
             <Input />

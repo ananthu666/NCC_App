@@ -277,7 +277,7 @@ function Tablegrid({ data, loading }) {
   }, [data, selectedCamps, selectedCollege, selectedRank]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col z-0">
       <div className="flex justify-end gap-2 items-center">
         <Select
           onSearch={onSearch}

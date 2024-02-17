@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { HashRouter, Routes, Route, BrowserRouter } from "react-router-dom";
 import Login from "./components/Login";
-import Home from "./pages/Home";
+import Home from "./pages/MasterData";
 import About from "./pages/About";
 import CadetReg from "./pages/CadetReg";
 import DashBoard from "./pages/DashBoard";
