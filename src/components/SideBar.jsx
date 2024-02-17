@@ -46,7 +46,11 @@ const SideBar = () => {
       <UserAddOutlined />
     ),
 
-    getItem(<Link to="/">Logout</Link>, "link2", <LogoutOutlined />),
+    getItem(
+      <Link to="/">Logout</Link>,
+      "link2",
+      <LogoutOutlined style={{ color: "crimson" }} />
+    ),
   ];
 
   return (
@@ -56,8 +60,6 @@ const SideBar = () => {
           height: "100vh",
           maxWidth: "200px",
         }}
-        defaultSelectedKeys={["1"]}
-        defaultOpenKeys={["sub1"]}
         mode="inline"
         theme="dark"
         items={items}
