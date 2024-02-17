@@ -1,46 +1,68 @@
 import React, { useState } from "react";
 import {
   LogoutOutlined,
-  CalendarOutlined,
-  LinkOutlined,
+  ContainerOutlined,
   MailOutlined,
+  DesktopOutlined,
+  MenuUnfoldOutlined,
+  UserAddOutlined,
 } from "@ant-design/icons";
-import { Divider, Menu, Switch } from "antd";
+import { Button, Menu } from "antd";
 import { Link } from "react-router-dom";
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
-}
-const items = [
-  getItem(<Link to="/">login</Link>, "link", <MailOutlined />),
-  getItem("Navigation Two", "2", <CalendarOutlined />),
 
-  getItem(
-    <a href="https://ant.design" target="_blank" rel="noopener noreferrer">
-      Ant Design
-    </a>,
-    "link3",
-    <LinkOutlined />
-  ),
-  getItem(<Link to="/">Logout</Link>, "link2", <LogoutOutlined />),
-];
 const SideBar = () => {
+  const [collapsed, setCollapsed] = useState(false);
+  const toggleCollapsed = () => {
+    setCollapsed(!collapsed);
+  };
+
+  function getItem(label, key, icon, children) {
+    return {
+      key,
+      icon,
+      children,
+      label,
+    };
+  }
+  const items = [
+    getItem(
+      <div className="" onClick={toggleCollapsed}>
+        Menu
+      </div>,
+      "1",
+      <MenuUnfoldOutlined onClick={toggleCollapsed} />
+    ),
+    getItem("Dashboard", "2", <DesktopOutlined />),
+    getItem(
+      <Link to="/masterdata">
+        <div className="">Master Data</div>
+      </Link>,
+      "master",
+      <ContainerOutlined />
+    ),
+
+    getItem(
+      <Link to="/addcadet">New Cadet</Link>,
+      "newcadet",
+      <UserAddOutlined />
+    ),
+
+    getItem(<Link to="/">Logout</Link>, "link2", <LogoutOutlined />),
+  ];
+
   return (
     <>
       <Menu
         style={{
-          width: "12vw",
           height: "100vh",
+          maxWidth: "200px",
         }}
         defaultSelectedKeys={["1"]}
         defaultOpenKeys={["sub1"]}
         mode="inline"
         theme="dark"
         items={items}
+        inlineCollapsed={collapsed}
       />
     </>
   );

@@ -44,9 +44,9 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Login />} />
-              <Route path="/home" element={<Home />} />
+              <Route path="/masterdata" element={<Home />} />
               <Route path="/about" element={<About />} />
-              <Route path="/newreg" element={<CadetReg />} />
+              <Route path="/addcadet" element={<CadetReg />} />
               <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
           </BrowserRouter>

@@ -83,7 +83,7 @@ const Home = () => {
     <>
       <div className="flex justify-between items-start">
         <SideBar />
-        <div className="flex justify-center items-center py-2 px-2 my-2 ">
+        <div className="flex flex-1 justify-center items-center py-2 px-2 my-2 ">
           <Table data={cadets} loading={loading} />
         </div>
       </div>
