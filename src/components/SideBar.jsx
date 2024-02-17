@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   LogoutOutlined,
   ContainerOutlined,
-  MailOutlined,
   DesktopOutlined,
   MenuUnfoldOutlined,
   UserAddOutlined,
