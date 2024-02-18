@@ -9,8 +9,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 
-
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
   Form,
   Input,
@@ -23,12 +22,16 @@ import {
   Col,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import { useLocation } from "react-router";
+import { data } from "autoprefixer";
 
 const { Option } = Select;
 
 const CadetForm = () => {
   const [form] = Form.useForm();
-
+  const location = useLocation();
+  const { cadet } = location.state || {};
+  console.log(cadet);
   // Function to handle form submission
   const onFinish = (values) => {
     // Process form values here
@@ -36,50 +39,50 @@ const CadetForm = () => {
   };
 
   // add the cadet details to db
-  
 
   const storage = getStorage();
-  
-  
+
   // 'file' comes from the Blob or File API
-  
+
   const addcdtDB = async () => {
     const formValues = form.getFieldsValue();
-    
+
     // uploadBytes(storageRef,formValues.upload);
     const storageRef = ref(storage, `images/${formValues.id}`);
     await uploadBytes(storageRef, formValues.upload[0].originFileObj);
     const imageUrl = await getDownloadURL(storageRef);
     console.log(imageUrl);
-    
-    try {
 
+    try {
       // Assuming you have a Firestore reference named citiesRef
       const cadetsRef = collection(database, "cadets");
-      
-  
+
       // Data to be sent
       const data = {
         name: formValues.name || "Default Name",
-  college: formValues.college || "Default College",
-  dob: formValues.dob.format('DD-MM-YYYY') || "01-01-2000",
-  // dob: moment(formValues.dob).format('DD-MM-YYYY') || "01-01-2000",
+        college: formValues.college || "Default College",
+        dob: formValues.dob.format("DD-MM-YYYY") || "01-01-2000",
+        // dob: moment(formValues.dob).format('DD-MM-YYYY') || "01-01-2000",
 
-  address: formValues.address || "Default Address",
-  bankAccountHoldersName: formValues.bankAccountHolders || "Default Bank Account Holder Name",
-  bankAccountNumber: formValues.bankAccountNumber || "Default Bank Account Number",
-  height: formValues.height || "Default Height",
-  category: formValues.category || "Default Category",
-  division: formValues.division || "Default Division",
-  email: formValues.email || "default@example.com",
-  gender: formValues.gender || "Male",
-  ifsc: formValues.ifsc || "Default IFSC Code",
-  identificationMark: formValues.identificationMark || "Default Identification Mark",
-  motherName: formValues.motherName || "Default Mother's Name",
-  "father 'sName": formValues.fatherName || "Default Father's Name",
-  dateOfEnrolment: formValues.dateOfEnrolment.format('DD-MM-YYYY') || "01-01-2022",
-  year: formValues.year|| "Default Year",
-  upload: imageUrl || "Default Upload Value",
+        address: formValues.address || "Default Address",
+        bankAccountHoldersName:
+          formValues.bankAccountHolders || "Default Bank Account Holder Name",
+        bankAccountNumber:
+          formValues.bankAccountNumber || "Default Bank Account Number",
+        height: formValues.height || "Default Height",
+        category: formValues.category || "Default Category",
+        division: formValues.division || "Default Division",
+        email: formValues.email || "default@example.com",
+        gender: formValues.gender || "Male",
+        ifsc: formValues.ifsc || "Default IFSC Code",
+        identificationMark:
+          formValues.identificationMark || "Default Identification Mark",
+        motherName: formValues.motherName || "Default Mother's Name",
+        "father 'sName": formValues.fatherName || "Default Father's Name",
+        dateOfEnrolment:
+          formValues.dateOfEnrolment.format("DD-MM-YYYY") || "01-01-2022",
+        year: formValues.year || "Default Year",
+        upload: imageUrl || "Default Upload Value",
       };
       const documentRef = doc(cadetsRef, formValues.id);
       await setDoc(documentRef, data);
@@ -88,19 +91,17 @@ const CadetForm = () => {
       console.error("Error sending data to Firestore:", error);
     }
   };
-  
- 
-// 
+
+  //
 
   // Function to handle file uploads
-
 
   const beforeUpload = (file) => {
     const isJPGOrPNG = file.type === "image/jpeg" || file.type === "image/png";
     if (!isJPGOrPNG) {
       message.error("You can only upload JPG/PNG file!");
     }
-    const isLt2M = file.size / 1024  < 2;
+    const isLt2M = file.size / 1024 < 2;
     if (!isLt2M) {
       message.error("Image must smaller than 2MB!");
     }
@@ -113,7 +114,6 @@ const CadetForm = () => {
       return e;
     }
     return e && e.fileList;
-    
   };
 
   return (
@@ -125,6 +125,7 @@ const CadetForm = () => {
         form={form}
         name="register"
         onFinish={onFinish}
+        initialValues={cadet}
         scrollToFirstError
         className="flex px-8 gap-2 justify-around"
       >
@@ -290,7 +291,9 @@ const CadetForm = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button htmlType="submit" onClick={addcdtDB}>Register</Button>
+            <Button htmlType="submit" onClick={addcdtDB}>
+              Register
+            </Button>
           </Form.Item>
         </Col>
       </Form>
