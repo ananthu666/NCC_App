@@ -134,8 +134,8 @@ function Tablegrid({ data, loading }) {
     },
     {
       title: "Bank Account Holder's Name",
-      dataIndex: "bankAccountHolderName",
-      key: "bankAccountHolderName",
+      dataIndex: "bankAccountHoldersName",
+      key: "bankAccountHoldersName",
       width: 200,
     },
     {
