@@ -22,16 +22,13 @@ import {
   Col,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import { useLocation } from "react-router";
 import { data } from "autoprefixer";
 
 const { Option } = Select;
 
-const CadetForm = () => {
+const CadetForm = ({ data = {} }) => {
   const [form] = Form.useForm();
   const location = useLocation();
-  const { cadet } = location.state || {};
-  console.log(cadet);
   // Function to handle form submission
   const onFinish = (values) => {
     // Process form values here
@@ -125,7 +122,7 @@ const CadetForm = () => {
         form={form}
         name="register"
         onFinish={onFinish}
-        initialValues={cadet}
+        initialValues={data}
         scrollToFirstError
         className="flex px-8 gap-2 justify-around"
       >
