@@ -206,8 +206,8 @@ function Tablegrid({ data, loading }) {
     },
     {
       title: "Father's Name",
-      dataIndex: "fatherName",
-      key: "fatherName",
+      dataIndex: "father'sName",
+      key: "father'sName",
       width: 180,
     },
 
