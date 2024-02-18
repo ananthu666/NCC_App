@@ -6,6 +6,7 @@ import Home from "./pages/MasterData";
 import About from "./pages/About";
 import CadetReg from "./pages/CadetReg";
 import DashBoard from "./pages/DashBoard";
+import CadetInfo from "./pages/CadetInfo";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -45,11 +46,12 @@ function App() {
           </HashRouter> */}
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Login />} />
+              <Route exact path="/" element={<Login />} />
               <Route path="/dashboard" element={<DashBoard />} />
               <Route path="/masterdata" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/addcadet" element={<CadetReg />} />
+              <Route path="/edit/:id" element={<CadetInfo />} />
               <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
           </BrowserRouter>

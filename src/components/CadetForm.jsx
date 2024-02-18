@@ -14,7 +14,7 @@ import { UploadOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
-const CadetForm = () => {
+const CadetForm = ({ data = {} }) => {
   const [form] = Form.useForm();
 
   // Function to handle form submission
@@ -54,6 +54,7 @@ const CadetForm = () => {
         name="register"
         onFinish={onFinish}
         scrollToFirstError
+        // initialValues={data}
         className="flex px-8 gap-2 justify-around"
       >
         <div className="bg_logo">
@@ -66,11 +67,11 @@ const CadetForm = () => {
         </div>
         <Col>
           <Form.Item name="id" label="ID" rules={[{ required: true }]}>
-            <Input />
+            <Input defaultValue={data.id} />
           </Form.Item>
 
           <Form.Item name="name" label="Name" rules={[{ required: true }]}>
-            <Input />
+            <Input defaultValue={data.name} />
           </Form.Item>
 
           <Form.Item
@@ -78,7 +79,7 @@ const CadetForm = () => {
             label="College"
             rules={[{ required: true }]}
           >
-            <Input />
+            <Input defaultValue={data.college} />
           </Form.Item>
 
           <Form.Item
@@ -86,7 +87,10 @@ const CadetForm = () => {
             label="Date of Birth"
             rules={[{ required: true }]}
           >
-            <DatePicker />
+            <DatePicker
+            // defaultValue={new Date(data.dateOfBirth)}
+            // format={"DD/MM/YYYY"}
+            />
           </Form.Item>
 
           <Form.Item
@@ -218,7 +222,7 @@ const CadetForm = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button htmlType="submit">Register</Button>
+            <Button htmlType="submit">Submit</Button>
           </Form.Item>
         </Col>
       </Form>

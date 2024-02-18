@@ -1,6 +1,6 @@
 import React from "react";
 import SideBar from "../components/SideBar";
-import CadetForm from "../components/CadetForm.";
+import CadetForm from "../components/CadetForm";
 
 const CadetReg = () => {
   return (

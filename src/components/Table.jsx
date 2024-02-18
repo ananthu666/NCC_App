@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Flex, Table, Input, Select, Popconfirm } from "antd";
 import { useState, useEffect } from "react";
 import { DeleteFilled } from "@ant-design/icons";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function Tablegrid({ data, loading }) {
   const [searchText, setSearchText] = useState("");
@@ -9,6 +10,14 @@ function Tablegrid({ data, loading }) {
   const [selectedCollege, setSelectedCollege] = useState([]);
   const [selectedRank, setSelectedRank] = useState([]);
   const [filteredData, setFilteredData] = useState(data);
+  const navigate = useNavigate();
+
+  const handleEdit = (cadet) => {
+    console.log("Edit", cadet);
+    navigate(`/edit/${cadet.id}`, {
+      state: { cadet },
+    }); // Redirect to the edit page
+  };
 
   const { Search } = Input;
 
@@ -249,7 +258,18 @@ function Tablegrid({ data, loading }) {
       width: 150,
       render: (_, record) => (
         <Flex justify="center" gap={"middle"}>
-          <Button className="bg-blue-600 text-white">Edit</Button>
+          <Popconfirm
+            title="Edit?"
+            onConfirm={() => handleEdit(record)}
+            okButtonProps={{
+              style: {
+                backgroundColor: "blue",
+                color: "white",
+              },
+            }}
+          >
+            <Button>Edit</Button>
+          </Popconfirm>
           <Popconfirm
             title="Sure to delete?"
             onConfirm={() => handleDelete(record.id)}
