@@ -22,13 +22,13 @@ import {
   Col,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+
 import { data } from "autoprefixer";
 
 const { Option } = Select;
 
 const CadetForm = ({ data = {} }) => {
   const [form] = Form.useForm();
-  const location = useLocation();
   // Function to handle form submission
   const onFinish = (values) => {
     // Process form values here
