@@ -134,8 +134,8 @@ function Tablegrid({ data, loading }) {
     },
     {
       title: "Bank Account Holder's Name",
-      dataIndex: "bankAccountHolderName",
-      key: "bankAccountHolderName",
+      dataIndex: "bankAccountHoldersName",
+      key: "bankAccountHoldersName",
       width: 200,
     },
     {
@@ -206,8 +206,8 @@ function Tablegrid({ data, loading }) {
     },
     {
       title: "Father's Name",
-      dataIndex: "fatherName",
-      key: "fatherName",
+      dataIndex: "father'sName",
+      key: "father'sName",
       width: 180,
     },
 
