@@ -14,18 +14,18 @@ const Home = () => {
   async function getCadets(db = database) {
     const cadetsData = [];
     const querySnapshot = await getDocs(collection(db, "cadets"));
-    querySnapshot.forEach((doc) => {
-     // doc.data() is never undefined for query doc snapshots
-     console.log(doc.id, " => ", doc.data());
-    });
+    // querySnapshot.forEach((doc) => {
+    //  // doc.data() is never undefined for query doc snapshots
+    //  console.log(doc.id, " => ", doc.data());
+    // });
 
-   //  querySnapshot.forEach((doc) => {
-   //    const cadet = {
-   //    id: doc.id,
-   //    ...doc.data()
-   //  };
-   //  cadetsData.push(cadet);
-   // });
+    querySnapshot.forEach((doc) => {
+      const cadet = {
+      id: doc.id,
+      ...doc.data()
+    };
+    cadetsData.push(cadet);
+   });
     return cadetsData;
   }
 
