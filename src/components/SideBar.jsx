@@ -31,7 +31,10 @@ const SideBar = () => {
       "1",
       <MenuUnfoldOutlined onClick={toggleCollapsed} />
     ),
-    getItem("Dashboard", "2", <DesktopOutlined />),
+    getItem(
+    <Link to="/dashboard">
+    <div className="">Dashboard</div>
+    </Link>, "2", <DesktopOutlined />),
     getItem(
       <Link to="/masterdata">
         <div className="">Master Data</div>
