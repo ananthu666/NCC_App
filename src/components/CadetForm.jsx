@@ -30,6 +30,7 @@ const { Option } = Select;
 const CadetForm = ({ data = {} }) => {
   const [form] = Form.useForm();
   // Function to handle form submission
+  
   const onFinish = (values) => {
     // Process form values here
     console.log("Received values of form:", values);
@@ -71,11 +72,12 @@ const CadetForm = ({ data = {} }) => {
         division: formValues.division || "Default Division",
         email: formValues.email || "default@example.com",
         gender: formValues.gender || "Male",
-        ifsc: formValues.ifsc || "Default IFSC Code",
+        ifscCode: formValues.ifscCode || "Default IFSC Code",
         identificationMark:
           formValues.identificationMark || "Default Identification Mark",
         motherName: formValues.motherName || "Default Mother's Name",
-        "father 'sName": formValues.fatherName || "Default Father's Name",
+        "father'sName": formValues["father'sName"] || "Default Father's Name",
+
         dateOfEnrolment:
           formValues.dateOfEnrolment.format("DD-MM-YYYY") || "01-01-2022",
         year: formValues.year || "Default Year",
@@ -230,7 +232,7 @@ const CadetForm = ({ data = {} }) => {
             </Select>
           </Form.Item>
 
-          <Form.Item name="ifsc" label="IFSC Code" rules={[{ required: true }]}>
+          <Form.Item name="ifscCode" label="IFSC Code" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
 
@@ -263,8 +265,8 @@ const CadetForm = ({ data = {} }) => {
           </Form.Item>
 
           <Form.Item
-            name="fatherName"
-            label="Father's Name"
+            name="father'sName"
+            label="father'sName"
             rules={[{ required: true }]}
           >
             <Input />
