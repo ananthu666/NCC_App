@@ -3,6 +3,11 @@ import SideBar from "../components/SideBar";
 import AddCampForm from "../components/AddCampForm";
 import Camptable from "../components/CampTable";
 const Home = () => {
+    const initialData = [
+        { id: 1, name: 'John', lastName: 'Doe' },
+        { id: 2, name: 'Jane', lastName: 'Doe' },
+        // ... other rows
+      ];
   return (
     <>
       <div className="flex justify-between items-start">
@@ -24,7 +29,7 @@ const Home = () => {
         </div>
 
         <div style={{height:"50vh"}}>
-          <Camptable />
+          <Camptable data={initialData} loading={false}/>
         </div>
         </div>
       </div>

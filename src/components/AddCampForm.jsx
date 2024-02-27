@@ -33,143 +33,45 @@ const CadetForm=()=>
         scrollToFirstError
         className="flex px-8 gap-2 justify-around"
       >
-        <div className="bg_logo">
+        {/* <div className="bg_logo">
           <img
             src="/NCC.png"
             className="absolute inset-0 mx-auto my-auto h-2/5 opacity-10"
             draggable="false"
             alt=""
           />
-        </div>
+        </div> */}
         <Col>
           
 
-          <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+          <Form.Item name="Camp Name" label="CampName" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
 
           <Form.Item
-            name="college"
-            label="College"
+            name="Camp Area"
+            label="CampArea"
             rules={[{ required: true }]}
           >
             <Input />
           </Form.Item>
 
           <Form.Item
-            name="dob"
-            label="Date of Birth"
-            rules={[{ required: true }]}
-          >
-            <DatePicker />
-          </Form.Item>
-
-          <Form.Item
-            name="address"
-            label="Address"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          </Col>
-          <Col>
-          <Form.Item
-            name="bankAccountNumber"
-            label="Bank Account Number"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item name="height" label="Height" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            name="category"
-            label="Category"
-            rules={[{ required: true }]}
-          >
-            <Select>
-              <Option value="A">A</Option>
-              <Option value="B">B</Option>
-              {/* Add other categories here */}
-            </Select>
-          </Form.Item>
-
-          <Form.Item
-            name="division"
-            label="Division"
-            rules={[{ required: true }]}
-          >
-            <Select>
-              <Option value="infantry">Infantry</Option>
-              <Option value="armored">Armored</Option>
-              {/* Add other divisions here */}
-            </Select>
-          </Form.Item>
-
-          </Col>
-  
-          <Col>
-          <Form.Item
-            name="email"
-            label="E-mail"
-            rules={[
-              {
-                type: "email",
-                message: "The input is not valid E-mail!",
-              },
-              {
-                required: true,
-                message: "Please input your E-mail!",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item name="gender" label="Gender" rules={[{ required: true }]}>
-            <Select>
-              <Option value="male">Male</Option>
-              <Option value="female">Female</Option>
-              <Option value="other">Other</Option>
-            </Select>
-          </Form.Item>
-
-          <Form.Item name="ifscCode" label="IFSC Code" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            name="identificationMark"
-            label="Identification Mark"
-            rules={[{ required: true }]}
-          >
-            <Input.TextArea />
-          </Form.Item>
-          </Col>
-  
-          <Col>
-          <Form.Item
-            name="motherName"
-            label="Mother's Name"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            name="dateOfEnrolment"
-            label="Date of Enrolment"
+            name="Camp Date"
+            label="CampDate"
             rules={[{ required: true }]}
           >
             <DatePicker />
           </Form.Item>
 
-          <Form.Item name="year" label="Year" rules={[{ required: true }]}>
+          <Form.Item
+            name="Camp Commander"
+            label="CampCommander"
+            rules={[{ required: true }]}
+          >
             <Input />
           </Form.Item>
-
+          
           <Form.Item>
             <Button htmlType="submit" >
               Register
