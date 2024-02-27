@@ -7,6 +7,7 @@ import About from "./pages/About";
 import CadetReg from "./pages/CadetReg";
 import DashBoard from "./pages/DashBoard";
 import CadetInfo from "./pages/CadetInfo";
+import CampPage from "./pages/CampPage";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -50,6 +51,7 @@ function App() {
               <Route path="/dashboard" element={<DashBoard />} />
               <Route path="/masterdata" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/camp" element={<CampPage />} />
               <Route path="/addcadet" element={<CadetReg />} />
               <Route path="/edit/:id" element={<CadetInfo />} />
               <Route path="*" element={<h1>Not Found</h1>} />

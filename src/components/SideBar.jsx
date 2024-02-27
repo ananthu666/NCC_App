@@ -48,6 +48,11 @@ const SideBar = () => {
       "newcadet",
       <UserAddOutlined />
     ),
+    getItem(
+      <Link to="/camp">Camp</Link>,
+      "newcadet",
+      <UserAddOutlined />
+    ),
 
     getItem(
       <Link to="/">Logout</Link>,
