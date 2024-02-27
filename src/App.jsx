@@ -8,6 +8,7 @@ import CadetReg from "./pages/CadetReg";
 import DashBoard from "./pages/DashBoard";
 import CadetInfo from "./pages/CadetInfo";
 import CampPage from "./pages/CampPage";
+import AddCampPage from "./pages/AddCampPage";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -53,6 +54,7 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/camp" element={<CampPage />} />
               <Route path="/addcadet" element={<CadetReg />} />
+              <Route path="/addcamp" element={<AddCampPage />} />
               <Route path="/edit/:id" element={<CadetInfo />} />
               <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
