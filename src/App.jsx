@@ -60,7 +60,7 @@ function App() {
               <Route path="/addcadet" element={<CadetReg />} />
 
                 {/*<Route path="/edit/:id" element={<UpdateCadet/>} /> */}
-              <Route path="/addcamp" element={<AddCampPage />} />
+              <Route path="/addcamp/:index" element={<AddCampPage />} />
               <Route path="/edit/:id" element={<CadetInfo />} />
 
               <Route path="*" element={<h1>Not Found</h1>} />
