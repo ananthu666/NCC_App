@@ -134,7 +134,7 @@ function Tablegrid({ data, loading }) {
         dataSource={filteredData}
         scroll={{
           x: 1000,
-          y: 750,
+          y: 250,
         }}
         pagination={{
           position: ["bottomRight"],

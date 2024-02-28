@@ -6,6 +6,15 @@ const Home = () => {
     const initialData = [
         { id: 1, name: 'John', lastName: 'Doe' },
         { id: 2, name: 'Jane', lastName: 'Doe' },
+        { id: 11, name: 'John', lastName: 'Doe' },
+        { id: 21, name: 'Jane', lastName: 'Doe' },
+        { id: 12, name: 'John', lastName: 'Doe' },
+        { id: 23, name: 'Jane', lastName: 'Doe' },
+        { id: 14, name: 'John', lastName: 'Doe' },
+        { id: 25, name: 'Jane', lastName: 'Doe' },
+        { id: 25, name: 'Jane', lastName: 'Doe' },
+        { id: 25, name: 'Jane', lastName: 'Doe' },
+        { id: 25, name: 'Jane', lastName: 'Doe' },
         // ... other rows
       ];
   return (
@@ -28,7 +37,7 @@ const Home = () => {
           <AddCampForm />
         </div>
 
-        <div style={{height:"50vh"}}>
+        <div style={{height:"20vh"}}>
           <Camptable data={initialData} loading={false}/>
         </div>
         </div>
