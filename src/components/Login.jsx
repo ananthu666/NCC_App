@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Card } from "antd";
 import "../assets/styles/login.css";
@@ -6,9 +6,12 @@ import "../assets/styles/login.css";
 import { useNavigate } from "react-router";
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import AuthContext from "../context/auth/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const context = useContext(AuthContext);
+  const { userType, setUserType, isLoggedIn, setIsLoggedIn } = context;
   const handleClick = async (values) => {
     try {
       const email = values.username;
@@ -17,6 +20,9 @@ const Login = () => {
       await signInWithEmailAndPassword(auth, email, password)
         .then((user) => {
           console.log(user);
+          setUserType(user.user.uid);
+          setIsLoggedIn(true);
+          localStorage.setItem("user", user.user.uid);
           navigate("/dashboard");
         })
         .catch((error) => {
@@ -70,7 +76,7 @@ const Login = () => {
                 },
               ]}
             >
-              <Input
+              <Input.Password
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password"
                 placeholder="Password"
@@ -86,16 +92,6 @@ const Login = () => {
               </a>
             </div>
 
-            {/* <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="login-form-button"
-            >
-              Log in
-            </Button>
-            Or <a href="">register now!</a>
-          </Form.Item> */}
             <div className="flex justify-center flex-col">
               <Button htmlType="submit" className="login-form-button">
                 Log in

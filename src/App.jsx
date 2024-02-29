@@ -12,7 +12,8 @@ import UpdateCadet from "./pages/UpdateCadet";
 
 import CampPage from "./pages/CampPage";
 import AddCampPage from "./pages/AddCampPage";
-
+import AuthState from "./context/auth/AuthState";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -50,22 +51,26 @@ function App() {
               <Route path="*" element={<h1>Not Found</h1>} />
             </Routes>
           </HashRouter> */}
-          <BrowserRouter>
-            <Routes>
-              <Route exact path="/" element={<Login />} />
-              <Route path="/dashboard" element={<DashBoard />} />
-              <Route path="/masterdata" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/camp" element={<CampPage />} />
-              <Route path="/addcadet" element={<CadetReg />} />
+          <AuthState>
+            <BrowserRouter>
+              <Routes>
+                <Route exact path="/" element={<Login />} />
+                <Route element={<PrivateRoute />}>
+                  <Route path="/dashboard" element={<DashBoard />} />
+                  <Route path="/masterdata" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/camp" element={<CampPage />} />
+                  <Route path="/addcadet" element={<CadetReg />} />
 
-                {/*<Route path="/edit/:id" element={<UpdateCadet/>} /> */}
-              <Route path="/addcamp/:index" element={<AddCampPage />} />
-              <Route path="/edit/:id" element={<CadetInfo />} />
+                  <Route path="/edit/:id" element={<UpdateCadet />} />
+                  <Route path="/addcamp/:index" element={<AddCampPage />} />
+                  {/* <Route path="/edit/:id" element={<CadetInfo />} /> */}
 
-              <Route path="*" element={<h1>Not Found</h1>} />
-            </Routes>
-          </BrowserRouter>
+                  <Route path="*" element={<h1>Not Found</h1>} />
+                </Route>
+              </Routes>
+            </BrowserRouter>
+          </AuthState>
         </div>
       )}
     </>

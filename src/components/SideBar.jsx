@@ -7,14 +7,19 @@ import {
   UserAddOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SideBar = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
   };
 
+  const logOut = () => {
+    localStorage.removeItem("user");
+    navigate("/");
+  };
   function getItem(label, key, icon, children) {
     return {
       key,
@@ -32,9 +37,12 @@ const SideBar = () => {
       <MenuUnfoldOutlined onClick={toggleCollapsed} />
     ),
     getItem(
-    <Link to="/dashboard">
-    <div className="">Dashboard</div>
-    </Link>, "2", <DesktopOutlined />),
+      <Link to="/dashboard">
+        <div className="">Dashboard</div>
+      </Link>,
+      "2",
+      <DesktopOutlined />
+    ),
     getItem(
       <Link to="/masterdata">
         <div className="">Master Data</div>
@@ -48,14 +56,10 @@ const SideBar = () => {
       "newcadet",
       <UserAddOutlined />
     ),
-    getItem(
-      <Link to="/camp">Camp</Link>,
-      "newcadet",
-      <UserAddOutlined />
-    ),
+    getItem(<Link to="/camp">Camp</Link>, "newcadet", <UserAddOutlined />),
 
     getItem(
-      <Link to="/">Logout</Link>,
+      <div onClick={logOut}>Logout</div>,
       "link2",
       <LogoutOutlined style={{ color: "crimson" }} />
     ),
