@@ -33,7 +33,7 @@ const Camp = () => {
             Add Camp
           </Button> */}
           <AddCamp />
-          <div style={{ overflowY: "auto", maxHeight: "600px" }}>
+          <div style={{ overflowY: "auto", maxHeight: "300px" }}>
           <div style={{ display: "flex", flexDirection: "row" ,flexWrap: "wrap" }}>
 
           <CampMainForm />
