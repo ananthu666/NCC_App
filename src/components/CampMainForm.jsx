@@ -3,8 +3,8 @@ import { Card } from 'antd';
 import { database } from "../../firebase";
 import {
   doc,
-  collection,
-  getDocs,
+  collection,onSnapshot,
+  getDocs,query,
   addDoc,
   setDoc,
   updateDoc,
@@ -15,16 +15,29 @@ import { useNavigate } from 'react-router';
 function TextExample() {
 const [camps, setcamps] = useState([]);
 async function getCamps(db = database) {
-  const cadetsData = [];
-  const querySnapshot = await getDocs(collection(db, "camp_main"));
-  querySnapshot.forEach((doc) => {
-    const cadet = {
-      id: doc.id,
-      ...doc.data(),
+  try {
+    
+
+    const q = query(collection(db, "camp_main"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const campData = [];
+      querySnapshot.forEach((doc) => {
+        const camp = {
+          id: doc.id,
+          ...doc.data(),
+        };
+
+        campData.push(camp);
+      });
+      setcamps(campData);
+    });
+    return () => {
+      unsubscribe();
     };
-    cadetsData.push(cadet);
-  });
-  return cadetsData;
+  } catch (error) {
+    console.error("Error fetching cadets:", error);
+    
+  }
 }
 const { Meta } = Card;
   // Sample data
@@ -46,7 +59,7 @@ const { Meta } = Card;
   };
   useEffect(() => {
     
-    fetchCamps();
+    getCamps();
   }, []);
   console.log(camps);
   return (

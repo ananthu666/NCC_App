@@ -9,7 +9,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { v4 as uuidv4 } from 'uuid';
+
 
 // Generate a UUID
 
@@ -33,7 +33,7 @@ const CadetForm=(index)=>
 {
   const [form1] = Form.useForm();
   // add to database ****************************************
-  const gen_id = uuidv4();
+  
     const addcampcd = async () => {
       const formValues = form1.getFieldsValue();
       
@@ -44,13 +44,13 @@ const CadetForm=(index)=>
         // Data to be sent
         const data = {
           
-          cadet_num: formValues.cadetnum,
-          cadet_rank: formValues.rank ,
-          cadet_name: formValues.cadetname ,
-          cadet_insti: formValues.institution ,
-          cadet_act: formValues.activities ,
-          cadet_rem: formValues.remarks ,
-          cadet_veg: formValues.veg ,
+          cadet_num: formValues.cadetnum||1,
+          cadet_rank: formValues.rank || 1,
+          cadet_name: formValues.cadetname ||1,
+          cadet_insti: formValues.institution ||1,
+          cadet_act: formValues.activities ||1,
+          cadet_rem: formValues.remarks ||1,
+          cadet_veg: formValues.veg ||"veg",
           campid: index.index,
           
           
@@ -59,12 +59,13 @@ const CadetForm=(index)=>
           
         };
         console.log(data);
-        const documentRef = doc(cadetsRef,gen_id);
+        const documentRef = doc(cadetsRef, formValues.cadetnum);
         await setDoc(documentRef, data);
         console.log("Data successfully sent to Firestore!");
       } catch (error) {
         console.error("Error sending data to Firestore:", error);
       }
+      form1.resetFields();
     };
     // ***************************************************
     const [data, setdata] = useState([]);
@@ -125,14 +126,14 @@ const CadetForm=(index)=>
         <Col>
           
 
-          <Form.Item name="cadetnum" label="Cadet No" rules={[{ required: true }]}>
+          <Form.Item name="cadetnum" label="Cadet No" rules={[{ required: false }]}>
             <Input />
           </Form.Item>
 
           <Form.Item
             name="rank"
             label="Rank"
-            rules={[{ required: true }]}
+            rules={[{ required: false }]}
           >
             <Input />
           </Form.Item>
@@ -142,7 +143,7 @@ const CadetForm=(index)=>
           <Form.Item
             name="cadetname"
             label="Cadet Name"
-            rules={[{ required: true }]}
+            rules={[{ required: false }]}
           >
             <Input />
           </Form.Item>
@@ -150,7 +151,7 @@ const CadetForm=(index)=>
           <Form.Item
             name="institution"
             label="Institution"
-            rules={[{ required: true }]}
+            rules={[{ required: false }]}
           >
             <Input />
           </Form.Item>
@@ -166,7 +167,7 @@ const CadetForm=(index)=>
           <Form.Item
             name="activities"
             label="Activities"
-            rules={[{ required: true }]}
+            rules={[{ required: false }]}
             
             
           >
@@ -175,11 +176,11 @@ const CadetForm=(index)=>
           <Form.Item
             name="remarks"
             label="Remarks"
-            rules={[{ required: true }]}
+            rules={[{ required: false }]}
           >
             <Input.TextArea />
           </Form.Item>
-          <Form.Item name="veg" label="Veg/NonVeg" rules={[{ required: true }]}>
+          <Form.Item name="veg" label="Veg/NonVeg" rules={[{ required: false }]}>
             <Select>
               <Option value="veg">Veg</Option>
               <Option value="nonveg">Non Veg</Option>
