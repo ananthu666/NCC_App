@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { database } from "../../firebase";
 import {
   doc,
   collection,
-  getDoc,
+  getDoc,getDocs,
   addDoc,
   setDoc,
   updateDoc,
@@ -29,8 +29,10 @@ import { UploadOutlined } from "@ant-design/icons";
 import { data } from "autoprefixer";
 const { Option } = Select;
 
-const CadetForm=(index)=>
+const CadetForm=({campdata,index})=>
 {
+  // console.log("campdata",campdata);
+  // console.log("index",index);
   const [form1] = Form.useForm();
   // add to database ****************************************
   
@@ -51,7 +53,7 @@ const CadetForm=(index)=>
           cadet_act: formValues.activities ||1,
           cadet_rem: formValues.remarks ||1,
           cadet_veg: formValues.veg ||"veg",
-          campid: index.index,
+          campid: index,
           
           
   
@@ -94,18 +96,85 @@ const CadetForm=(index)=>
         console.error("Error:", error);
       }
     }
-    useState(() => {
+    
+    
+    // get masterdata
+      const [cadets, setcadets] = useState([]);
+      async function getCadets(db = database) {
+        const cadetsData = [];
+        console.log("Hello");
+        try
+        {
+        const querySnapshot = await getDocs(collection(db, "cadets"));
+        querySnapshot.forEach((doc) => {
+          const cadet = {
+            id: doc.id,
+            ...doc.data(),
+          };
+          cadetsData.push(cadet);
+        });
+
+        setcadets(cadetsData);
+      } catch (error) {
+        console.error("Error fetching cadets:", error);
+      }
+      }
+      useEffect(() => {
         
-        fetchCamps();
-      });
-      console.log(data);
-  return (
+          fetchCamps();
+      })
+      useEffect(() => {
+        getCadets();
+          
+      }, []);
+        // console.log(data);
+      // console.log("===>",cadets);
+      // write a search function in the list cadets
+      const search_id = () => {
+        console.log("searching");
+        // for i in cadets
+        for (var i = 0; i < campdata.length; i++) {
+          if (campdata[i].id == form1.getFieldValue("cadetnum")) {
+            
+            form1.setFieldsValue({
+              cadetname: campdata[i].cadet_name,
+              rank: campdata[i].cadet_rank,
+              institution: campdata[i].cadet_insti,
+              activities: campdata[i].cadet_act,
+              remarks: campdata[i].cadet_rem,
+              veg: campdata[i].cadet_veg,
+              
+            });
+            console.log("found");
+          }
+          console.log("Not found");
+        }
+
+        {for (var i = 0; i < cadets.length; i++) {
+          if (cadets[i].id == form1.getFieldValue("cadetnum")) {
+            console.log("if");
+            form1.setFieldsValue({
+              cadetname: cadets[i].name,
+              rank: cadets[i].rank,
+              institution: cadets[i].college,
+            });
+            console.log("found");
+          }
+          console.log("Not found");
+        }}
+      }
+      return (
     <div style={{display:"flex"}}>
     
     <Card
       title="Cadet Register Form"
       className="flex-1 overflow-x-hidden  my-4 mx-6 py-2 px-4"
     >
+      <Form.Item>
+            <Button onClick={search_id}  >
+              Search Cadet
+            </Button>
+          </Form.Item>
       <Form
         
         name="cadetregister"
@@ -123,6 +192,7 @@ const CadetForm=(index)=>
             alt=""
           />
         </div> */}
+        
         <Col>
           
 
@@ -161,6 +231,7 @@ const CadetForm=(index)=>
               Add Cadet
             </Button>
           </Form.Item>
+          
           </Col>
           <Col>
           

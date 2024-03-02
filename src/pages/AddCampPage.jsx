@@ -130,7 +130,7 @@ async function getCadets(db = database) {
     </p>
               </Card>
             </div>
-            <AddCampcadetForm index={index} />
+            <AddCampcadetForm campdata={cad} index={index} />
           </div>
 
           <div style={{ height: "20vh" }}>
