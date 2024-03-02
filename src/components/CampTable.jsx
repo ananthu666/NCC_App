@@ -7,7 +7,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 function Tablegrid({ data, loading }) {
   const [searchText, setSearchText] = useState("");
   
-
+  
 
   const [filteredData, setFilteredData] = useState(data);
   const navigate = useNavigate();
@@ -17,13 +17,15 @@ function Tablegrid({ data, loading }) {
 
   
 
+  // console.log("Hello",data);
+  // if data is empty wait for data to be loaded
  
 
   
   const columns = [
     {
       title: "Cadet NO",
-      dataIndex: "id",
+      dataIndex: "cadet_num",
       key: "id",
       width: 140,
       fixed: "left",
@@ -31,13 +33,13 @@ function Tablegrid({ data, loading }) {
     },
     {
       title: "Rank",
-      dataIndex: "rank",
+      dataIndex: "cadet_rank",
       key: "rank",
       width: 160,
     },
     {
       title: "Cadet Name",
-      dataIndex: "name",
+      dataIndex: "cadet_name",
       key: "name",
       fixed: "left",
       width: 200,
@@ -45,25 +47,25 @@ function Tablegrid({ data, loading }) {
     },
     {
       title: "Instituion",
-      dataIndex: "college",
+      dataIndex: "cadet_insti",
       key: "college",
       width: 230,
     },
     {
       title: "Activities/Achievements",
-      dataIndex: "activities",
+      dataIndex: "cadet_act",
       key: "activities",
       width: 250,
     },
     {
       title: "Remarks",
-      dataIndex: "remarks",
+      dataIndex: "cadet_rem",
       key: "remarks",
       width: 200,
     },
     {
       title: "VEG /NONVEG",
-      dataIndex: "veg",
+      dataIndex: "cadet_veg",
       key: "veg",
       width: 120,
     },
@@ -108,11 +110,10 @@ function Tablegrid({ data, loading }) {
 
  
 
-  
+  console.log(data);
 
   return (
     <div className="flex flex-col z-0">
-      
 
       
 
@@ -130,8 +131,10 @@ function Tablegrid({ data, loading }) {
             </div>
       <Table
         rowKey="id"
+        
+        dataSource={data}
         columns={columns}
-        dataSource={filteredData}
+        
         scroll={{
           x: 1000,
           y: 250,
@@ -147,7 +150,8 @@ function Tablegrid({ data, loading }) {
         }}
         loading={loading}
         showSizeChanger="false"
-      />
+        />
+        
     </div>
   );
 }
