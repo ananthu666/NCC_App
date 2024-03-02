@@ -133,24 +133,28 @@ const CadetForm=({campdata,index})=>
       const search_id = () => {
         console.log("searching");
         // for i in cadets
+        var flag=0;
         for (var i = 0; i < campdata.length; i++) {
+          console.log(campdata[i].cadet_rank);
           if (campdata[i].id == form1.getFieldValue("cadetnum")) {
             
             form1.setFieldsValue({
               cadetname: campdata[i].cadet_name,
-              rank: campdata[i].cadet_rank,
               institution: campdata[i].cadet_insti,
+              rank: campdata[i].cadet_rank,
               activities: campdata[i].cadet_act,
               remarks: campdata[i].cadet_rem,
               veg: campdata[i].cadet_veg,
               
             });
-            console.log("found");
+            console.log("found in camp");
+            flag=1;
           }
-          console.log("Not found");
+          console.log("Not found in camp");
         }
-
-        {for (var i = 0; i < cadets.length; i++) {
+        if(flag==0)
+        {for (i = 0; i < cadets.length; i++) {
+          
           if (cadets[i].id == form1.getFieldValue("cadetnum")) {
             console.log("if");
             form1.setFieldsValue({
@@ -158,9 +162,9 @@ const CadetForm=({campdata,index})=>
               rank: cadets[i].rank,
               institution: cadets[i].college,
             });
-            console.log("found");
+            console.log("found in mastere");
           }
-          console.log("Not found");
+          console.log("Not found in masterdata");
         }}
       }
       return (
