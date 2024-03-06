@@ -44,9 +44,9 @@ const Login = () => {
 
   return (
     <>
-      <div className=" mx-auto flex justify-center h-screen max-w-lg flex-col md:max-w-none md:flex-row md:pr-10">
-        <div className="flex justify-start  gap-10 flex-col  flex-1 max-w-md rounded-3xl bg-gradient-to-t from-teal-400 via-blue-700 to-blue-600 px-8 py-10 text-white sm:px-10 md:m-8 md:mr-8">
-          <p className="my-2 text-7xl text-center font-bold md:text-4xl md:leading-snug">
+      <div className=" mx-auto flex justify-center h-screen items-center max-w-lg flex-col md:max-w-none md:flex-row md:pr-10">
+        <div className="flex justify-start h-max  gap-10 flex-col  flex-1 max-w-md rounded-3xl bg-gradient-to-t from-teal-400 via-blue-700 to-blue-600 px-8 py-12 text-white   md:mr-8">
+          <p className="my-1  text-7xl text-center font-bold md:text-4xl md:leading-snug">
             National Cadet Corps
           </p>
           <div className="bg-white bg-opacity-10 rounded-2xl px-4 py-8">
