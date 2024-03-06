@@ -3,7 +3,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { Button, Flex, Table, Input, Select, Popconfirm } from "antd";
 import { useState, useEffect } from "react";
-import { DeleteFilled } from "@ant-design/icons";
+import { DownloadOutlined } from "@ant-design/icons";
 import { Navigate, useNavigate } from "react-router-dom";
 import imageUrl from "../assets/NCC.png";
 
@@ -280,16 +280,19 @@ function Tablegrid({ data, loading }) {
             <Button>Edit</Button>
           </Popconfirm>
           <Popconfirm
-            title="Sure to delete?"
+            title="Download Biodata?"
             onConfirm={() => genCert(record)}
             okButtonProps={{
               style: {
-                backgroundColor: "red",
+                backgroundColor: "blue",
                 color: "white",
               },
             }}
           >
-            <Button danger icon={<DeleteFilled />} />
+            <Button
+              icon={<DownloadOutlined />}
+              style={{ backgroundColor: "#0ea5e9", color: "white" }}
+            />
           </Popconfirm>
         </Flex>
       ),
