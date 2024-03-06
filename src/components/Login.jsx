@@ -1,7 +1,9 @@
 import React, { useContext } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Card } from "antd";
+import { Button, Checkbox, Form, Input } from "antd";
 import "../assets/styles/login.css";
+
+import image from "../assets/NCC.png";
 
 import { useNavigate } from "react-router";
 import { auth } from "../../firebase";
@@ -12,6 +14,9 @@ const Login = () => {
   const navigate = useNavigate();
   const context = useContext(AuthContext);
   const { userType, setUserType, isLoggedIn, setIsLoggedIn } = context;
+
+  console.log(context);
+
   const handleClick = async (values) => {
     try {
       const email = values.username;
@@ -19,16 +24,18 @@ const Login = () => {
       console.log(email, password);
       await signInWithEmailAndPassword(auth, email, password)
         .then((user) => {
-          console.log(user);
+          console.log(user.user.uid);
           setUserType(user.user.uid);
           setIsLoggedIn(true);
           localStorage.setItem("user", user.user.uid);
+
           navigate("/dashboard");
         })
         .catch((error) => {
           console.log(error);
           alert(error.message);
         });
+      console.log(isLoggedIn, userType);
     } catch (e) {
       console.log(e);
       alert(e.message);
@@ -37,15 +44,30 @@ const Login = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen">
-        <Card
-          title="Login"
-          bordered={true}
-          style={{
-            width: 400,
-          }}
-        >
+      <div className=" mx-auto flex justify-center h-screen max-w-lg flex-col md:max-w-none md:flex-row md:pr-10">
+        <div className="flex justify-start  gap-10 flex-col  flex-1 max-w-md rounded-3xl bg-gradient-to-t from-teal-400 via-blue-700 to-blue-600 px-8 py-10 text-white sm:px-10 md:m-8 md:mr-8">
+          <p className="my-2 text-7xl text-center font-bold md:text-4xl md:leading-snug">
+            National Cadet Corps
+          </p>
+          <div className="bg-white bg-opacity-10 rounded-2xl px-4 py-8">
+            <img className="rounded-md" src={image}></img>
+            <div className="">
+              <div className="flex items-center justify-center">
+                <p className="text-xl font-bold text-center">
+                  "Unity and Discipline" <br /> (Ekta aur Anushasan)
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="px-4 py-20 flex justify-start  flex-col gap-10 w-1/3">
+          <h1 className="text-5xl">
+            Welcome Back to <br />
+            <span className="font-bold text-blue-600">NCC Trivandrum!</span>
+          </h1>
+          <h2 className="mb-2 text-3xl font-semibold">Login</h2>
           <Form
+            layout="vertical"
             name="normal_login"
             className="login-form "
             initialValues={{
@@ -55,6 +77,7 @@ const Login = () => {
           >
             <Form.Item
               name="username"
+              label="Username"
               rules={[
                 {
                   required: true,
@@ -63,11 +86,13 @@ const Login = () => {
               ]}
             >
               <Input
+                size="large"
                 prefix={<UserOutlined className="site-form-item-icon" />}
                 placeholder="Username"
               />
             </Form.Item>
             <Form.Item
+              label="Password"
               name="password"
               rules={[
                 {
@@ -80,6 +105,8 @@ const Login = () => {
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password"
                 placeholder="Password"
+                name="password"
+                size="large"
               />
             </Form.Item>
             <div className="flex my-4 justify-between">
@@ -93,15 +120,20 @@ const Login = () => {
             </div>
 
             <div className="flex justify-center flex-col">
-              <Button htmlType="submit" className="login-form-button">
+              <Button
+                htmlType="submit"
+                style={{ backgroundColor: "#2563eb", color: "white" }}
+                className="login-form-button"
+                size="large"
+              >
                 Log in
               </Button>
               <a href="" className="my-2 text-blue-500">
-                register now!
+                Forgot password!
               </a>
             </div>
           </Form>
-        </Card>
+        </div>
       </div>
     </>
   );
