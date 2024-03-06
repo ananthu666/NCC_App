@@ -7,50 +7,74 @@ import { Card } from "antd";
 import { database } from "../../firebase";
 
 import { useState, useEffect } from "react";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc ,onSnapshot,collection,query, where} from "firebase/firestore";
 const Home = () => {
   const { index } = useParams();
-  const initialData = [
-    { id: 1, name: "John", lastName: "Doe" },
-    { id: 2, name: "Jane", lastName: "Doe" },
-    { id: 11, name: "John", lastName: "Doe" },
-    { id: 21, name: "Jane", lastName: "Doe" },
-    { id: 12, name: "John", lastName: "Doe" },
-    { id: 23, name: "Jane", lastName: "Doe" },
-    { id: 14, name: "John", lastName: "Doe" },
-    { id: 25, name: "Jane", lastName: "Doe" },
-    { id: 25, name: "Jane", lastName: "Doe" },
-    { id: 25, name: "Jane", lastName: "Doe" },
-    { id: 25, name: "Jane", lastName: "Doe" },
-  ];
+  const [loading, setLoading] = useState(false);
   const [data, setdata] = useState([]);
+  const [cad, setcad] = useState([]);
+  
 
+async function getCadets(db = database) {
+  try {
+    setLoading(true);
+
+    const q = query(collection(db, "cadet_in_camp"), where("campid", "==", index));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const cadetsData = [];
+      querySnapshot.forEach((doc) => {
+        const cadet = {
+          id: doc.id,
+          ...doc.data(),
+        };
+
+        cadetsData.push(cadet);
+      });
+      // console.log("realtime",cadetsData);
+      // console.log("cadet",cadetsData.campid);
+      setLoading(false);
+      setcad(cadetsData);
+    });
+
+    // Cleanup function
+    return () => {
+      unsubscribe();
+    };
+  } catch (error) {
+    console.error("Error fetching cadets:", error);
+    setLoading(false);
+  }
+}
+
+  
+  
   async function getCamps(db = database) {
     // ////////////////////////////////
     const docRef = doc(db, "camp_main", index);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      // console.log("Document data:", docSnap.data());
+      setdata(docSnap.data());
     } else {
       // docSnap.data() will be undefined in this case
       console.log("No such document!");
     }
     // ////////////////////////////////
-    return docSnap.data();
+    // return docSnap.data();
   }
-  async function fetchCamps() {
-    try {
-      const campList = await getCamps();
-      setdata(campList);
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }
+  
   useState(() => {
-    fetchCamps();
+    getCamps();
+    
+    getCadets(); 
+    
+    
+    
   });
+  
   console.log(data);
+ 
+  // console.log(cad);
   return (
     <>
       <div className="flex justify-between items-start">
@@ -106,11 +130,11 @@ const Home = () => {
     </p>
               </Card>
             </div>
-            <AddCampcadetForm index={index} />
+            <AddCampcadetForm campdata={cad} index={index} />
           </div>
 
           <div style={{ height: "20vh" }}>
-            <Camptable data={initialData} loading={false} />
+            <Camptable data={cad} loading={loading} campid={index} />
           </div>
         </div>
       </div>

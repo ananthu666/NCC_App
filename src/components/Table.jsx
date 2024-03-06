@@ -13,7 +13,7 @@ function Tablegrid({ data, loading }) {
   const [selectedRank, setSelectedRank] = useState([]);
   const [filteredData, setFilteredData] = useState(data);
   const navigate = useNavigate();
-
+  console.log(data);
   const handleEdit = (cadet) => {
     console.log("Edit", cadet);
     navigate(`/edit/${cadet.id}`, {
@@ -155,6 +155,12 @@ function Tablegrid({ data, loading }) {
       title: "Height",
       dataIndex: "height",
       key: "height",
+      width: 100,
+    },
+    {
+      title: "Camps Attended",
+      dataIndex: "camps",
+      key: "camp",
       width: 100,
     },
     {

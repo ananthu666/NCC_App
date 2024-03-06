@@ -54,7 +54,7 @@ const CadetForm=()=>
       } catch (error) {
         console.error("Error sending data to Firestore:", error);
       }
-      window.location.reload();
+      form1.resetFields();
     };
     
   return (
