@@ -5,6 +5,7 @@ import { Button, Flex, Table, Input, Select, Popconfirm } from "antd";
 import { useState, useEffect } from "react";
 import { DeleteFilled } from "@ant-design/icons";
 import { Navigate, useNavigate } from "react-router-dom";
+import imageUrl from "../assets/NCC.png";
 
 function Tablegrid({ data, loading }) {
   const [searchText, setSearchText] = useState("");
@@ -295,6 +296,125 @@ function Tablegrid({ data, loading }) {
     },
   ];
 
+  // const genCert = (cadet) => {
+  //   console.log(cadet);
+  //   const doc = new jsPDF({
+  //     orientation: "portrait",
+  //     unit: "mm",
+  //     format: "a4",
+  //   });
+
+  //   // Set font size for the heading
+  //   doc.setFontSize(24);
+
+  //   // Calculate the width of the text to center it
+  //   const textWidth =
+  //     (doc.getStringUnitWidth("BIODATA") * doc.internal.getFontSize()) /
+  //     doc.internal.scaleFactor;
+  //   const centerX = (doc.internal.pageSize.width - textWidth) / 2;
+
+  //   // Add the heading at the calculated position
+  //   doc.text("BIODATA", centerX, 20);
+
+  //   // Reset font size for the rest of the content
+  //   doc.setFontSize(12);
+
+  //   // Define the labels and corresponding values
+  //   const labels = [
+  //     "Cadet ID",
+  //     "Name",
+  //     "Rank",
+  //     "Enrollment Institute",
+  //     // "Awards",
+  //     // "NCC Year",
+  //     // "ANO Name",
+  //     "Blood Group",
+  //     "Height",
+  //     "Address",
+  //     "Bank Acc No",
+  //     "IFSC Code",
+  //     "Mobile No",
+  //     "Father Name",
+  //     // "Certificate Qualified",
+  //   ];
+  //   const values = [
+  //     `: ${cadet.id}`,
+  //     `: ${cadet.name}`,
+  //     `: ${cadet.rank}`,
+  //     `: ${cadet.college}`,
+  //     // `: ${cadet.awards}`,
+  //     // `: ${cadet.nccYear}`,
+  //     // `: ${cadet.anoName}`,
+  //     `: ${cadet.bloodGroup}`,
+  //     `: ${cadet.height}`,
+  //     `: ${cadet.address}`,
+  //     `: ${cadet.bankAccountNumber}`,
+  //     `: ${cadet.ifscCode}`,
+  //     `: ${cadet.mobileNo}`,
+  //     `: ${cadet["father'sName"]}`,
+  //     // `: ${cadet.certificateQualified}`,
+  //   ];
+
+  //   // Calculate the maximum label width
+  //   const maxLabelWidth = Math.max(
+  //     ...labels.map((label) => doc.getStringUnitWidth(label))
+  //   );
+
+  //   // Define the starting y position and line height
+  //   let startY = 40;
+  //   const lineHeight = 10;
+
+  //   // Adjust the distance between label and value
+  //   const distanceBetweenLabelAndValue = 80; // Increase this value to add more space
+
+  //   // Loop through each label and value to print them
+  //   labels.forEach((label, index) => {
+  //     // Calculate x position for label and value
+  //     const labelX = 15;
+  //     const valueX = maxLabelWidth + distanceBetweenLabelAndValue; // Add fixed distance between label and value
+
+  //     // Print label and value at calculated positions
+  //     doc.text(label, labelX, startY);
+  //     doc.text(values[index], valueX, startY);
+
+  //     // Increment y position for the next label
+  //     startY += lineHeight;
+  //   });
+
+  //   // Add a section for camps attended
+  //   // const campsStartY = startY + lineHeight;
+  //   // doc.text("Camps Attended", 15, campsStartY);
+
+  //   // // Create a table for camps attended
+  //   // const campsTable = {
+  //   //   head: [["Camp Name", "Year", "Location"]],
+  //   //   body: cadet.camps.map((camp) => [camp]),
+  //   //   startY: campsStartY + lineHeight,
+  //   // };
+
+  //   // doc.autoTable(campsTable); // Use autoTable function from jspdf-autotable plugin
+
+  //   // Add border around the entire certificate
+  //   const certificateWidth = doc.internal.pageSize.width - 20; // Width of the certificate
+  //   const certificateHeight = doc.internal.pageSize.height - 20; // Height of the certificate
+  //   doc.rect(8, 8, certificateWidth + 2, certificateHeight, "S"); // Add border with "S" style (solid)
+
+  //   // Fetch the image through cors-anywhere proxy
+  //   // Save the PDF without the image
+
+  //   // Add the image to the PDF
+  //   // doc.addImage(imageUrl, "JPEG", 10, 10, 100, 100);
+  //   doc.addImage(
+  //     imageUrl,
+  //     "JPEG",
+  //     doc.internal.pageSize.width - 50,
+  //     35,
+  //     32,
+  //     40
+  //   );
+  //   doc.save("certificate.pdf");
+  // };
+
   const genCert = (cadet) => {
     console.log(cadet);
     const doc = new jsPDF({
@@ -324,9 +444,6 @@ function Tablegrid({ data, loading }) {
       "Name",
       "Rank",
       "Enrollment Institute",
-      // "Awards",
-      // "NCC Year",
-      // "ANO Name",
       "Blood Group",
       "Height",
       "Address",
@@ -334,16 +451,12 @@ function Tablegrid({ data, loading }) {
       "IFSC Code",
       "Mobile No",
       "Father Name",
-      // "Certificate Qualified",
     ];
     const values = [
       `: ${cadet.id}`,
       `: ${cadet.name}`,
       `: ${cadet.rank}`,
       `: ${cadet.college}`,
-      // `: ${cadet.awards}`,
-      // `: ${cadet.nccYear}`,
-      // `: ${cadet.anoName}`,
       `: ${cadet.bloodGroup}`,
       `: ${cadet.height}`,
       `: ${cadet.address}`,
@@ -351,7 +464,6 @@ function Tablegrid({ data, loading }) {
       `: ${cadet.ifscCode}`,
       `: ${cadet.mobileNo}`,
       `: ${cadet["father'sName"]}`,
-      // `: ${cadet.certificateQualified}`,
     ];
 
     // Calculate the maximum label width
@@ -366,40 +478,41 @@ function Tablegrid({ data, loading }) {
     // Adjust the distance between label and value
     const distanceBetweenLabelAndValue = 80; // Increase this value to add more space
 
+    // Calculate the width available for the certificate
+    const certificateWidth = doc.internal.pageSize.width - 20;
+
     // Loop through each label and value to print them
     labels.forEach((label, index) => {
       // Calculate x position for label and value
       const labelX = 15;
       const valueX = maxLabelWidth + distanceBetweenLabelAndValue; // Add fixed distance between label and value
 
-      // Print label and value at calculated positions
-      doc.text(label, labelX, startY);
-      doc.text(values[index], valueX, startY);
+      let valueY = startY;
+
+      // Split address into multiple lines if necessary
+      if (label === "Address") {
+        const addressLines = doc.splitTextToSize(
+          values[index],
+          certificateWidth - valueX - 10
+        );
+        addressLines.forEach((line) => {
+          doc.text(line, valueX, valueY);
+          valueY += lineHeight;
+        });
+      } else {
+        // Print label and value at calculated positions
+        doc.text(label, labelX, startY);
+        doc.text(values[index], valueX, startY);
+      }
 
       // Increment y position for the next label
-      startY += lineHeight;
+      startY = valueY + lineHeight;
     });
 
-    // Add a section for camps attended
-    const campsStartY = startY + lineHeight;
-    doc.text("Camps Attended", 15, campsStartY);
-
-    // Create a table for camps attended
-    const campsTable = {
-      head: [["Camp Name", "Year", "Location"]],
-      body: cadet.camps.map((camp) => [camp]),
-      startY: campsStartY + lineHeight,
-    };
-
-    doc.autoTable(campsTable); // Use autoTable function from jspdf-autotable plugin
-
     // Add border around the entire certificate
-    const certificateWidth = doc.internal.pageSize.width - 20; // Width of the certificate
+    // const certificateWidth = doc.internal.pageSize.width - 20; // Width of the certificate
     const certificateHeight = doc.internal.pageSize.height - 20; // Height of the certificate
     doc.rect(8, 8, certificateWidth + 2, certificateHeight, "S"); // Add border with "S" style (solid)
-
-    // Fetch the image through cors-anywhere proxy
-    // Save the PDF without the image
 
     // Add the image to the PDF
     // doc.addImage(imageUrl, "JPEG", 10, 10, 100, 100);
@@ -411,8 +524,11 @@ function Tablegrid({ data, loading }) {
       32,
       40
     );
+
+    // Save the PDF
     doc.save("certificate.pdf");
   };
+
   const filterData = () => {
     let temp = applyFilters(data);
     setFilteredData(temp);

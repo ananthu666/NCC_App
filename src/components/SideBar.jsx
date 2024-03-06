@@ -5,6 +5,8 @@ import {
   DesktopOutlined,
   MenuUnfoldOutlined,
   UserAddOutlined,
+  MoneyCollectOutlined,
+  TeamOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { Link, useNavigate } from "react-router-dom";
@@ -56,7 +58,12 @@ const SideBar = () => {
       "newcadet",
       <UserAddOutlined />
     ),
-    getItem(<Link to="/camp">Camp</Link>, "newcadet", <UserAddOutlined />),
+    getItem(<Link to="/camp">Camp</Link>, "camp", <TeamOutlined />),
+    getItem(
+      <Link to="/finance">Finance</Link>,
+      "fin",
+      <MoneyCollectOutlined />
+    ),
 
     getItem(
       <div onClick={logOut}>Logout</div>,

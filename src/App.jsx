@@ -14,6 +14,7 @@ import CampPage from "./pages/CampPage";
 import AddCampPage from "./pages/AddCampPage";
 import AuthState from "./context/auth/AuthState";
 import PrivateRoute from "./components/PrivateRoute";
+import Finance from "./pages/Finance";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -64,6 +65,7 @@ function App() {
 
                   <Route path="/edit/:id" element={<UpdateCadet />} />
                   <Route path="/addcamp/:index" element={<AddCampPage />} />
+                  <Route path="/finance" element={<Finance />} />
                   {/* <Route path="/edit/:id" element={<CadetInfo />} /> */}
 
                   <Route path="*" element={<h1>Not Found</h1>} />
