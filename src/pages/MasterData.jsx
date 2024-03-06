@@ -22,9 +22,13 @@ const Home = () => {
     const querySnapshot = await getDocs(collection(db, "cadets"));
     querySnapshot.forEach((doc) => {
       const cadet = {
+        
         id: doc.id,
         ...doc.data(),
       };
+      if (Array.isArray(cadet.camps)) {
+        cadet.camps = cadet.camps.join(', '); // Use a comma and space as separator
+      }
       cadetsData.push(cadet);
     });
     return cadetsData;

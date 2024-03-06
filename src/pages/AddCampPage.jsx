@@ -134,7 +134,7 @@ async function getCadets(db = database) {
           </div>
 
           <div style={{ height: "20vh" }}>
-            <Camptable data={cad} loading={loading} />
+            <Camptable data={cad} loading={loading} campid={index} />
           </div>
         </div>
       </div>

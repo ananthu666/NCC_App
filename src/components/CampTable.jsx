@@ -1,13 +1,22 @@
 import React from "react";
-import { Button, Flex, Table, Input, Select, Popconfirm} from "antd";
+import { Button, Flex, Table, Input, Select, Popconfirm, message } from "antd";
 import { useState, useEffect } from "react";
-
+import { DeleteFilled } from "@ant-design/icons";
 import { Navigate, useNavigate } from "react-router-dom";
-
-function Tablegrid({ data, loading }) {
+import { database } from "../../firebase";
+import { doc, deleteDoc, updateDoc,arrayUnion } from "firebase/firestore";
+function Tablegrid({ data, loading,campid }) {
   const [searchText, setSearchText] = useState("");
-  
-  
+  const handleDelete = async (id) => {
+    try {
+      await deleteDoc(doc(database, "cadet_in_camp", id));
+      console.log("Document successfully deleted!");
+      // not a alert just a message
+      message.success("Document successfully deleted!");
+    } catch (e) {
+      console.error("Error removing document: ", e);
+    }
+  };
 
   const [filteredData, setFilteredData] = useState(data);
   const navigate = useNavigate();
@@ -15,14 +24,54 @@ function Tablegrid({ data, loading }) {
   const { Search } = Input;
   const onSearch = (value) => setSearchText(value);
 
-  
+  // promoting all cadets in the camp
+  const promoteall = async () => {
+    const userConfirmation = window.confirm(
+      "Are you sure you want to promote all?"
+    );
 
+    // If the user confirms, proceed with the action
+    if (userConfirmation) {
+      // Extract all id from data
+      const allIds = data.map((item) => item.id);
+
+      try {
+        // Iterate over each id and update the corresponding document in the "cadets" collection
+        for (const id of allIds) {
+          const cadetRef = doc(database, "cadets", id);
+    
+          // Update the "regions" field of the cadet document with the specified campid
+          await updateDoc(cadetRef, {
+            camps: arrayUnion(campid),
+          });
+    
+          console.log(`Cadet with id ${id} updated successfully.`);
+          // You can add additional logic or logging if needed
+        }
+    
+        console.log("All cadets updated successfully.");
+      } catch (error) {
+        console.error("Error updating cadets:", error.message);
+        // You can add additional error handling logic here
+      }
+    } else {
+      // If the user cancels the action
+      console.log("Update canceled by the user.");
+      // You can add additional logic or simply return from the function
+    }
+  };
   // console.log("Hello",data);
   // if data is empty wait for data to be loaded
- 
 
-  
   const columns = [
+    {
+      title: "Sl NO",
+      dataIndex: "sln",
+      key: "sln",
+      width: 50,
+      fixed: "left",
+      render: (_, __, index) => index + 1,
+    },
     {
       title: "Cadet NO",
       dataIndex: "cadet_num",
@@ -69,8 +118,28 @@ function Tablegrid({ data, loading }) {
       key: "veg",
       width: 120,
     },
-    
-   
+    {
+      title: "Delete",
+      fixed: "right",
+      width: 90,
+      render: (_, record) => (
+        <Flex justify="center" gap={"middle"}>
+          <Popconfirm
+            title="Sure to delete?"
+            onConfirm={() => handleDelete(record.id)}
+            okButtonProps={{
+              style: {
+                backgroundColor: "red",
+                color: "white",
+              },
+            }}
+          >
+            <Button danger icon={<DeleteFilled />} />
+          </Popconfirm>
+        </Flex>
+      ),
+    },
+
     {
       filteredValue: [searchText],
       onFilter: (value, record) =>
@@ -104,37 +173,34 @@ function Tablegrid({ data, loading }) {
         String(record.fatherName).toLowerCase().includes(value.toLowerCase()) ||
         String(record.id).toLowerCase().includes(value.toLowerCase()),
       width: 0,
-    }
-    
+    },
   ];
-
- 
 
   console.log(data);
 
   return (
     <div className="flex flex-col z-0">
+      <div className="flex justify-end gap-2 items-center">
+        <div>
+          <Button type="primar" onClick={promoteall}>
+            Promote All
+          </Button>
+        </div>
 
-      
-
-            <div className="flex justify-end gap-2 items-center">
-              
-              <Search
-                placeholder="Input search text"
-                className="self-end mr-3 py-4"
-                onChange={(e) => setSearchText(e.target.value)}
-                onSearch={onSearch}
-                style={{
-                  width: 200,
-                }}
-              />
-            </div>
+        <Search
+          placeholder="Input search text"
+          className="self-end mr-3 py-4"
+          onChange={(e) => setSearchText(e.target.value)}
+          onSearch={onSearch}
+          style={{
+            width: 200,
+          }}
+        />
+      </div>
       <Table
         rowKey="id"
-        
         dataSource={data}
         columns={columns}
-        
         scroll={{
           x: 1000,
           y: 250,
@@ -146,12 +212,11 @@ function Tablegrid({ data, loading }) {
         }}
         size="small"
         style={{
-          width: "85vw",
+          width: "86vw",
         }}
         loading={loading}
         showSizeChanger="false"
-        />
-        
+      />
     </div>
   );
 }
