@@ -61,7 +61,7 @@ const CadetForm = ({ data = {} }) => {
         college: formValues.college || "Default College",
         dob: formValues.dob.format("DD-MM-YYYY") || "01-01-2000",
         // dob: moment(formValues.dob).format('DD-MM-YYYY') || "01-01-2000",
-
+        camps: [formValues.campsattended],
         address: formValues.address || "Default Address",
         bankAccountHoldersName:
           formValues.bankAccountHolders || "Default Bank Account Holder Name",
@@ -89,6 +89,7 @@ const CadetForm = ({ data = {} }) => {
     } catch (error) {
       console.error("Error sending data to Firestore:", error);
     }
+    form.resetFields();
   };
 
   //
@@ -239,6 +240,13 @@ const CadetForm = ({ data = {} }) => {
           <Form.Item
             name="identificationMark"
             label="Identification Mark"
+            rules={[{ required: true }]}
+          >
+            <Input.TextArea />
+          </Form.Item>
+          <Form.Item
+            name="campsattended"
+            label="Camps Attended"
             rules={[{ required: true }]}
           >
             <Input.TextArea />
