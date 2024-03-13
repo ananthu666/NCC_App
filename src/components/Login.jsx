@@ -44,13 +44,13 @@ const Login = () => {
 
   return (
     <>
-      <div className=" mx-auto flex justify-center h-screen items-center max-w-lg flex-col md:max-w-none md:flex-row md:pr-10">
+      <div className="bg-white mx-auto flex justify-center h-screen items-center max-w-lg flex-col md:max-w-none md:flex-row md:pr-10">
         <div className="flex justify-start h-max  gap-10 flex-col  flex-1 max-w-md rounded-3xl bg-gradient-to-t from-teal-400 via-blue-700 to-blue-600 px-8 py-12 text-white   md:mr-8">
-          <p className="my-1  text-7xl text-center font-bold md:text-4xl md:leading-snug">
+          <p className="my-1 font-roboto  text-7xl text-center font-bold md:text-4xl md:leading-snug">
             National Cadet Corps
           </p>
-          <div className="bg-white bg-opacity-10 rounded-2xl px-4 py-8">
-            <img className="rounded-md" src={image}></img>
+          <div className="bg-white shadow-2xl bg-opacity-10 rounded-2xl px-4 py-8">
+            <img className="rounded-md drop-shadow-xl " src={image}></img>
             <div className="">
               <div className="flex items-center justify-center">
                 <p className="text-xl font-bold text-center">
@@ -63,7 +63,9 @@ const Login = () => {
         <div className="px-4 py-20 flex justify-start  flex-col gap-10 w-1/3">
           <h1 className="text-5xl">
             Welcome Back to <br />
-            <span className="font-bold text-blue-600">NCC Trivandrum!</span>
+            <span className="font-bold text-blue-600">
+              1(K)NU NCC TRIVANDRUM!
+            </span>
           </h1>
           <h2 className="mb-2 text-3xl font-semibold">Login</h2>
           <Form
