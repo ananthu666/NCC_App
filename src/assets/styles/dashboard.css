@@ -9,3 +9,6 @@
   );
   border-radius: 0.75rem; /* Adjust as needed */
 }
+.dashboard {
+  background: url("../navy-wall.jpg");
+}

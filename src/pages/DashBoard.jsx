@@ -7,7 +7,7 @@ const DashBoard = () => {
     <div className="flex justify-around">
       <SideBar />
       <div className="flex flex-col p-4 flex-1 min-h-lvh justify-start self-center text-center items-center ">
-        <div className="relative self-start rounded-xl flex-1 bg-ncc bg-cover bg-center bg-no-repeat w-full">
+        <div className="dashboard relative self-start rounded-xl flex-1  bg-cover bg-center bg-no-repeat w-full">
           <div className="font-roboto py-4 px-2  absolute top-0 left-0 mt-4 ml-4">
             <h1 className="relative text-left pb-2 z-30 text-6xl  font-semibold text-white">
               1(K) NAVAL NCC UNIT
