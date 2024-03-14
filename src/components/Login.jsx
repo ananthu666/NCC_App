@@ -2,10 +2,8 @@ import React, { useContext } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input } from "antd";
 import "../assets/styles/login.css";
-
 import image from "../assets/NCC.png";
-
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { auth } from "../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import AuthContext from "../context/auth/AuthContext";
@@ -13,9 +11,10 @@ import AuthContext from "../context/auth/AuthContext";
 const Login = () => {
   const navigate = useNavigate();
   const context = useContext(AuthContext);
-  const { userType, setUserType, isLoggedIn, setIsLoggedIn } = context;
+  const { setAuth, userType, setUserType, isLoggedIn, setIsLoggedIn } = context;
 
-  console.log(context);
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/dashboard";
 
   const handleClick = async (values) => {
     try {
@@ -28,8 +27,11 @@ const Login = () => {
           setUserType(user.user.uid);
           setIsLoggedIn(true);
           localStorage.setItem("user", user.user.uid);
-          
-          navigate("/dashboard");
+
+          setAuth({ roles: [user.user.uid] });
+          // navigate("/dashboard");
+          navigate(from, { replace: true });
+
         })
         .catch((error) => {
           console.log(error);

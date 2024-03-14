@@ -248,6 +248,7 @@ function Tablegrid({ data, loading }) {
         String(record.bankAccountNumber)
           .toLowerCase()
           .includes(value.toLowerCase()) ||
+        String(record.camps).toLowerCase().includes(value.toLowerCase()) ||
         String(record.height).toLowerCase().includes(value.toLowerCase()) ||
         String(record.category).toLowerCase().includes(value.toLowerCase()) ||
         String(record.division).toLowerCase().includes(value.toLowerCase()) ||
