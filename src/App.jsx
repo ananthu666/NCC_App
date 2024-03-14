@@ -73,7 +73,7 @@ function App() {
 
                   <Route path="/edit/:id" element={<UpdateCadet />} />
                   <Route path="/addcamp/:index" element={<AddCampPage />} />
-                  <Route path="/campfin/:index" element={<Campfindash />} />
+                
                   <Route path="/finance" element={<Finance />} />
                   
 
@@ -112,6 +112,7 @@ function App() {
                       <RequireAuth allowedRoles={[ROLES.co, ROLES.cs]} />
                     }
                   >
+                    <Route path="/campfin/:index" element={<Campfindash />} />
                     <Route path="/finance" element={<Finance />} />
                   </Route>
                   {/* <Route path="/edit/:id" element={<CadetInfo />} /> */}
