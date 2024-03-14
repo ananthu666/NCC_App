@@ -82,6 +82,8 @@ const CadetForm = ({ data = {} }) => {
           formValues.dateOfEnrolment.format("DD-MM-YYYY") || "01-01-2022",
         year: formValues.year || "Default Year",
         upload: imageUrl || "Default Upload Value",
+        rank: formValues.rank || "Default Rank",
+        exam_grade: formValues.exam_grade || "Default Exam Grade",
       };
       const documentRef = doc(cadetsRef, formValues.id);
       await setDoc(documentRef, data);
@@ -101,7 +103,7 @@ const CadetForm = ({ data = {} }) => {
     if (!isJPGOrPNG) {
       message.error("You can only upload JPG/PNG file!");
     }
-    const isLt2M = file.size / 1024 < 2;
+    const isLt2M = file.size /1024/1024 < 2;
     if (!isLt2M) {
       message.error("Image must smaller than 2MB!");
     }
@@ -138,18 +140,18 @@ const CadetForm = ({ data = {} }) => {
           />
         </div>
         <Col>
-          <Form.Item name="id" label="ID" rules={[{ required: true }]}>
+          <Form.Item name="id" label="ID" rules={[{ required: false }]}>
             <Input />
           </Form.Item>
 
-          <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+          <Form.Item name="name" label="Name" rules={[{ required: false }]}>
             <Input />
           </Form.Item>
 
           <Form.Item
             name="college"
             label="College"
-            rules={[{ required: true }]}
+            rules={[{ required: false }]}
           >
             <Input />
           </Form.Item>
@@ -157,7 +159,7 @@ const CadetForm = ({ data = {} }) => {
           <Form.Item
             name="dob"
             label="Date of Birth"
-            rules={[{ required: true }]}
+            rules={[{ required: false }]}
           >
             <DatePicker />
           </Form.Item>
@@ -165,7 +167,7 @@ const CadetForm = ({ data = {} }) => {
           <Form.Item
             name="address"
             label="Address"
-            rules={[{ required: true }]}
+            rules={[{ required: false }]}
           >
             <Input />
           </Form.Item>
@@ -173,19 +175,19 @@ const CadetForm = ({ data = {} }) => {
           <Form.Item
             name="bankAccountNumber"
             label="Bank Account Number"
-            rules={[{ required: true }]}
+            rules={[{ required: false }]}
           >
             <Input />
           </Form.Item>
 
-          <Form.Item name="height" label="Height" rules={[{ required: true }]}>
+          <Form.Item name="height" label="Height" rules={[{ required: false }]}>
             <Input />
           </Form.Item>
 
           <Form.Item
             name="category"
             label="Category"
-            rules={[{ required: true }]}
+            rules={[{ required: false }]}
           >
             <Select>
               <Option value="A">A</Option>
@@ -197,7 +199,7 @@ const CadetForm = ({ data = {} }) => {
           <Form.Item
             name="division"
             label="Division"
-            rules={[{ required: true }]}
+            rules={[{ required: false }]}
           >
             <Select>
               <Option value="infantry">Infantry</Option>
@@ -215,17 +217,29 @@ const CadetForm = ({ data = {} }) => {
                 message: "The input is not valid E-mail!",
               },
               {
-                required: true,
+                required: false,
                 message: "Please input your E-mail!",
               },
             ]}
           >
             <Input />
           </Form.Item>
+          <Form.Item
+            name="exam_grade"
+            label="Examination grade"
+            rules={[{ required: false }]}
+          >
+            <Select>
+              <Option value="A">A</Option>
+              <Option value="B">B</Option>
+              <Option value="C">C</Option>
+              {/* Add other divisions here */}
+            </Select>
+          </Form.Item>
         </Col>
 
         <Col>
-          <Form.Item name="gender" label="Gender" rules={[{ required: true }]}>
+          <Form.Item name="gender" label="Gender" rules={[{ required: false }]}>
             <Select>
               <Option value="male">Male</Option>
               <Option value="female">Female</Option>
@@ -233,21 +247,21 @@ const CadetForm = ({ data = {} }) => {
             </Select>
           </Form.Item>
 
-          <Form.Item name="ifscCode" label="IFSC Code" rules={[{ required: true }]}>
+          <Form.Item name="ifscCode" label="IFSC Code" rules={[{ required: false }]}>
             <Input />
           </Form.Item>
 
           <Form.Item
             name="identificationMark"
             label="Identification Mark"
-            rules={[{ required: true }]}
+            rules={[{ required: false }]}
           >
             <Input.TextArea />
           </Form.Item>
           <Form.Item
             name="campsattended"
             label="Camps Attended"
-            rules={[{ required: true }]}
+            rules={[{ required: false }]}
           >
             <Input.TextArea />
           </Form.Item>
@@ -255,7 +269,7 @@ const CadetForm = ({ data = {} }) => {
           <Form.Item
             name="motherName"
             label="Mother's Name"
-            rules={[{ required: true }]}
+            rules={[{ required: false }]}
           >
             <Input />
           </Form.Item>
@@ -263,19 +277,26 @@ const CadetForm = ({ data = {} }) => {
           <Form.Item
             name="dateOfEnrolment"
             label="Date of Enrolment"
-            rules={[{ required: true }]}
+            rules={[{ required: false }]}
           >
             <DatePicker />
           </Form.Item>
 
-          <Form.Item name="year" label="Year" rules={[{ required: true }]}>
+          <Form.Item name="year" label="Year" rules={[{ required: false }]}>
             <Input />
           </Form.Item>
 
           <Form.Item
             name="father'sName"
             label="father'sName"
-            rules={[{ required: true }]}
+            rules={[{ required: false }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="rank"
+            label="Rank"
+            rules={[{ required: false }]}
           >
             <Input />
           </Form.Item>
