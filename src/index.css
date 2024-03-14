@@ -27,3 +27,7 @@
 :root {
   overflow: hidden;
 }
+
+* {
+  user-select: none;
+}

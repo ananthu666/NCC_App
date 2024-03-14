@@ -15,9 +15,16 @@ import AddCampPage from "./pages/AddCampPage";
 import AuthState from "./context/auth/AuthState";
 import PrivateRoute from "./components/PrivateRoute";
 import Finance from "./pages/Finance";
+import RequireAuth from "./components/RequireAuth";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+
+  const ROLES = {
+    co: "jyB7YRMTHIbxSCQLM6F9EylqZq43",
+    to: "306bIcSEFOS5MuaQmBakjdsiP9s2",
+    cs: "eJbFYeisrkMdfcTX8JXjD73shZ42",
+  };
 
   useEffect(() => {
     // Simulate loading delay
@@ -53,7 +60,7 @@ function App() {
             </Routes>
           </HashRouter> */}
           <AuthState>
-            <BrowserRouter>
+            {/* <BrowserRouter>
               <Routes>
                 <Route exact path="/" element={<Login />} />
                 <Route element={<PrivateRoute />}>
@@ -66,6 +73,45 @@ function App() {
                   <Route path="/edit/:id" element={<UpdateCadet />} />
                   <Route path="/addcamp/:index" element={<AddCampPage />} />
                   <Route path="/finance" element={<Finance />} />
+                  
+
+                  <Route path="*" element={<h1>Not Found</h1>} />
+                </Route>
+              </Routes>
+            </BrowserRouter> */}
+            <BrowserRouter>
+              <Routes>
+                <Route exact path="/" element={<Login />} />
+                <Route element={<PrivateRoute />}>
+                  <Route path="/dashboard" element={<DashBoard />} />
+
+                  <Route
+                    element={
+                      <RequireAuth allowedRoles={[ROLES.co, ROLES.to]} />
+                    }
+                  >
+                    <Route path="/masterdata" element={<Home />} />
+                  </Route>
+
+                  <Route path="/about" element={<About />} />
+                  <Route path="/addcadet" element={<CadetReg />} />
+                  <Route path="/edit/:id" element={<UpdateCadet />} />
+                  <Route
+                    element={
+                      <RequireAuth allowedRoles={[ROLES.co, ROLES.to]} />
+                    }
+                  >
+                    <Route path="/camp" element={<CampPage />} />
+                    <Route path="/addcamp/:index" element={<AddCampPage />} />
+                  </Route>
+
+                  <Route
+                    element={
+                      <RequireAuth allowedRoles={[ROLES.co, ROLES.cs]} />
+                    }
+                  >
+                    <Route path="/finance" element={<Finance />} />
+                  </Route>
                   {/* <Route path="/edit/:id" element={<CadetInfo />} /> */}
 
                   <Route path="*" element={<h1>Not Found</h1>} />
