@@ -27,9 +27,11 @@ const Login = () => {
           setUserType(user.user.uid);
           setIsLoggedIn(true);
           localStorage.setItem("user", user.user.uid);
+
           setAuth({ roles: [user.user.uid] });
           // navigate("/dashboard");
           navigate(from, { replace: true });
+
         })
         .catch((error) => {
           console.log(error);
