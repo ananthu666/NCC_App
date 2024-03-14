@@ -17,6 +17,7 @@ import AuthState from "./context/auth/AuthState";
 import PrivateRoute from "./components/PrivateRoute";
 import Finance from "./pages/Finance";
 import RequireAuth from "./components/RequireAuth";
+import Unauthorized from "./pages/Unauthorized";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -116,7 +117,7 @@ function App() {
                     <Route path="/finance" element={<Finance />} />
                   </Route>
                   {/* <Route path="/edit/:id" element={<CadetInfo />} /> */}
-
+                  <Route path="/unauthorized" element={<Unauthorized />} />
                   <Route path="*" element={<h1>Not Found</h1>} />
                 </Route>
               </Routes>
