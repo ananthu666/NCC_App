@@ -80,9 +80,11 @@ function Tablegrid({ data, loading }) {
   const onSearch = (value) => setSearchText(value);
 
   const camps = [
-    { label: "IGC", value: "IGC" },
+    { label: "IGC RDC", value: "IGC RDC" },
     { label: "ATC", value: "ATC" },
     { label: "LC", value: "LC" },
+    { label: "IGC NSC", value: "IGC NSC" },
+    { label: "NSC", value: "NSC" },
   ];
 
   const ranks = [
@@ -158,7 +160,6 @@ function Tablegrid({ data, loading }) {
       title: "Blood Group",
       dataIndex: "bloodGroup",
       key: "bloodGroup",
-      width: 100,
     },
     {
       title: "Bank Account Number",
@@ -182,25 +183,21 @@ function Tablegrid({ data, loading }) {
       title: "Category",
       dataIndex: "category",
       key: "category",
-      width: 100,
     },
     {
       title: "Division",
       dataIndex: "division",
       key: "division",
-      width: 100,
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      width: 180,
     },
     {
       title: "Gender",
       dataIndex: "gender",
       key: "gender",
-      width: 100,
     },
     {
       title: "IFSC Code",
@@ -230,18 +227,11 @@ function Tablegrid({ data, loading }) {
       title: "Year",
       dataIndex: "year",
       key: "year",
-      width: 130,
     },
     {
       title: "Father's Name",
       dataIndex: "father'sName",
       key: "father'sName",
-      width: 180,
-    },
-    {
-      title: "Examination Grade",
-      dataIndex: "exam_grade",
-      key: "exam_grade",
       width: 180,
     },
 
@@ -267,8 +257,8 @@ function Tablegrid({ data, loading }) {
         String(record.bankAccountNumber)
           .toLowerCase()
           .includes(value.toLowerCase()) ||
-        String(record.camps).toLowerCase().includes(value.toLowerCase()) ||
         String(record.height).toLowerCase().includes(value.toLowerCase()) ||
+        String(record.camps).toLowerCase().includes(value.toLowerCase()) ||
         String(record.category).toLowerCase().includes(value.toLowerCase()) ||
         String(record.division).toLowerCase().includes(value.toLowerCase()) ||
         String(record.email).toLowerCase().includes(value.toLowerCase()) ||
@@ -444,7 +434,11 @@ function Tablegrid({ data, loading }) {
   //   doc.save("certificate.pdf");
   // };
 
-  const genCert = (cadet) => {
+  const genCert = async (cadet) => {
+    const img = await fetch(`${cadet.upload}`);
+    const blob = await img.blob();
+
+    console.log(blob);
     console.log(cadet);
     const doc = new jsPDF({
       orientation: "portrait",
@@ -470,29 +464,31 @@ function Tablegrid({ data, loading }) {
     // Define the labels and corresponding values
     const labels = [
       "Cadet ID",
-      "Name",
       "Rank",
+      "Name",
       "Enrollment Institute",
       "Blood Group",
       "Height",
       "Address",
+      "Father Name",
+      "Mother's Name",
       "Bank Acc No",
       "IFSC Code",
       "Mobile No",
-      "Father Name",
     ];
     const values = [
       `: ${cadet.id}`,
-      `: ${cadet.name}`,
       `: ${cadet.rank}`,
+      `: ${cadet.name}`,
       `: ${cadet.college}`,
       `: ${cadet.bloodGroup}`,
       `: ${cadet.height}`,
       `: ${cadet.address}`,
+      `: ${cadet["father'sName"]}`,
+      `: ${cadet.motherName}`,
       `: ${cadet.bankAccountNumber}`,
       `: ${cadet.ifscCode}`,
       `: ${cadet.mobileNo}`,
-      `: ${cadet["father'sName"]}`,
     ];
 
     // Calculate the maximum label width
@@ -520,6 +516,7 @@ function Tablegrid({ data, loading }) {
 
       // Split address into multiple lines if necessary
       if (label === "Address") {
+        doc.text(label, labelX, startY);
         const addressLines = doc.splitTextToSize(
           values[index],
           certificateWidth - valueX - 10
@@ -545,17 +542,17 @@ function Tablegrid({ data, loading }) {
 
     // Add the image to the PDF
     // doc.addImage(imageUrl, "JPEG", 10, 10, 100, 100);
-    doc.addImage(
-      imageUrl,
-      "JPEG",
-      doc.internal.pageSize.width - 50,
-      35,
-      32,
-      40
-    );
+
+    const imgData = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+    doc.addImage(imgData, "JPEG", doc.internal.pageSize.width - 50, 20, 32, 40);
 
     // Save the PDF
-    doc.save("certificate.pdf");
+    doc.save(`${cadet.name}.pdf`);
   };
 
   const filterData = () => {
@@ -568,7 +565,7 @@ function Tablegrid({ data, loading }) {
   }, [data, selectedCamps, selectedCollege, selectedRank]);
   
   return (
-    <div className="flex flex-col z-0">
+    <div className="flex flex-col min-h-lvh z-0">
       <div className="flex justify-end gap-2 items-center">
         
       <Button ghost danger onClick={to_ex_cadet}>Ghost</Button>
@@ -633,7 +630,7 @@ function Tablegrid({ data, loading }) {
         dataSource={filteredData}
         scroll={{
           x: 3000,
-          y: 650,
+          y: 550,
         }}
         pagination={{
           position: ["bottomRight"],
@@ -643,7 +640,6 @@ function Tablegrid({ data, loading }) {
         size="small"
         style={{
           width: "85vw",
-          
         }}
         loading={loading}
         showSizeChanger="false"
