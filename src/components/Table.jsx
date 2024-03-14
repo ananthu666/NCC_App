@@ -145,6 +145,7 @@ function Tablegrid({ data, loading }) {
       title: "Blood Group",
       dataIndex: "bloodGroup",
       key: "bloodGroup",
+      width: 100,
     },
     {
       title: "Bank Account Number",
@@ -168,21 +169,25 @@ function Tablegrid({ data, loading }) {
       title: "Category",
       dataIndex: "category",
       key: "category",
+      width: 100,
     },
     {
       title: "Division",
       dataIndex: "division",
       key: "division",
+      width: 100,
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      width: 180,
     },
     {
       title: "Gender",
       dataIndex: "gender",
       key: "gender",
+      width: 100,
     },
     {
       title: "IFSC Code",
@@ -212,6 +217,7 @@ function Tablegrid({ data, loading }) {
       title: "Year",
       dataIndex: "year",
       key: "year",
+      width: 130,
     },
     {
       title: "Father's Name",
@@ -598,7 +604,7 @@ function Tablegrid({ data, loading }) {
         dataSource={filteredData}
         scroll={{
           x: 3000,
-          y: 550,
+          y: 650,
         }}
         pagination={{
           position: ["bottomRight"],
@@ -608,6 +614,7 @@ function Tablegrid({ data, loading }) {
         size="small"
         style={{
           width: "85vw",
+          
         }}
         loading={loading}
         showSizeChanger="false"
