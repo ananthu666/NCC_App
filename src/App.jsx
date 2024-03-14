@@ -48,7 +48,7 @@ function App() {
           </div>
         </div>
       ) : (
-        <div className="items-center min-h-screen bg-gray-100">
+        <div className="items-center min-h-screen bg-gray-300">
           {/* <HashRouter>
             <Routes>
               <Route path="/" element={<Login />} />
