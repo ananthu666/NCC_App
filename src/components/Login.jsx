@@ -28,7 +28,7 @@ const Login = () => {
           setUserType(user.user.uid);
           setIsLoggedIn(true);
           localStorage.setItem("user", user.user.uid);
-
+          
           navigate("/dashboard");
         })
         .catch((error) => {

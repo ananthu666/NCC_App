@@ -8,6 +8,7 @@ import CadetReg from "./pages/CadetReg";
 import DashBoard from "./pages/DashBoard";
 import CadetInfo from "./pages/CadetInfo";
 
+import Campfindash from "./pages/Campfindash";
 import UpdateCadet from "./pages/UpdateCadet";
 
 import CampPage from "./pages/CampPage";
@@ -65,6 +66,7 @@ function App() {
 
                   <Route path="/edit/:id" element={<UpdateCadet />} />
                   <Route path="/addcamp/:index" element={<AddCampPage />} />
+                  <Route path="/campfin/:index" element={<Campfindash />} />
                   <Route path="/finance" element={<Finance />} />
                   {/* <Route path="/edit/:id" element={<CadetInfo />} /> */}
 

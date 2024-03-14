@@ -219,6 +219,12 @@ function Tablegrid({ data, loading }) {
       key: "father'sName",
       width: 180,
     },
+    {
+      title: "Examination Grade",
+      dataIndex: "exam_grade",
+      key: "exam_grade",
+      width: 180,
+    },
 
     {
       title: "Rank",
