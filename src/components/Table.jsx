@@ -7,7 +7,11 @@ import { DownloadOutlined } from "@ant-design/icons";
 import { Navigate, useNavigate } from "react-router-dom";
 import imageUrl from "../assets/NCC.png";
 import { database } from "../../firebase";
+<<<<<<< HEAD
 import { collection, updateDoc ,doc} from "firebase/firestore";
+=======
+import { collection, updateDoc, doc } from "firebase/firestore";
+>>>>>>> 72975bf73fe0b41cc90787705792d26a8e91f543
 
 function Tablegrid({ data, loading }) {
   const [searchText, setSearchText] = useState("");
@@ -15,9 +19,9 @@ function Tablegrid({ data, loading }) {
   const [selectedCollege, setSelectedCollege] = useState([]);
   const [selectedRank, setSelectedRank] = useState([]);
   const [filteredData, setFilteredData] = useState(data);
-  const [excadets,setexcadets] = useState([]);
+  const [excadets, setexcadets] = useState([]);
   const navigate = useNavigate();
-  
+
   const handleEdit = (cadet) => {
     console.log("Edit", cadet);
     navigate(`/edit/${cadet.id}`, {
@@ -26,6 +30,7 @@ function Tablegrid({ data, loading }) {
   };
 
   const { Search } = Input;
+<<<<<<< HEAD
   const to_ex_cadet =async ()=> {
     excadets.forEach(excadet => {
       try
@@ -46,6 +51,17 @@ function Tablegrid({ data, loading }) {
     
   }
     
+=======
+  const to_ex_cadet = async () => {
+    excadets.forEach((excadet) => {
+      const cadetRef = doc(database, "cadets", excadet);
+      updateDoc(cadetRef, {
+        ex_cadet: true,
+      });
+    });
+  };
+
+>>>>>>> 72975bf73fe0b41cc90787705792d26a8e91f543
   const handleDelete = (id) => {
     console.log("Deleted", id);
   };
@@ -572,14 +588,21 @@ function Tablegrid({ data, loading }) {
   useEffect(() => {
     filterData();
   }, [data, selectedCamps, selectedCollege, selectedRank]);
-  
+
   return (
     <div className="flex flex-col min-h-lvh z-0">
       <div className="flex justify-end gap-2 items-center">
+<<<<<<< HEAD
         
       <Button ghost danger onClick={to_ex_cadet}>Promote</Button>
       
     
+=======
+        <Button ghost danger onClick={to_ex_cadet}>
+          Ghost
+        </Button>
+
+>>>>>>> 72975bf73fe0b41cc90787705792d26a8e91f543
         <Select
           onSearch={onSearch}
           onChange={handleCampsChange}
@@ -644,11 +667,11 @@ function Tablegrid({ data, loading }) {
           type: "checkbox",
           onChange: (selectedRowKeys, selectedRows) => {
             setexcadets(selectedRowKeys);
-            
+
             console.log(
-                `selectedRowKeys: ${selectedRowKeys}`,
-                "selectedRows: ",
-                selectedRows
+              `selectedRowKeys: ${selectedRowKeys}`,
+              "selectedRows: ",
+              selectedRows
             );
           },
         }}
