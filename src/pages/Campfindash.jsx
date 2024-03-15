@@ -137,7 +137,7 @@ const styles = {
         margin: "20px",
         padding: "10px",
         fontSize: "20px",
-        backgroundColor: "lightblue",
+        backgroundColor: "grey",
         borderRadius: "10px",
         cursor: "pointer"
     },

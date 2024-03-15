@@ -29,17 +29,9 @@ import { data } from "autoprefixer";
 const UpdateCadet = () => {
   const location = useLocation();
   const { cadet } = location.state || {};
-  const [initialFileList, setInitialFileList] = useState("");
 
   useEffect(() => {
-    if (cadet && cadet.upload) {
-      const file  = [
-      {
-        url : cadet.upload
-      }]
-      
-      setInitialFileList(file); 
-    }
+    alert("CadetInfo", console.log(cadet));
   }, [cadet]);
   
 
@@ -48,12 +40,9 @@ const UpdateCadet = () => {
   try {
     const cadetDocRef = doc(database, "cadets", cadet.id);
     const fieldsToUpdate = {};
-    if (formValues.upload && formValues.upload!==cadet.upload) {
-      const storageRef = ref(storage, `images/${formValues.id}`);
-      await uploadBytes(storageRef, formValues.upload);
-      const imageUrl = await getDownloadURL(storageRef);
-      fieldsToUpdate.upload = imageUrl;
-    }
+    const storageRef = ref(storage, `images/${formValues.id}`);
+    await uploadBytes(storageRef, formValues.upload);
+    const imageUrl = await getDownloadURL(storageRef);
 
     if (formValues.name !== cadet.name) {
       fieldsToUpdate.name = formValues.name;
@@ -103,6 +92,9 @@ const UpdateCadet = () => {
     if (formValues.year !== cadet.year) {
       fieldsToUpdate.year = formValues.year;
     }
+    if (imageUrl !== cadet.upload) {
+      fieldsToUpdate.upload = imageUrl;
+    }
     
     await updateDoc(cadetDocRef, fieldsToUpdate);
     console.log("Cadet data updated successfully");
@@ -111,12 +103,11 @@ const UpdateCadet = () => {
   }
 }
 
-
   return (
     <div className="flex gap-10">
       <SideBar className="" />
       <div className="flex flex-1 justify-center items-center">
-        <UpdateForm data={cadet} initialFileList={initialFileList} handleSubmit={handleSubmit}/>
+        <UpdateForm data={cadet}  handleSubmit={handleSubmit}/>
       </div>
     </div>
   );

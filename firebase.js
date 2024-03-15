@@ -1,6 +1,7 @@
+
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import {getFirestore} from "firebase/firestore";
 
 //username admin@ncc.com //pwd:password
 // const firebaseConfig = {
@@ -22,7 +23,7 @@ const firebaseConfig = {
   projectId: "nccdb-35c3a",
   storageBucket: "nccdb-35c3a.appspot.com",
   messagingSenderId: "810942646892",
-  appId: "1:810942646892:web:4396b6200b0a7dbe9b2649",
+  appId: "1:810942646892:web:4396b6200b0a7dbe9b2649"
 };
 
 const app = initializeApp(firebaseConfig);
