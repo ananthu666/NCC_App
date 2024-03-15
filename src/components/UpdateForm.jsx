@@ -6,7 +6,7 @@ import { UploadOutlined } from "@ant-design/icons";
 
 
 const { Option } = Select;
-const UpdateForm = ({ data = {}, handleSubmit }) => {
+const UpdateForm = ({data={}, initialFileList={}, handleSubmit }) => {
   const [form] = Form.useForm();
   const [formData, setFormData] = useState(data);
   const storage = getStorage();
@@ -42,17 +42,17 @@ const UpdateForm = ({ data = {}, handleSubmit }) => {
   };
 
   const onChange = (e) => {
-    
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
   };
 
  const onUpload = (e) => {
   const value = e.fileList[0].originFileObj;
-  console.log(value)
   setFormData({ ...formData, upload: value });
 };
 
+  const myUrl = initialFileList && initialFileList.length > 0 ? initialFileList[0]['url'] :'';
+  const urlString = Array.isArray(myUrl) ? myUrl.join('') : myUrl.toString();
   return (
     <Card title="Cadet Registration Form" className="flex-1 overflow-x-hidden my-4 mx-6 py-2 px-4">
       <Form
@@ -66,6 +66,19 @@ const UpdateForm = ({ data = {}, handleSubmit }) => {
           <img src="/NCC.png" className="absolute inset-0 mx-auto my-auto h-2/5 opacity-10" draggable="false" alt="" />
         </div>
         <Col>
+            <Form.Item name=" " label="Image" rules={[{ required: false }]}>
+              <img
+                src={urlString}
+                alt="cadet image"
+                style={{
+                  width: '250px',
+                  height: '280px',
+                  borderRadius: '8px',
+                  boxShadow: '0 0 8px rgba(0, 0, 0, 0.2)',
+                  objectFit: 'cover',
+                }}
+            />
+          </Form.Item>
           <Form.Item name="id" label="ID" rules={[{ required: true }]}>
             <Input onChange={onChange} />
           </Form.Item>
@@ -77,7 +90,6 @@ const UpdateForm = ({ data = {}, handleSubmit }) => {
           <Form.Item name="college" label="College" rules={[{ required: true }]}>
             <Input onChange={onChange} />
           </Form.Item>
-
           <Form.Item name="dob" label="Date of Birth" rules={[{ required: true }]}>
             <DatePicker onChange={onChange} />
           </Form.Item>
@@ -147,12 +159,11 @@ const UpdateForm = ({ data = {}, handleSubmit }) => {
           </Form.Item>
 
           <Form.Item
-          name="upload"
+          name=" "
           label="Upload Image"
           valuePropName="fileList"
           getValueFromEvent={normFile}
-          extra="Image must be smaller than 2MB and in JPG/PNG format"
-          >
+          extra="Image must be smaller than 2MB and in JPG/PNG format">
           <Upload
             name="logo"
             onChange={onUpload}
@@ -160,7 +171,7 @@ const UpdateForm = ({ data = {}, handleSubmit }) => {
             listType="picture"
             beforeUpload={beforeUpload}
           >
-          <Button icon={<UploadOutlined />}>Click to upload</Button>
+          <Button icon={<UploadOutlined/>}>Click to upload</Button>
           </Upload>
          </Form.Item>
 
@@ -172,5 +183,4 @@ const UpdateForm = ({ data = {}, handleSubmit }) => {
     </Card>
   );
 };
-
 export default UpdateForm;
