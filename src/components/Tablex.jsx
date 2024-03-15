@@ -26,26 +26,7 @@ function Tablegrid({ data, loading }) {
   };
 
   const { Search } = Input;
-  const to_ex_cadet =async ()=> {
-    excadets.forEach(excadet => {
-      try
-      {
-
-        const cadetRef = doc(database, "cadets",excadet);
-        updateDoc(cadetRef, {
-          ex_cadet:true
-        });
-        message.success("Ex Cadets Updated");
-      }
-      catch(e)
-      {
-        console.error("Error updating document:", e);
-      }
-    }
-    );
-    
-  }
-    
+      
   const handleDelete = (id) => {
     console.log("Deleted", id);
   };
@@ -577,7 +558,7 @@ function Tablegrid({ data, loading }) {
     <div className="flex flex-col min-h-lvh z-0">
       <div className="flex justify-end gap-2 items-center">
         
-      <Button ghost danger onClick={to_ex_cadet}>Promote</Button>
+      
       
     
         <Select
@@ -623,9 +604,6 @@ function Tablegrid({ data, loading }) {
       </div>
       <Table
         rowKey="id"
-        
-        
-        
         title={() => (
           <h1
             style={{
@@ -635,10 +613,9 @@ function Tablegrid({ data, loading }) {
               fontWeight: "bold",
             }}
           >
-            Cadets Main Data
+            Ex Cadets Data
           </h1>
         )}
-        
         columns={columns}
         rowSelection={{
           type: "checkbox",
