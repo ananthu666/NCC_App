@@ -261,7 +261,7 @@ function Tablegrid({ data, loading }) {
         String(record.bankAccountNumber)
           .toLowerCase()
           .includes(value.toLowerCase()) ||
-        String(record.height).toLowerCase().includes(value.toLowerCase()) ||
+        String(record.height).toLowerCase().includ(value.toLowerCase()) ||
         String(record.camps).toLowerCase().includes(value.toLowerCase()) ||
         String(record.category).toLowerCase().includes(value.toLowerCase()) ||
         String(record.division).toLowerCase().includes(value.toLowerCase()) ||
@@ -588,7 +588,7 @@ function Tablegrid({ data, loading }) {
           onChange={handleCollegeChange}
           showSearch
           allowClear
-          placeholder="Search to Select"
+          placeholder="Filter by College"
           optionFilterProp="children"
           filterSort={(optionA, optionB) =>
             (optionA?.label ?? "")
@@ -605,6 +605,15 @@ function Tablegrid({ data, loading }) {
           allowClear
           style={{ width: "20%" }}
           options={ranks}
+        />
+        <Search
+          placeholder="Search by height"
+          className="self-end mr-3 py-4"
+          onChange={(e) => setSearchText(e.target.value)}
+          onSearch={onSearch}
+          style={{
+            width: 200,
+          }}
         />
         <Search
           placeholder="Input search text"
