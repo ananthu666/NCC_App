@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import { DownloadOutlined } from "@ant-design/icons";
 import { Navigate, useNavigate } from "react-router-dom";
 import imageUrl from "../assets/NCC.png";
+import database from "../../firebase";
+import { collection, updateDoc ,doc} from "firebase/firestore";
 
 function Tablegrid({ data, loading }) {
   const [searchText, setSearchText] = useState("");
@@ -13,8 +15,9 @@ function Tablegrid({ data, loading }) {
   const [selectedCollege, setSelectedCollege] = useState([]);
   const [selectedRank, setSelectedRank] = useState([]);
   const [filteredData, setFilteredData] = useState(data);
+  const [excadets,setexcadets] = useState([]);
   const navigate = useNavigate();
-  console.log(data);
+  
   const handleEdit = (cadet) => {
     console.log("Edit", cadet);
     navigate(`/edit/${cadet.id}`, {
@@ -23,7 +26,17 @@ function Tablegrid({ data, loading }) {
   };
 
   const { Search } = Input;
-
+  const to_ex_cadet =async ()=> {
+    excadets.forEach(excadet => {
+      const cadetRef = doc(database, "cadets",excadet);
+      updateDoc(cadetRef, {
+        ex_cadet:true
+      });
+    }
+    );
+    
+  }
+    
   const handleDelete = (id) => {
     console.log("Deleted", id);
   };
@@ -550,10 +563,14 @@ function Tablegrid({ data, loading }) {
   useEffect(() => {
     filterData();
   }, [data, selectedCamps, selectedCollege, selectedRank]);
-
+  
   return (
     <div className="flex flex-col min-h-lvh z-0">
       <div className="flex justify-end gap-2 items-center">
+        
+      <Button ghost danger onClick={to_ex_cadet}>Ghost</Button>
+      
+    
         <Select
           onSearch={onSearch}
           onChange={handleCampsChange}
@@ -598,6 +615,18 @@ function Tablegrid({ data, loading }) {
       <Table
         rowKey="id"
         columns={columns}
+        rowSelection={{
+          type: "checkbox",
+          onChange: (selectedRowKeys, selectedRows) => {
+            setexcadets(selectedRowKeys);
+            
+            console.log(
+                `selectedRowKeys: ${selectedRowKeys}`,
+                "selectedRows: ",
+                selectedRows
+            );
+          },
+        }}
         dataSource={filteredData}
         scroll={{
           x: 3000,
