@@ -53,17 +53,20 @@ const SideBar = () => {
       <ContainerOutlined />
     ),
 
-    getItem(
-      <Link to="/addcadet">New Cadet</Link>,
-      "newcadet",
-      <UserAddOutlined />
-    ),
-    getItem(<Link to="/camp">Camp</Link>, "camp", <TeamOutlined />),
-    getItem(
-      <Link to="/finance">Finance</Link>,
-      "fin",
-      <MoneyCollectOutlined />
-    ),
+    getItem("Cadet Registration", "reg", <UserAddOutlined />, [
+      getItem(<Link to="/addcadet">Individual Registration</Link>, "add"),
+      getItem(<Link to="/dashboard">Import Cadets</Link>, "import"),
+    ]),
+    getItem("Camp", "camp", <TeamOutlined />, [
+      getItem(<Link to="/dashboard">Training 1</Link>, "t1"),
+      getItem(<Link to="/dashboard">Training 2</Link>, "t2"),
+      getItem(<Link to="/camp">Training 3</Link>, "t3"),
+    ]),
+    getItem("Finance", "fin", <MoneyCollectOutlined />, [
+      getItem(<Link to="/dashboard">Unit Finance</Link>, "income"),
+      getItem(<Link to="/finance">Camp Finance</Link>, "expense"),
+      getItem(<Link to="/dashboard">Logistics</Link>, "logistics"),
+    ]),
 
     getItem(
       <div onClick={logOut}>Logout</div>,
