@@ -65,7 +65,7 @@ const SideBar = () => {
     getItem("Finance", "fin", <MoneyCollectOutlined />, [
       getItem(<Link to="/dashboard">Unit Finance</Link>, "income"),
       getItem(<Link to="/finance">Camp Finance</Link>, "expense"),
-      getItem(<Link to="/dashboard">Logistics</Link>, "logistics"),
+      getItem(<Link to="/dbt">Logistics</Link>, "logistics"),
     ]),
 
     getItem(

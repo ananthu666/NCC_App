@@ -18,6 +18,8 @@ import PrivateRoute from "./components/PrivateRoute";
 import Finance from "./pages/Finance";
 import RequireAuth from "./components/RequireAuth";
 import Unauthorized from "./pages/Unauthorized";
+import DataState from "./context/data/DataState";
+import DBT from "./pages/DBT";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -62,6 +64,49 @@ function App() {
             </Routes>
           </HashRouter> */}
           <AuthState>
+            <DataState>
+              <BrowserRouter>
+                <Routes>
+                  <Route exact path="/" element={<Login />} />
+                  <Route element={<PrivateRoute />}>
+                    <Route path="/dashboard" element={<DashBoard />} />
+
+                    <Route
+                      element={
+                        <RequireAuth allowedRoles={[ROLES.co, ROLES.to]} />
+                      }
+                    >
+                      <Route path="/masterdata" element={<Home />} />
+                    </Route>
+
+                    <Route path="/about" element={<About />} />
+                    <Route path="/addcadet" element={<CadetReg />} />
+                    <Route path="/edit/:id" element={<UpdateCadet />} />
+                    <Route
+                      element={
+                        <RequireAuth allowedRoles={[ROLES.co, ROLES.to]} />
+                      }
+                    >
+                      <Route path="/camp" element={<CampPage />} />
+                      <Route path="/addcamp/:index" element={<AddCampPage />} />
+                    </Route>
+
+                    <Route
+                      element={
+                        <RequireAuth allowedRoles={[ROLES.co, ROLES.cs]} />
+                      }
+                    >
+                      <Route path="/campfin/:index" element={<Campfindash />} />
+                      <Route path="/finance" element={<Finance />} />
+                    </Route>
+                    {/* <Route path="/edit/:id" element={<CadetInfo />} /> */}
+                    <Route path="/unauthorized" element={<Unauthorized />} />
+                    <Route path="*" element={<h1>Not Found</h1>} />
+                    <Route path="/dbt" element={<DBT />} />
+                  </Route>
+                </Routes>
+              </BrowserRouter>
+            </DataState>
             {/* <BrowserRouter>
               <Routes>
                 <Route exact path="/" element={<Login />} />
@@ -82,46 +127,6 @@ function App() {
                 </Route>
               </Routes>
             </BrowserRouter> */}
-            <BrowserRouter>
-              <Routes>
-                <Route exact path="/" element={<Login />} />
-                <Route element={<PrivateRoute />}>
-                  <Route path="/dashboard" element={<DashBoard />} />
-
-                  <Route
-                    element={
-                      <RequireAuth allowedRoles={[ROLES.co, ROLES.to]} />
-                    }
-                  >
-                    <Route path="/masterdata" element={<Home />} />
-                  </Route>
-
-                  <Route path="/about" element={<About />} />
-                  <Route path="/addcadet" element={<CadetReg />} />
-                  <Route path="/edit/:id" element={<UpdateCadet />} />
-                  <Route
-                    element={
-                      <RequireAuth allowedRoles={[ROLES.co, ROLES.to]} />
-                    }
-                  >
-                    <Route path="/camp" element={<CampPage />} />
-                    <Route path="/addcamp/:index" element={<AddCampPage />} />
-                  </Route>
-
-                  <Route
-                    element={
-                      <RequireAuth allowedRoles={[ROLES.co, ROLES.cs]} />
-                    }
-                  >
-                    <Route path="/campfin/:index" element={<Campfindash />} />
-                    <Route path="/finance" element={<Finance />} />
-                  </Route>
-                  {/* <Route path="/edit/:id" element={<CadetInfo />} /> */}
-                  <Route path="/unauthorized" element={<Unauthorized />} />
-                  <Route path="*" element={<h1>Not Found</h1>} />
-                </Route>
-              </Routes>
-            </BrowserRouter>
           </AuthState>
         </div>
       )}
