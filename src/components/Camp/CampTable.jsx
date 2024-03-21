@@ -3,14 +3,13 @@ import { Button, Flex, Table, Input, Select, Popconfirm, message } from "antd";
 import { useState, useEffect } from "react";
 import { DeleteFilled } from "@ant-design/icons";
 import { Navigate, useNavigate } from "react-router-dom";
-import { database } from "../../firebase";
+import { database } from "../../../firebase";
 import { doc, deleteDoc, updateDoc,arrayUnion } from "firebase/firestore";
 function Tablegrid({ data, loading,campid }) {
-  console.log("!!!!!!!!!!",data);
   const [searchText, setSearchText] = useState("");
   const handleDelete = async (id) => {
     try {
-      await deleteDoc(doc(database, "camp_debit", id));
+      await deleteDoc(doc(database, "cadet_in_camp", id));
       console.log("Document successfully deleted!");
       // not a alert just a message
       message.success("Document successfully deleted!");
@@ -26,9 +25,44 @@ function Tablegrid({ data, loading,campid }) {
   const onSearch = (value) => setSearchText(value);
 
   // promoting all cadets in the camp
-  
+  const promoteall = async () => {
+    const userConfirmation = window.confirm(
+      "Are you sure you want to promote all?"
+    );
 
-   
+    // If the user confirms, proceed with the action
+    if (userConfirmation) {
+      // Extract all id from data
+      const allIds = data.map((item) => item.id);
+
+      try {
+        // Iterate over each id and update the corresponding document in the "cadets" collection
+        for (const id of allIds) {
+          const cadetRef = doc(database, "cadets", id);
+    
+          // Update the "regions" field of the cadet document with the specified campid
+          await updateDoc(cadetRef, {
+            camps: arrayUnion(campid),
+          });
+    
+          console.log(`Cadet with id ${id} updated successfully.`);
+          // You can add additional logic or logging if needed
+        }
+    
+        console.log("All cadets updated successfully.");
+      } catch (error) {
+        console.error("Error updating cadets:", error.message);
+        // You can add additional error handling logic here
+      }
+    } else {
+      // If the user cancels the action
+      console.log("Update canceled by the user.");
+      // You can add additional logic or simply return from the function
+    }
+  };
+  // console.log("Hello",data);
+  // if data is empty wait for data to be loaded
+
   const columns = [
     {
       title: "Sl NO",
@@ -39,112 +73,55 @@ function Tablegrid({ data, loading,campid }) {
       render: (_, __, index) => index + 1,
     },
     {
-      title: "Vr NO",
-      dataIndex: "vrno",
-      key: "vr_num",
+      title: "Cadet NO",
+      dataIndex: "cadet_num",
+      key: "id",
       width: 140,
       fixed: "left",
       sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
-      title: "To Whom Paid",
-      dataIndex: "towhom",
-      key: "to_whom_paid",
+      title: "Rank",
+      dataIndex: "cadet_rank",
+      key: "rank",
+      width: 160,
+    },
+    {
+      title: "Cadet Name",
+      dataIndex: "cadet_name",
+      key: "name",
       fixed: "left",
+      width: 200,
+      sorter: (a, b) => a.name.localeCompare(b.name),
+    },
+    {
+      title: "Instituion",
+      dataIndex: "cadet_insti",
+      key: "college",
       width: 230,
     },
     {
-      title: "On what account",
-      dataIndex: "onwhataccount",
-      key: "on_what_account",
-      width: 200,
-      
-    },
-    
-    {
-      title: "Cash",
-      dataIndex: "cash",
-      key: "cash",
-      width: 160,
-    },
-    {
-      title: "Bank",
-      dataIndex: "bank",
-      key: "bank",
-      width: 160,
-    },
-    {
-      title: "TA/DA Officers/Cadets",
-      dataIndex: "ta_off",
-      key: "ta_da_off",
+      title: "Activities/Achievements",
+      dataIndex: "cadet_act",
+      key: "activities",
       width: 250,
     },
     {
-      title: "Messing Officers",
-      dataIndex: "messing_off",
-      key: "messing_officers",
+      title: "Remarks",
+      dataIndex: "cadet_rem",
+      key: "remarks",
       width: 200,
     },
     {
-      title: "Messing Cadets",
-      dataIndex: "messing_cad",
-      key: "messing_cadets",
-      width: 200,
-    },
-    {
-      title: "Rank pay",
-      dataIndex: "rank_pay",
-      key: "rank_pay",
+      title: "VEG /NONVEG",
+      dataIndex: "cadet_veg",
+      key: "veg",
       width: 120,
     },
-    {
-      title: "TA/DA Civilians",
-      dataIndex: "ta_da_civil",
-      key: "ta_da_civil",
-      width: 120,
-    },
-    {
-      title: "POL",
-      dataIndex: "pol",
-      key: "pol",
-      width: 120,
-    },
-    {
-      title: "Security Deposit",
-      dataIndex: "security_depo",
-      key: "security_deposit",
-      width: 120,
-    },
-    {
-      title: "Suspense",
-      dataIndex: "suspense",
-      key: "suspense",
-      width: 120,
-    },
-    {
-      title: "Initials of Officer",
-      dataIndex: "initials_of_off",
-      key: "initials_of_officer",
-      width: 120,
-    },
-    {
-      title: "Ship Modelling",
-      dataIndex: "ship_modelling",
-      key: "ship_modelling",
-      width: 120,
-    },
-    {
-      title: "Mode Of Payment",
-      dataIndex: "mode_of_payment",
-      key: "mode_of_payment",
-      width: 120,
-    },
-    
-    
     {
       title: "Delete",
       fixed: "right",
-      width: 102,
+      width: 100,
       render: (_, record) => (
         <Flex justify="center" gap={"middle"}>
           <Popconfirm
@@ -203,10 +180,12 @@ function Tablegrid({ data, loading,campid }) {
 
   return (
     <div className="flex flex-col z-0">
-        <div style={{textAlign:"center",color:"blue",fontSize:"25px"}}>
-          PAYMENTS (DEBITS)
-        </div>
       <div className="flex justify-end gap-2 items-center">
+        <div>
+          <Button type="primar" onClick={promoteall}>
+            Promote All
+          </Button>
+        </div>
 
         <Search
           placeholder="Input search text"
@@ -233,7 +212,7 @@ function Tablegrid({ data, loading,campid }) {
         }}
         size="small"
         style={{
-          width: "83vw",
+          width: "86vw",
         }}
         loading={loading}
         showSizeChanger="false"

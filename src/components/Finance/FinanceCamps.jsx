@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from 'antd';
-import { database } from "../../firebase";
+import { database } from "../../../firebase";
 import {
   doc,
   collection,onSnapshot,
@@ -43,19 +43,10 @@ const { Meta } = Card;
   // Sample data
 
   const navigate = useNavigate();
-  async function fetchCamps() {
-    try {
-      
-      const campList = await getCamps();
-      setcamps(campList);
-      
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  }
+ 
   const HandleCardClick = (index) => {
     console.log(`Card clicked with name: ${index}`);
-    navigate(`/addcamp/${index}`);
+    navigate(`/campfin/${index}`);
   };
   useEffect(() => {
     
@@ -69,7 +60,7 @@ const { Meta } = Card;
         
           key={item.camp_name}
           hoverable
-          style={{ width: "370px", border: '1px dashed grey', textAlign: 'center', margin: '1rem',boxShadow:"" }}
+          style={{ width: "370px", border: '1px dashed grey', textAlign: 'center', margin: '1rem' }}
           onClick={() => HandleCardClick(item.camp_name)}
           
         >

@@ -1,6 +1,6 @@
   import React from "react";
   import SideBar from "../components/SideBar";
-  import Financebox from "../components/FinanceCamps"
+  import Financebox from "../components/Finance/FinanceCamps"
 
   const Finance = () => {
     return (

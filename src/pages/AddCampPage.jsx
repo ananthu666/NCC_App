@@ -1,7 +1,7 @@
 import React from "react";
 import SideBar from "../components/SideBar";
-import AddCampcadetForm from "../components/AddCampcadetForm";
-import Camptable from "../components/CampTable";
+import AddCampcadetForm from "../components/Camp/AddCampcadetForm";
+import Camptable from "../components/Camp/CampTable";
 import { useParams } from "react-router-dom";
 import { Card } from "antd";
 import { database } from "../../firebase";

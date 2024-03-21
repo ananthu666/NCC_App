@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Card, Form, Input, Table } from "antd";
-import DataContext from "../context/data/DataContext";
+import DataContext from "../../context/data/DataContext";
 
 const DBT_Table = () => {
   const context = useContext(DataContext);

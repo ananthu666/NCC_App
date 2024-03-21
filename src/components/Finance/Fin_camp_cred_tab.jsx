@@ -3,7 +3,7 @@ import { Button, Flex, Table, Input, Select, Popconfirm, message } from "antd";
 import { useState, useEffect } from "react";
 import { DeleteFilled } from "@ant-design/icons";
 import { Navigate, useNavigate } from "react-router-dom";
-import { database } from "../../firebase";
+import { database } from "../../../firebase";
 import { doc, deleteDoc, updateDoc,arrayUnion } from "firebase/firestore";
 function Tablegrid({ data, loading,campid }) {
   console.log("!!!!!!!!!!",data);
