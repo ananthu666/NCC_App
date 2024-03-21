@@ -1,7 +1,7 @@
 import React from "react";
 import SideBar from "../components/SideBar";
-import CampMainForm from "../components/CampMainForm";
-import AddCamp from "../components/AddCamp";
+import CampMainForm from "../components/Camp/CampMainForm";
+import AddCamp from "../components/Camp/AddCamp";
 import { Button, Flex } from 'antd';
 import { database } from "../../firebase";
 import { useState, useEffect } from "react";
@@ -32,6 +32,7 @@ const Camp = () => {
         {/* <Button  type="dashed" size="large"  onClick={toaddcamp}>
             Add Camp
           </Button> */}
+          
           <AddCamp />
           <div style={{ overflowY: "auto", maxHeight: "300px" }}>
           <div style={{ display: "flex", flexDirection: "row" ,flexWrap: "wrap" }}>

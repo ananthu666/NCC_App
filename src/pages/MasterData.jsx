@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import SideBar from "../components/SideBar";
-import Table from "../components/Table";
-import Tablex from "../components/Tablex";
+import Table from "../components/Cadet/Table";
+import Tablex from "../components/Cadet/Tablex";
 import { Button } from "antd";
 import { database } from "../../firebase";
 import { useEffect } from "react";

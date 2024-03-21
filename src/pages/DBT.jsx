@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import DataContext from "../context/data/DataContext";
 import SideBar from "../components/SideBar";
-import Table from "../components/DBT_Table";
+import Table from "../components/Finance/DBT_Table";
 
 const DBT = () => {
   const context = useContext(DataContext);

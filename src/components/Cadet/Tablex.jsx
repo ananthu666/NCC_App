@@ -5,8 +5,8 @@ import { Button, Flex, Table, Input, Select, Popconfirm, message } from "antd";
 import { useState, useEffect } from "react";
 import { DownloadOutlined } from "@ant-design/icons";
 import { Navigate, useNavigate } from "react-router-dom";
-import imageUrl from "../assets/NCC.png";
-import { database } from "../../firebase";
+import imageUrl from "../../assets/NCC.png";
+import { database } from "../../../firebase";
 import { collection, updateDoc ,doc} from "firebase/firestore";
 
 function Tablegrid({ data, loading }) {

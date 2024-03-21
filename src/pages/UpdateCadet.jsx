@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import SideBar from "../components/SideBar";
-import UpdateForm from "../components/UpdateForm";
+import UpdateForm from "../components/Cadet/UpdateForm";
 
 import { database } from "../../firebase";
 import {
