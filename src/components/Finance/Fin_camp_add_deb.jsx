@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { database } from "../../firebase";
+import { database } from "../../../firebase";
 import {
   doc,
   collection,

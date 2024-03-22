@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { database } from "../../firebase";
+import { database } from "../../../firebase";
 import {
   doc,
   collection,
@@ -58,13 +58,15 @@ const CadetForm=()=>
     };
     
   return (
-    <div className="flex">
+    <div className="flex" style={styles.Container}>
+
     <Card
       title="Camp Register Form"
       className="flex-1 overflow-x-hidden  my-4 mx-3 py-2 px-4"
+      
     >
       <Form
-        
+        style={styles.innerbox}
         name="campregister"
         form={form1}
         
@@ -94,14 +96,13 @@ const CadetForm=()=>
           >
             <Input />
           </Form.Item>
-
-          <Form.Item
-            name="camp_date"
-            label="Camp Date"
-            rules={[{ required: true }]}
-          >
-            <DatePicker />
+          <Form.Item>
+            <Button htmlType="submit"  style={styles.btn}>
+              Register Camp
+            </Button>
           </Form.Item>
+        </Col>
+        <Col>
 
           <Form.Item
             name="camp_commander"
@@ -118,12 +119,14 @@ const CadetForm=()=>
           >
             <Input />
           </Form.Item>
-          
-          <Form.Item>
-            <Button htmlType="submit" >
-              Register Camp
-            </Button>
+          <Form.Item
+            name="camp_date"
+            label="Camp Date"
+            rules={[{ required: true }]}
+          >
+            <DatePicker />
           </Form.Item>
+          
           
         </Col>
         
@@ -135,3 +138,31 @@ const CadetForm=()=>
 };
 
 export default CadetForm;
+
+const styles = {
+  Container: {
+    display: "flex",
+    justifyContent: "center",
+    width: "80%",
+  },
+  btn: {
+    
+    height: "50px",
+    fontSize: "20px",
+    backgroundColor: "grey",
+    borderRadius: "10px",
+    cursor: "pointer",
+    justifyContent: "center",
+    alignItems: "center",
+    
+  },
+  innerbox: {
+    margin: "20px",
+    padding: "20px",
+    backgroundColor: "lightgrey",
+    borderRadius: "10px",
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+};

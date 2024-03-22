@@ -1,13 +1,13 @@
 import React, { useState,useEffect } from 'react';
 import { useParams } from 'react-router';
 import SideBar from '../components/SideBar';
-import Camptable from '../components/CampTable';
+import Camptable from '../components/Camp/CampTable';
 import { Container } from 'postcss';
-import CadetForm from '../components/CadetForm';
-import Finance_cred from '../components/Fin_camp_cred_tab';
-import Finance_deb from '../components/Fin_camp_deb_tab';
-import Finance_add_cred from '../components/Fin_camp_add_cred';
-import Finance_add_deb from '../components/Fin_camp_add_deb';
+import CadetForm from '../components/Cadet/CadetForm';
+import Finance_cred from '../components/Finance/Fin_camp_cred_tab';
+import Finance_deb from '../components/Finance/Fin_camp_deb_tab';
+import Finance_add_cred from '../components/Finance/Fin_camp_add_cred';
+import Finance_add_deb from '../components/Finance/Fin_camp_add_deb';
 import { database } from "../../firebase";
 import { doc, getDoc ,onSnapshot,collection,query, where} from "firebase/firestore";
 

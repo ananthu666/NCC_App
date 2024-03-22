@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router";
 import SideBar from "../components/SideBar";
-import CadetForm from "../components/CadetForm";
+import CadetForm from "../components/Cadet/CadetForm";
 
 const CadetInfo = () => {
   const location = useLocation();
