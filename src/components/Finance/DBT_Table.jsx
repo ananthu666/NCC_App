@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Card, Form, Input, Table } from "antd";
 import DataContext from "../../context/data/DataContext";
+import { saveAs } from "file-saver";
+import * as XLSX from "xlsx";
 
 const DBT_Table = () => {
   const context = useContext(DataContext);
@@ -11,6 +13,32 @@ const DBT_Table = () => {
   const [noOfCadets, setNoOfCadets] = useState(0);
   const [selectedCadets, setSelectedCadets] = useState([]);
   const [amount, setAmount] = useState(0);
+
+  const exportToExcel = (tableData, fileName) => {
+    const worksheet = XLSX.utils.json_to_sheet(tableData);
+    worksheet["A1"] = { v: "Sl No" };
+    worksheet["B1"] = { v: "Cadet No" };
+
+    worksheet["C1"] = { v: "CadetName" };
+    worksheet["D1"] = { v: "ParentName" };
+    worksheet["E1"] = { v: "NameofEducationInstitution" };
+    worksheet["F1"] = { v: "BackwardDistYN" };
+    worksheet["G1"] = { v: "AmountRs" };
+    worksheet["H1"] = { v: "BankAccNo" };
+    worksheet["I1"] = { v: "IFSCCode" };
+    worksheet["J1"] = { v: "NameofDirectorate" };
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const data = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+    });
+    saveAs(data, fileName + ".xlsx");
+  };
 
   useEffect(() => {
     setSelectedCadetsNo(selectedCadets.length);
@@ -100,11 +128,11 @@ const DBT_Table = () => {
       name: cadet.name,
       fatherName: cadet["fatherName"],
       college: cadet.college,
-      backwardDistYN: "NULL",
+      backwardDistYN: "No",
       amount: amount || "NULL",
       bankAccountNumber: cadet.bankAccountNumber || "NULL",
       ifscCode: cadet.ifscCode || "NULL",
-      directorate: "NULL",
+      directorate: "Kerala",
     }));
     setDatas(data);
   };
@@ -167,10 +195,10 @@ const DBT_Table = () => {
         <div className="flex-1 flex flex-col gap-4">
           <div className="flex">
             <button
-              onClick={addCadet}
+              onClick={() => exportToExcel(selectedCadets, "DBT_Cadets")}
               className="bg-blue-600 rounded-lg text-white w-16 mr-4"
             >
-              Add
+              Export
             </button>
             <Input.Search onSearch={onSearch} placeholder="Search by College" />
           </div>
