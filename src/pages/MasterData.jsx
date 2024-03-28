@@ -31,7 +31,7 @@ const Home = () => {
     setLoading(true);
     const q = query(
       collection(database, "cadets"),
-      where("ex_cadet", "==", false)
+      where("ex_cadet", "==",false)
     );
     return onSnapshot(q, (querySnapshot) => {
       const cadetList = [];
@@ -52,9 +52,9 @@ const Home = () => {
 
   const fetchExCadets = () => {
     setLoading(true);
-    const q = query(collection(database, "cadets"), {
-      where: { ex_cadet: true },
-    });
+    const q = query(collection(database, "cadets"),
+      where( "ex_cadet", "==",true ),
+    );
     return onSnapshot(q, (querySnapshot) => {
       const exCadetList = [];
       querySnapshot.forEach((doc) => {

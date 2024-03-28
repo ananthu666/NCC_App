@@ -168,14 +168,14 @@ const CadetForm=({campdata,index})=>
         }}
       }
       return (
-    <div style={{display:"flex"}}>
+    <div style={styles.container}>
     
     <Card
       title="Cadet Register Form"
       className="flex-1 overflow-x-hidden  my-4 mx-6 py-2 px-4"
     >
       <Form.Item>
-            <Button onClick={search_id}  >
+            <Button onClick={search_id}  style={styles.btn}>
               Search Cadet
             </Button>
           </Form.Item>
@@ -231,7 +231,7 @@ const CadetForm=({campdata,index})=>
           </Form.Item>
 
           <Form.Item>
-            <Button htmlType="submit" >
+            <Button htmlType="submit"  style={styles.btn}>
               Add Cadet
             </Button>
           </Form.Item>
@@ -273,3 +273,20 @@ const CadetForm=({campdata,index})=>
 };
 
 export default CadetForm;
+
+const styles = {
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    height: "400px", // Set your desired height here, for example "500px"
+  },
+  btn: {
+    backgroundColor: "green",
+    color: "white",
+    borderRadius: "10px",
+    margin: "10px",
+  },
+};

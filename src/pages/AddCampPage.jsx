@@ -1,6 +1,7 @@
 import React from "react";
 import SideBar from "../components/SideBar";
-import AddCampcadetForm from "../components/Camp/AddCampcadetForm";
+import AddCampcadetForm  from "../components/Camp/AddCampcadetForm";
+import Add_camp_selective from "../components/Camp/Add_camp_selective";
 import Camptable from "../components/Camp/CampTable";
 import { useParams } from "react-router-dom";
 import { Card } from "antd";
@@ -13,6 +14,7 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [data, setdata] = useState([]);
   const [cad, setcad] = useState([]);
+  const [showAddCadetForm, setShowAddCadetForm] = useState(true);
   
 
 async function getCadets(db = database) {
@@ -128,9 +130,18 @@ async function getCadets(db = database) {
       <span style={{ marginRight: '8px', color:'brown' }}>ASST. Commander:</span>
       {data.camp_assistant}
     </p>
+              <button onClick={() => setShowAddCadetForm(!showAddCadetForm)} style={styles.btn}>Toggle Form</button>
               </Card>
             </div>
-            <AddCampcadetForm campdata={cad} index={index} />
+            <div style={styles.inputbox}>
+
+            {showAddCadetForm ? (
+              <AddCampcadetForm campdata={cad} index={index} />
+              ) : (
+                <Add_camp_selective index={index}/>
+                )}
+                </div>
+          
           </div>
 
           <div style={{ height: "20vh" }}>
@@ -143,3 +154,27 @@ async function getCadets(db = database) {
 };
 
 export default Home;
+
+const styles = 
+{
+  inputbox: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "20px",
+    width: "50%",
+    height: "50vh",
+    
+  },
+  btn: {
+    backgroundColor: "grey",
+    color: "white",
+    borderRadius: "10px",
+    margin: "30px",
+    height: "30px",
+    fontSize: "20px",
+    width: "50%",
+    
+  },
+};

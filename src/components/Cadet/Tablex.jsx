@@ -138,7 +138,7 @@ function Tablegrid({ data, loading }) {
       title: "Address",
       dataIndex: "address",
       key: "address",
-      width: 220,
+      width: 250,
     },
     {
       title: "Bank Account Holder's Name",
@@ -209,7 +209,7 @@ function Tablegrid({ data, loading }) {
     },
     {
       title: "Date of Enrolment",
-      dataIndex: "dateOfEnrolment",
+      dataIndex: "enrollmentDate",
       key: "dateOfEnrolment",
       width: 130,
     },
@@ -220,7 +220,7 @@ function Tablegrid({ data, loading }) {
     },
     {
       title: "Father's Name",
-      dataIndex: "father'sName",
+      dataIndex: "fatherName",
       key: "father'sName",
       width: 180,
     },
@@ -631,7 +631,7 @@ function Tablegrid({ data, loading }) {
         }}
         dataSource={filteredData}
         scroll={{
-          x: 3000,
+          x: 4000,
           y: 550,
         }}
         pagination={{

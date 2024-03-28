@@ -55,7 +55,7 @@ const SideBar = () => {
 
     getItem("Cadet Registration", "reg", <UserAddOutlined />, [
       getItem(<Link to="/addcadet">Individual Registration</Link>, "add"),
-      getItem(<Link to="/dashboard">Import Cadets</Link>, "import"),
+      getItem(<Link to="/bulk_import">Import Cadets</Link>, "import"),
     ]),
     getItem("Camp", "camp", <TeamOutlined />, [
       getItem(<Link to="/dashboard">Training 1</Link>, "t1"),
