@@ -26,12 +26,6 @@ function Tablegrid({ data }) {
       dataIndex: key, // Set dataIndex to key
       key: key, // Set key to key
       width: 150, // Set a default width
-      render: (text) => {
-        if (typeof text === 'boolean') {
-          return text ? 'True' : 'False'; // Convert boolean to text
-        }
-        return text; // Return the original value for non-boolean values
-      },
     }));
   };
 
