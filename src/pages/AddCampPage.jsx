@@ -1,6 +1,6 @@
 import React from "react";
 import SideBar from "../components/SideBar";
-import AddCampcadetForm  from "../components/Camp/AddCampcadetForm";
+import AddCampcadetForm from "../components/Camp/AddCampcadetForm";
 import Add_camp_selective from "../components/Camp/Add_camp_selective";
 import Camptable from "../components/Camp/CampTable";
 import { useParams } from "react-router-dom";
@@ -8,48 +8,55 @@ import { Card } from "antd";
 import { database } from "../../firebase";
 
 import { useState, useEffect } from "react";
-import { doc, getDoc ,onSnapshot,collection,query, where} from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  onSnapshot,
+  collection,
+  query,
+  where,
+} from "firebase/firestore";
 const Home = () => {
   const { index } = useParams();
   const [loading, setLoading] = useState(false);
   const [data, setdata] = useState([]);
   const [cad, setcad] = useState([]);
   const [showAddCadetForm, setShowAddCadetForm] = useState(true);
-  
 
-async function getCadets(db = database) {
-  try {
-    setLoading(true);
+  async function getCadets(db = database) {
+    try {
+      setLoading(true);
 
-    const q = query(collection(db, "cadet_in_camp"), where("campid", "==", index));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const cadetsData = [];
-      querySnapshot.forEach((doc) => {
-        const cadet = {
-          id: doc.id,
-          ...doc.data(),
-        };
+      const q = query(
+        collection(db, "cadet_in_camp"),
+        where("campid", "==", index)
+      );
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const cadetsData = [];
+        querySnapshot.forEach((doc) => {
+          const cadet = {
+            id: doc.id,
+            ...doc.data(),
+          };
 
-        cadetsData.push(cadet);
+          cadetsData.push(cadet);
+        });
+        // console.log("realtime",cadetsData);
+        // console.log("cadet",cadetsData.campid);
+        setLoading(false);
+        setcad(cadetsData);
       });
-      // console.log("realtime",cadetsData);
-      // console.log("cadet",cadetsData.campid);
+
+      // Cleanup function
+      return () => {
+        unsubscribe();
+      };
+    } catch (error) {
+      console.error("Error fetching cadets:", error);
       setLoading(false);
-      setcad(cadetsData);
-    });
-
-    // Cleanup function
-    return () => {
-      unsubscribe();
-    };
-  } catch (error) {
-    console.error("Error fetching cadets:", error);
-    setLoading(false);
+    }
   }
-}
 
-  
-  
   async function getCamps(db = database) {
     // ////////////////////////////////
     const docRef = doc(db, "camp_main", index);
@@ -64,18 +71,15 @@ async function getCadets(db = database) {
     // ////////////////////////////////
     // return docSnap.data();
   }
-  
+
   useState(() => {
     getCamps();
-    
-    getCadets(); 
-    
-    
-    
+
+    getCadets();
   });
-  
+
   console.log(data);
- 
+
   // console.log(cad);
   return (
     <>
@@ -107,41 +111,53 @@ async function getCadets(db = database) {
                   justifyContent: "center",
                   textAlign: "center",
                   backgroundColor: "lightGray",
-                  
                 }}
               >
-               <p style={{ fontSize: "18px", fontWeight: "bold" }}>
-      <span style={{ marginRight: '8px', color:'brown' }}>Camp Name:</span>
-      {data.camp_name}
-    </p>
-    <p style={{ fontSize: "18px", fontWeight: "bold" }}>
-      <span style={{ marginRight: '8px', color:'brown' }}>Camp Area:</span>
-      {data.camp_area}
-    </p>
-    <p style={{ fontSize: "18px", fontWeight: "bold" }}>
-      <span style={{ marginRight: '8px', color:'brown' }}>Camp Commander:</span>
-      {data.camp_commander}
-    </p>
-    <p style={{ fontSize: "18px", fontWeight: "bold" }}>
-      <span style={{ marginRight: '8px', color:'brown'}}>Camp Date:</span>
-      {data.camp_date}
-    </p>
-    <p style={{ fontSize: "18px", fontWeight: "bold" }}>
-      <span style={{ marginRight: '8px', color:'brown' }}>ASST. Commander:</span>
-      {data.camp_assistant}
-    </p>
-              <button onClick={() => setShowAddCadetForm(!showAddCadetForm)} style={styles.btn}>Toggle Form</button>
+                <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+                  <span style={{ marginRight: "8px", color: "brown" }}>
+                    Camp Name:
+                  </span>
+                  {data.camp_name}
+                </p>
+                <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+                  <span style={{ marginRight: "8px", color: "brown" }}>
+                    Camp Area:
+                  </span>
+                  {data.camp_area}
+                </p>
+                <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+                  <span style={{ marginRight: "8px", color: "brown" }}>
+                    Camp Commander:
+                  </span>
+                  {data.camp_commander}
+                </p>
+                <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+                  <span style={{ marginRight: "8px", color: "brown" }}>
+                    Camp Date:
+                  </span>
+                  {data.camp_date}
+                </p>
+                <p style={{ fontSize: "18px", fontWeight: "bold" }}>
+                  <span style={{ marginRight: "8px", color: "brown" }}>
+                    ASST. Commander:
+                  </span>
+                  {data.camp_assistant}
+                </p>
+                <button
+                  onClick={() => setShowAddCadetForm(!showAddCadetForm)}
+                  style={styles.btn}
+                >
+                  Toggle Form
+                </button>
               </Card>
             </div>
             <div style={styles.inputbox}>
-
-            {showAddCadetForm ? (
-              <AddCampcadetForm campdata={cad} index={index} />
+              {showAddCadetForm ? (
+                <AddCampcadetForm campdata={cad} index={index} />
               ) : (
-                <Add_camp_selective index={index}/>
-                )}
-                </div>
-          
+                <Add_camp_selective index={index} />
+              )}
+            </div>
           </div>
 
           <div style={{ height: "20vh" }}>
@@ -155,8 +171,7 @@ async function getCadets(db = database) {
 
 export default Home;
 
-const styles = 
-{
+const styles = {
   inputbox: {
     display: "flex",
     flexDirection: "column",
@@ -165,7 +180,6 @@ const styles =
     margin: "20px",
     width: "50%",
     height: "50vh",
-    
   },
   btn: {
     backgroundColor: "grey",
@@ -175,6 +189,5 @@ const styles =
     height: "30px",
     fontSize: "20px",
     width: "50%",
-    
   },
 };
