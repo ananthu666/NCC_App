@@ -1,7 +1,16 @@
 import React from "react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import { Button, Flex, Table, Input, Select, Popconfirm, message } from "antd";
+import {
+  Button,
+  Flex,
+  Table,
+  Input,
+  Select,
+  Popconfirm,
+  message,
+  Tag,
+} from "antd";
 import { useState, useEffect } from "react";
 import { DownloadOutlined } from "@ant-design/icons";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -11,6 +20,7 @@ import { database } from "../../../firebase";
 import { collection, updateDoc, doc } from "firebase/firestore";
 
 function Tablegrid({ data, loading }) {
+  const [selectedBloodGroup, setSelectedBloodGroup] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [selectedCamps, setSelectedCamps] = useState([]);
   const [selectedCollege, setSelectedCollege] = useState([]);
@@ -91,9 +101,19 @@ function Tablegrid({ data, loading }) {
       );
     }
 
+    if (selectedBloodGroup.length) {
+      cadetList = cadetList.filter(
+        (cadet) =>
+          cadet.bloodGroup && selectedBloodGroup.includes(cadet.bloodGroup)
+      );
+    }
+
     return cadetList;
   };
 
+  const handleBloodGroupChange = (value) => {
+    setSelectedBloodGroup(value || []);
+  };
   const handleCampsChange = (value) => {
     setSelectedCamps(value || []);
   };
@@ -144,6 +164,17 @@ function Tablegrid({ data, loading }) {
       value: "Mahatma Gandhi College, Tvpm",
     },
   ];
+
+  const bloodGroupColorMap = {
+    "a+": "volcano",
+    "b+": "green",
+    "ab+": "geekblue",
+    "o+": "gold",
+    "a-": "purple",
+    "b-": "cyan",
+    "ab-": "magenta",
+    "o-": "lime",
+  };
   const columns = [
     {
       title: "ID",
@@ -189,6 +220,19 @@ function Tablegrid({ data, loading }) {
       title: "Blood Group",
       dataIndex: "bloodGroup",
       key: "bloodGroup",
+      render: (bloodGroup) => (
+        <span>
+          {[bloodGroup].map((bloodGroup) => {
+            const color =
+              bloodGroupColorMap[bloodGroup.toLowerCase()] || "geekblue";
+            return (
+              <Tag color={color} key={bloodGroup}>
+                {bloodGroup.toUpperCase()}
+              </Tag>
+            );
+          })}
+        </span>
+      ),
     },
     {
       title: "Bank Account Number",
@@ -590,6 +634,17 @@ function Tablegrid({ data, loading }) {
     setFilteredData(temp);
   };
 
+  const bloodGroups = [
+    { label: "A+", value: "A+" },
+    { label: "A-", value: "A-" },
+    { label: "B+", value: "B+" },
+    { label: "B-", value: "B-" },
+    { label: "AB+", value: "AB+" },
+    { label: "AB-", value: "AB-" },
+    { label: "O+", value: "O+" },
+    { label: "O-", value: "O-" },
+  ];
+
   const onSearchHeight = (value) => {
     // setSearchText(value);
     const filteredData = data.filter((cadet) =>
@@ -600,7 +655,7 @@ function Tablegrid({ data, loading }) {
 
   useEffect(() => {
     filterData();
-  }, [data, selectedCamps, selectedCollege, selectedRank]);
+  }, [data, selectedCamps, selectedCollege, selectedRank, selectedBloodGroup]);
 
   return (
     <div className="flex flex-col min-h-lvh z-0">
@@ -608,7 +663,14 @@ function Tablegrid({ data, loading }) {
         <Button ghost danger onClick={to_ex_cadet}>
           Promote
         </Button>
-
+        <Select
+          onChange={handleBloodGroupChange}
+          mode="multiple"
+          placeholder="Filter by Blood Group"
+          allowClear
+          style={{ width: "20%" }}
+          options={bloodGroups}
+        />
         <Select
           onSearch={onSearch}
           onChange={handleCampsChange}
