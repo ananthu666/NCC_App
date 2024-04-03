@@ -15,7 +15,8 @@ import CampPage from "./pages/CampPage";
 import AddCampPage from "./pages/AddCampPage";
 import AuthState from "./context/auth/AuthState";
 import PrivateRoute from "./components/PrivateRoute";
-import Finance from "./pages/Finance";
+import CampFinance from "./pages/CampFinance";
+import UnitFinance from "./pages/UnitFinance";
 import RequireAuth from "./components/RequireAuth";
 import Unauthorized from "./pages/Unauthorized";
 import DataState from "./context/data/DataState";
@@ -102,7 +103,8 @@ function App() {
                       }
                     >
                       <Route path="/campfin/:index" element={<Campfindash />} />
-                      <Route path="/finance" element={<Finance />} />
+                      <Route path="/campfinance" element={<CampFinance />} />
+                      <Route path="/unitfinance" element={<UnitFinance />} />
                     </Route>
                     {/* <Route path="/edit/:id" element={<CadetInfo />} /> */}
                     <Route path="/unauthorized" element={<Unauthorized />} />
