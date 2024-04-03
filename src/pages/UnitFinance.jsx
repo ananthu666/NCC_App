@@ -2,17 +2,39 @@ import React, { useState } from "react";
 import SideBar from "../components/SideBar";
 import Financebox from "../components/Finance/FinanceCamps";
 import { PlusOutlined } from "@ant-design/icons";
+import {Button} from "antd";
+import { database } from "../../firebase";
+import { collection, setDoc, doc } from "firebase/firestore";
+
 
 const Finance = () => {
   const [showInputBox, setShowInputBox] = useState(false);
   const [financeDetails, setFinanceDetails] = useState({
-    title: "",
-    amount: "",
-    date: ""
+    month: "",
+    year: ""
   });
-
+  const uploadmonth = async() => {
+    try{
+      
+    
+    const financeRef = collection(database, "unit_fin_monthly");
+    const data = {
+      month: "financeDetails.month",
+      year: "financeDetails.year.toString()",
+    };
+    const documentRef = doc(financeRef, data.year);
+    await setDoc(documentRef, data);
+    setDoc(financeRef, data);
+    setShowInputBox(false);
+  }
+  catch (error) {
+    console.error("Error sending data to Firestore:", error);
+  }
+}
   const createbox = () => {
-    setShowInputBox(true);
+    // toggle show input box
+    setShowInputBox(!showInputBox);
+
   }
 
   const handleChange = (e) => {
@@ -22,6 +44,10 @@ const Finance = () => {
       [name]: value
     }));
   }
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({length: currentYear - 2019}, (_, i) => 2020 + i);
+
 
   return (
     <div style={styles.outercont}>
@@ -35,31 +61,38 @@ const Finance = () => {
         </div>
         {showInputBox && (
           <div style={styles.inputBoxContainer}>
-            <input
-              type="text"
-              name=""
-              placeholder="Title"
-              value={financeDetails.title}
+            <select
+              name="month"
+              value={financeDetails.month}
               onChange={handleChange}
-              style={styles.inputField}
-            />
-            <input
-              type="number"
-              name="amount"
-              placeholder="Amount"
-              value={financeDetails.amount}
+              style={styles.selectField}
+            >
+              <option value="">Select Month</option>
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="March">March</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
+            </select>
+            <select
+              name="year"
+              value={financeDetails.year}
               onChange={handleChange}
-              style={styles.inputField}
-            />
-            <input
-              type="date"
-              name="date"
-              placeholder="Date"
-              value={financeDetails.date}
-              onChange={handleChange}
-              style={styles.inputField}
-            />
-            {/* Add more fields as needed */}
+              style={styles.selectField}
+            >
+              <option value="">Select Year</option>
+              {years.map((year, index) => (
+                <option key={index} value={year}>{year}</option>
+              ))}
+            </select>
+            <Button style={styles.btn} onClick={uploadmonth}>create</Button>
           </div>
         )}
       </div>
@@ -113,14 +146,26 @@ const styles = {
     border: "1px solid #ccc",
     borderRadius: "4px",
     boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.1)",
-    textAlign: "right"
+    // textAlign: "right"
   },
-  inputField: {
+  selectField: {
     width: "100%",
     padding: "8px",
     fontSize: "1rem",
     border: "1px solid #ccc",
     borderRadius: "4px",
     marginBottom: "10px"
+  },
+  btn: {
+    padding: "8px",
+    fontSize: "1rem",
+    backgroundColor: "blue",
+    color: "#fff",
+    // border: "none",
+    borderRadius: "8px",
+    cursor: "pointer",
+    height: "100%",
+    
+    
   }
 };
