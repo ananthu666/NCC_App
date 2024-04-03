@@ -1,171 +1,197 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SideBar from "../components/SideBar";
-import Financebox from "../components/Finance/FinanceCamps";
+import TopBar from "../components/TopBar";
+import { Button, Card, DatePicker, Form, Input, Modal, Select } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import {Button} from "antd";
-import { database } from "../../firebase";
-import { collection, setDoc, doc } from "firebase/firestore";
+import { useNavigate } from "react-router";
+const UnitFinance = () => {
+  const navigate = useNavigate();
+  const [balance, setBalance] = useState(10000);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [data, setData] = useState([
+    { month: "January", year: 2021, description: "January Transaction" },
+  ]);
+  const formatBalanceWithCommas = (balance) => {
+    return balance.toLocaleString();
+  };
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
+  const onClick = (month, year) => {
+    navigate(`/unitfinance/${month}${year}`, { state: { month, year } });
+  };
 
-const Finance = () => {
-  const [showInputBox, setShowInputBox] = useState(false);
-  const [financeDetails, setFinanceDetails] = useState({
-    month: "",
-    year: ""
-  });
-  const uploadmonth = async() => {
-    try{
-      
-    
-    const financeRef = collection(database, "unit_fin_monthly");
-    const data = {
-      month: "financeDetails.month",
-      year: "financeDetails.year.toString()",
+  const onFinish = (formData) => {
+    const newData = {
+      month: formData.month,
+      year: formData.year, // Use the selected year
+      description: formData.description,
     };
-    const documentRef = doc(financeRef, data.year);
-    await setDoc(documentRef, data);
-    setDoc(financeRef, data);
-    setShowInputBox(false);
-  }
-  catch (error) {
-    console.error("Error sending data to Firestore:", error);
-  }
-}
-  const createbox = () => {
-    // toggle show input box
-    setShowInputBox(!showInputBox);
+    setData((prevData) => [...prevData, newData]); // Use callback form of setData
+    setIsModalOpen(false);
 
-  }
+    // Close the modal
+  };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFinanceDetails(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  }
-
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({length: currentYear - 2019}, (_, i) => 2020 + i);
-
-
+  useEffect(() => {
+    console.log(data); // Print data whenever it changes
+  }, [data]);
   return (
-    <div style={styles.outercont}>
-      <div style={styles.container}>
-        <SideBar />
-      </div>
-      <div style={styles.headingContainer}>
-        <h1 style={styles.unittext}>Unit Account</h1>
-        <div style={styles.plusIconContainer}>
-          <PlusOutlined style={styles.plusIcon} onClick={createbox}/>
-        </div>
-        {showInputBox && (
-          <div style={styles.inputBoxContainer}>
-            <select
-              name="month"
-              value={financeDetails.month}
-              onChange={handleChange}
-              style={styles.selectField}
-            >
-              <option value="">Select Month</option>
-              <option value="January">January</option>
-              <option value="February">February</option>
-              <option value="March">March</option>
-              <option value="April">April</option>
-              <option value="May">May</option>
-              <option value="June">June</option>
-              <option value="July">July</option>
-              <option value="August">August</option>
-              <option value="September">September</option>
-              <option value="October">October</option>
-              <option value="November">November</option>
-              <option value="December">December</option>
-            </select>
-            <select
-              name="year"
-              value={financeDetails.year}
-              onChange={handleChange}
-              style={styles.selectField}
-            >
-              <option value="">Select Year</option>
-              {years.map((year, index) => (
-                <option key={index} value={year}>{year}</option>
-              ))}
-            </select>
-            <Button style={styles.btn} onClick={uploadmonth}>create</Button>
+    <div className="flex  ">
+      <SideBar className="" />
+      <div className="w-full flex flex-col justify-start h-full flex-1 self-start  ">
+        <TopBar name="Unit Finance" />
+        <div className="flex-1 bg-white">
+          <div class="flex flex-col bg-white rounded-3xl">
+            <div class="px-6 py-8 sm:p-10 sm:pb-6">
+              <div class="grid items-center justify-center w-full grid-cols-1 text-left">
+                <div>
+                  <h2 class="text-lg font-medium tracking-tighter text-gray-600 lg:text-3xl">
+                    Account Details
+                  </h2>
+                  <p class="mt-2 text-sm text-gray-500">
+                    Current balance in your account :
+                  </p>
+                </div>
+                <div class="mt-6">
+                  <p>
+                    <span class="text-5xl font-light tracking-tight text-black">
+                      ₹ {formatBalanceWithCommas(balance)}
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="flex px-6 pb-8 sm:px-8">
+              <Button
+                onClick={showModal}
+                icon={<PlusOutlined />}
+                aria-describedby="tier-company"
+                class="flex items-center justify-center w-full px-6 py-2.5 text-center text-white duration-200 bg-black border-2 border-black rounded-full nline-flex hover:bg-transparent hover:border-black hover:text-black focus:outline-none focus-visible:outline-black text-sm focus-visible:ring-black"
+                href="#"
+              >
+                Add transaction
+              </Button>
+            </div>
           </div>
-        )}
+        </div>
+        <Modal
+          title="Add transaction"
+          open={isModalOpen}
+          okButtonProps={{ className: "bg-blue-700 text-white hidden" }}
+          cancelButtonProps={{ className: "bg-red-700 text-white hidden" }}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        >
+          {/* Form to select year and month only */}
+          <Form onFinish={onFinish}>
+            <Form.Item
+              label="Select Month"
+              name={"month"}
+              rules={[{ required: true, message: "Please input the month!" }]}
+            >
+              <Select
+                defaultValue="january"
+                style={{
+                  width: 120,
+                }}
+                // onChange={}
+                options={[
+                  {
+                    value: "january",
+                    label: "January",
+                  },
+                  {
+                    value: "february",
+                    label: "February",
+                  },
+                  {
+                    value: "march",
+                    label: "March",
+                  },
+                  {
+                    value: "april",
+                    label: "april",
+                  },
+                  {
+                    value: "may",
+                    label: "may",
+                  },
+                  {
+                    value: "june",
+                    label: "june",
+                  },
+                  {
+                    value: "july",
+                    label: "july",
+                  },
+                  {
+                    value: "august",
+                    label: "august",
+                  },
+                  {
+                    value: "september",
+                    label: "september",
+                  },
+                  {
+                    value: "october",
+                    label: "october",
+                  },
+                  {
+                    value: "november",
+                    label: "november",
+                  },
+                  {
+                    value: "december",
+                    label: "december",
+                  },
+                ]}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Select Year"
+              name="year"
+              rules={[{ required: true, message: "Please input the year!" }]}
+            >
+              <Input type="number" placeholder="Enter Year" />
+            </Form.Item>
+            <Form.Item name="description" label="Description">
+              <Input.TextArea
+                name="description"
+                placeholder="Add description"
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button htmlType="submit" className="bg-blue-700 text-white">
+                Add
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+        <div className="flex flex-wrap justify-start">
+          {data.map((item, index) => (
+            <Card
+              onClick={() => onClick(item.month, item.year)}
+              key={index}
+              title={`${item.month} ${item.year}`}
+              className="m-2"
+              style={{ width: 250 }}
+              onCanPlay={() => {}}
+            >
+              <p>{item.description}</p>
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
-export default Finance;
-
-const styles = {
-  outercont: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    width: "100%",
-    height: "100%",
-  },
-  container: {
-    display: "flex",
-    alignItems: "center",
-    backgroundColor:"green"
-  },
-  headingContainer: {
-    textAlign: "center",
-    flexGrow: 1,
-    flexDirection: "column",
-  },
-  unittext: {
-    fontSize: "2rem",
-    fontWeight: "bold",
-    color: "black",
-    marginTop: "1rem",
-  },
-  plusIconContainer: {
-    position: "absolute",
-    top: 10,
-    right: 10,
-    padding: "10px"
-  },
-  plusIcon: {
-    fontSize: "2.5rem",
-    color: "blue",
-    cursor: "pointer",
-  },
-  inputBoxContainer: {
-    position: "absolute",
-    top: 60,
-    right: 10,
-    backgroundColor: "#fff",
-    padding: "10px",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-    boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.1)",
-    // textAlign: "right"
-  },
-  selectField: {
-    width: "100%",
-    padding: "8px",
-    fontSize: "1rem",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-    marginBottom: "10px"
-  },
-  btn: {
-    padding: "8px",
-    fontSize: "1rem",
-    backgroundColor: "blue",
-    color: "#fff",
-    // border: "none",
-    borderRadius: "8px",
-    cursor: "pointer",
-    height: "100%",
-    
-    
-  }
-};
+export default UnitFinance;

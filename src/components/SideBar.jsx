@@ -10,6 +10,9 @@ import {
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { Link, useNavigate } from "react-router-dom";
+import { icons } from "antd/es/image/PreviewGroup";
+import logo from "../assets/NCC.png";
+import "./SideBar.css";
 
 const SideBar = () => {
   const [collapsed, setCollapsed] = useState(false);
