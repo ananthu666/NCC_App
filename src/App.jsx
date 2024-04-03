@@ -22,6 +22,7 @@ import DataState from "./context/data/DataState";
 import DBT from "./pages/DBT";
 import ImportExcelData from "./pages/Bulk_import";
 import Training2 from "./pages/Training2";
+import DocReview from "./components/Training2/DocReview";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -90,6 +91,7 @@ function App() {
                       }
                     >
                       <Route path="/training2" element={<Training2 />} />
+                      <Route path="/training2/:id" element={<DocReview />} />
                       <Route path="/camp" element={<CampPage />} />
                       <Route path="/addcamp/:index" element={<AddCampPage />} />
                     </Route>
