@@ -45,24 +45,49 @@ function Tablegrid({ data, loading }) {
     console.log("Deleted", id);
   };
 
+  // const applyFilters = (cadetList) => {
+  //   if (selectedCamps.length) {
+  //     cadetList = cadetList.filter((cadet) =>
+  //       selectedCamps.some((camp) =>
+  //         cadet.detailsOfCampsAttended.includes(camp)
+  //       )
+  //     );
+  //   }
+
+  //   if (selectedCollege.length) {
+  //     cadetList = cadetList.filter((cadet) =>
+  //       selectedCollege.includes(cadet.college)
+  //     );
+  //   }
+
+  //   if (selectedRank.length) {
+  //     cadetList = cadetList.filter((cadet) =>
+  //       selectedRank.includes(cadet.rank)
+  //     );
+  //   }
+
+  //   return cadetList;
+  // };
   const applyFilters = (cadetList) => {
     if (selectedCamps.length) {
-      cadetList = cadetList.filter((cadet) =>
-        selectedCamps.some((camp) =>
-          cadet.detailsOfCampsAttended.includes(camp)
-        )
+      cadetList = cadetList.filter(
+        (cadet) =>
+          cadet.detailsOfCampsAttended &&
+          selectedCamps.some((camp) =>
+            cadet.detailsOfCampsAttended.includes(camp)
+          )
       );
     }
 
     if (selectedCollege.length) {
-      cadetList = cadetList.filter((cadet) =>
-        selectedCollege.includes(cadet.college)
+      cadetList = cadetList.filter(
+        (cadet) => cadet.college && selectedCollege.includes(cadet.college)
       );
     }
 
     if (selectedRank.length) {
-      cadetList = cadetList.filter((cadet) =>
-        selectedRank.includes(cadet.rank)
+      cadetList = cadetList.filter(
+        (cadet) => cadet.rank && selectedRank.includes(cadet.rank)
       );
     }
 
@@ -262,7 +287,7 @@ function Tablegrid({ data, loading }) {
         String(record.bankAccountNumber)
           .toLowerCase()
           .includes(value.toLowerCase()) ||
-        String(record.height).toLowerCase().includ(value.toLowerCase()) ||
+        String(record.height).toLowerCase().includes(value.toLowerCase()) ||
         String(record.camps).toLowerCase().includes(value.toLowerCase()) ||
         String(record.category).toLowerCase().includes(value.toLowerCase()) ||
         String(record.division).toLowerCase().includes(value.toLowerCase()) ||
@@ -565,6 +590,14 @@ function Tablegrid({ data, loading }) {
     setFilteredData(temp);
   };
 
+  const onSearchHeight = (value) => {
+    // setSearchText(value);
+    const filteredData = data.filter((cadet) =>
+      String(cadet.height).toLowerCase().startsWith(value.toLowerCase())
+    );
+    setFilteredData(filteredData);
+  };
+
   useEffect(() => {
     filterData();
   }, [data, selectedCamps, selectedCollege, selectedRank]);
@@ -610,8 +643,8 @@ function Tablegrid({ data, loading }) {
         <Search
           placeholder="Search by height"
           className="self-end mr-3 py-4"
-          onChange={(e) => setSearchText(e.target.value)}
-          onSearch={onSearch}
+          onChange={(e) => e.target.value}
+          onSearch={onSearchHeight}
           style={{
             width: 200,
           }}

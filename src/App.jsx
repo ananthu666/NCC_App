@@ -21,6 +21,7 @@ import Unauthorized from "./pages/Unauthorized";
 import DataState from "./context/data/DataState";
 import DBT from "./pages/DBT";
 import ImportExcelData from "./pages/Bulk_import";
+import Training2 from "./pages/Training2";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -88,6 +89,7 @@ function App() {
                         <RequireAuth allowedRoles={[ROLES.co, ROLES.to]} />
                       }
                     >
+                      <Route path="/training2" element={<Training2 />} />
                       <Route path="/camp" element={<CampPage />} />
                       <Route path="/addcamp/:index" element={<AddCampPage />} />
                     </Route>
@@ -104,7 +106,7 @@ function App() {
                     <Route path="/unauthorized" element={<Unauthorized />} />
                     <Route path="*" element={<h1>Not Found</h1>} />
                     <Route path="/dbt" element={<DBT />} />
-                    <Route path="/bulk_import" element={<ImportExcelData/>} />
+                    <Route path="/bulk_import" element={<ImportExcelData />} />
                   </Route>
                 </Routes>
               </BrowserRouter>

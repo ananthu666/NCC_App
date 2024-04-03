@@ -58,7 +58,7 @@ const SideBar = () => {
         getItem(<Link to="/addcadet">Individual Registration</Link>, "add"),
         getItem(<Link to="/bulk_import">Import Cadets</Link>, "import"),
       ]),
-      getItem(<Link to="/dashboard">Training 2</Link>, "t2"),
+      getItem(<Link to="/training2">Training 2</Link>, "t2"),
       getItem(<Link to="/camp">Camp</Link>, "t3"),
     ]),
     getItem("Finance", "fin", <MoneyCollectOutlined />, [
