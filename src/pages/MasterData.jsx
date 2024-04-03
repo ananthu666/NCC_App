@@ -31,7 +31,7 @@ const Home = () => {
     setLoading(true);
     const q = query(
       collection(database, "cadets"),
-      where("ex_cadet", "==",false)
+      where("ex_cadet", "==", false)
     );
     return onSnapshot(q, (querySnapshot) => {
       const cadetList = [];
@@ -52,8 +52,9 @@ const Home = () => {
 
   const fetchExCadets = () => {
     setLoading(true);
-    const q = query(collection(database, "cadets"),
-      where( "ex_cadet", "==",true ),
+    const q = query(
+      collection(database, "cadets"),
+      where("ex_cadet", "==", true)
     );
     return onSnapshot(q, (querySnapshot) => {
       const exCadetList = [];
@@ -80,8 +81,17 @@ const Home = () => {
     <>
       <div className="flex justify-between items-start">
         <SideBar />
-        <div className=" justify-center items-center py-2 px-2 my-2">
-          <Button onClick={toggleTable}>Cadets/EX_Cadets</Button>
+        <div className="flex-1 flex flex-col justify-center items-center py-2 px-2 my-2">
+          <div className="self-end mr-20">
+            <Button
+              type="primary"
+              danger
+              className="self-end "
+              onClick={toggleTable}
+            >
+              Cadets/EX_Cadets
+            </Button>
+          </div>
           <img
             src="/NCC.png"
             className="absolute z-5 inset-0 mx-auto my-auto h-2/5 opacity-10"

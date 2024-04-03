@@ -43,24 +43,24 @@ const Training2 = () => {
   };
   /* eslint-enable no-template-curly-in-string */
 
-  const onFinish = (values) => {
-    console.log(values);
-  };
-
-  const data = [
+  const [data, setData] = useState([
     {
-      title: "Ant Design Title 1",
+      title: "Title 1",
+      desc: "Description of the document",
     },
     {
-      title: "Ant Design Title 2",
+      title: "Title 2",
+      desc: "Description of the document",
     },
     {
-      title: "Ant Design Title 3",
+      title: "Title 3",
+      desc: "Description of the document",
     },
     {
-      title: "Ant Design Title 4",
+      title: "Title 4",
+      desc: "Description of the document",
     },
-  ];
+  ]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -72,6 +72,37 @@ const Training2 = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
+  const onFinish = (formData) => {
+    const newData = {
+      title: formData.name,
+      date: formData.date, // Use the selected year
+      desc: formData.desc,
+    };
+    setData((prevData) => [...prevData, newData]); // Use callback form of setData
+    setIsModalOpen(false);
+
+    // Close the modal
+  };
+
+  const props = {
+    name: "file",
+    action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
+    headers: {
+      authorization: "authorization-text",
+    },
+    onChange(info) {
+      if (info.file.status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === "done") {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === "error") {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
+
   return (
     <div className="flex gap-4 ">
       <SideBar className="" />
@@ -101,13 +132,8 @@ const Training2 = () => {
           renderItem={(item, index) => (
             <List.Item>
               <List.Item.Meta
-                avatar={
-                  <Avatar
-                    src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
-                  />
-                }
-                title={<a href="https://ant.design">{item.title}</a>}
-                description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                title={<div>{item.title}</div>}
+                description={<div>{item.desc}</div>}
               />
               <List.Item
                 actions={[<Button onClick={handleClick}>View</Button>]}
@@ -118,9 +144,8 @@ const Training2 = () => {
         <Modal
           title="Upload Document"
           open={isModalOpen}
-          okButtonProps={{
-            className: "bg-blue-600 text-white",
-          }}
+          okButtonProps={{ className: "bg-blue-700 text-white hidden" }}
+          cancelButtonProps={{ className: "bg-red-700 text-white hidden" }}
           onOk={handleOk}
           onCancel={handleCancel}
         >
@@ -134,12 +159,12 @@ const Training2 = () => {
             }}
             validateMessages={validateMessages}
           >
-            <Form.Item name={["user", "name"]} label="Name">
+            <Form.Item name={"name"} label="Name">
               <Input />
             </Form.Item>
             <Form.Item
               label="Date"
-              name="DatePicker"
+              name="date"
               rules={[
                 {
                   message: "Please input!",
@@ -150,7 +175,7 @@ const Training2 = () => {
             </Form.Item>
 
             <Form.Item
-              name={["desc", "desc"]}
+              name={"desc"}
               label="Description"
               rules={[
                 {
@@ -162,13 +187,24 @@ const Training2 = () => {
             </Form.Item>
             <Form.Item
               name="upload"
-              label="Upload"
+              label="Upload Image"
               valuePropName="fileList"
-              extra="Upload the document here"
+              // getValueFromEvent={normFile}
+              extra="Image must smaller than 2MB and in JPG/PNG format"
             >
-              <Upload name="logo" action="/upload.do" listType="picture">
+              <Upload
+                name="logo"
+                action="/upload.do"
+                listType="picture"
+                // beforeUpload={beforeUpload}
+              >
                 <Button icon={<UploadOutlined />}>Click to upload</Button>
               </Upload>
+            </Form.Item>
+            <Form.Item>
+              <Button htmlType="submit" className="bg-blue-700 text-white">
+                Add
+              </Button>
             </Form.Item>
           </Form>
         </Modal>

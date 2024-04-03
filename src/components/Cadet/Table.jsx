@@ -245,6 +245,7 @@ function Tablegrid({ data, loading }) {
       dataIndex: "height",
       key: "height",
       width: 100,
+      sorter: (a, b) => parseFloat(a.height) - parseFloat(b.height),
     },
     {
       title: "Camps Attended",
@@ -645,10 +646,17 @@ function Tablegrid({ data, loading }) {
     { label: "O-", value: "O-" },
   ];
 
+  // const onSearchHeight = (value) => {
+  //   // setSearchText(value);
+  //   const filteredData = data.filter((cadet) =>
+  //     String(cadet.height).toLowerCase().startsWith(value.toLowerCase())
+  //   );
+  //   setFilteredData(filteredData);
+  // };
+
   const onSearchHeight = (value) => {
-    // setSearchText(value);
-    const filteredData = data.filter((cadet) =>
-      String(cadet.height).toLowerCase().startsWith(value.toLowerCase())
+    const filteredData = data.filter(
+      (cadet) => parseFloat(cadet.height) >= parseFloat(value)
     );
     setFilteredData(filteredData);
   };
@@ -658,7 +666,7 @@ function Tablegrid({ data, loading }) {
   }, [data, selectedCamps, selectedCollege, selectedRank, selectedBloodGroup]);
 
   return (
-    <div className="flex flex-col min-h-lvh z-0">
+    <div className="flex flex-1 flex-col min-h-lvh z-0">
       <div className="flex justify-end gap-2 items-center">
         <Button ghost danger onClick={to_ex_cadet}>
           Promote
