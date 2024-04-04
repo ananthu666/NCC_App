@@ -21,14 +21,6 @@ const Training2 = () => {
   const handleClick = () => {
     navigate(`/training2/doc1`);
   };
-  // const layout = {
-  //   labelCol: {
-  //     span: 8,
-  //   },
-  //   wrapperCol: {
-  //     span: 16,
-  //   },
-  // };
 
   /* eslint-disable no-template-curly-in-string */
   const validateMessages = {
@@ -73,17 +65,21 @@ const Training2 = () => {
     setIsModalOpen(false);
   };
 
-  const onFinish = (formData) => {
+  const onFinish = () => {
+    const formValues = form.getFieldsValue();
     const newData = {
-      title: formData.name,
-      date: formData.date, // Use the selected year
-      desc: formData.desc,
+      title: formValues.name,
+      date: formValues.date, // Use the selected year
+      desc: formValues.desc,
     };
     setData((prevData) => [...prevData, newData]); // Use callback form of setData
     setIsModalOpen(false);
 
     // Close the modal
   };
+  useEffect(() => {
+    console.log(data); // Print data whenever it changes
+  }, [data]);
 
   const props = {
     name: "file",
@@ -102,58 +98,51 @@ const Training2 = () => {
       }
     },
   };
+  const beforeUpload = (file) => {
+    // const isWordOrPdf =
+    //   file.type === "application/msword" ||
+    //   file.type === "application/pdf" ||
+    //   file.type ===
+    //     "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    // if (!isWordOrPdf) {
+    //   message.error("You can only upload Word or PDF files!");
+    // }
+    // const isLt2M = file.size / 1024 / 1024 < 2;
+    // if (!isLt2M) {
+    //   message.error("File must be smaller than 2MB!");
+    // }
+    // console.log(file);
+    // return isWordOrPdf && isLt2M;
+  };
+
+  const normFile = (e) => {
+    console.log("Upload event:", e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+    // Check if e contains a fileList property
+    if (e && e.fileList && Array.isArray(e.fileList)) {
+      return e.fileList;
+    }
+    // If neither array nor object with fileList property, return null or an empty array
+    return null; // or [] depending on how you want to handle this case
+  };
 
   return (
     <div className="flex gap-4 ">
       <SideBar className="" />
-      <div className="flex-1 flex mr-4 rounded-md justify-center self-center  bg-white items-center p-4 h-full overflow-auto">
-        <List
-          header={
-            <div className=" flex justify-between font-poppins">
-              <div className="text-3xl text-left font-semibold ">Documents</div>
-              <div className="">
-                <Button
-                  onClick={showModal}
-                  type="danger"
-                  className="bg-red-600 hover:bg-red-500 text-white"
-                >
-                  Upload
-                </Button>
-              </div>
+      <div className="flex-1 flex mr-4 flex-col rounded-md justify-center self-center  bg-white p-4 h-full overflow-auto">
+        <div className="flex-1 flex flex-col">
+          <div className=" flex flex-1 self-start justify-start font-poppins">
+            <div className="text-3xl text-left font-semibold mb-3">
+              Documents
             </div>
-          }
-          style={{
-            height: "calc(100vh - 5rem)",
-            overflow: "auto",
-          }}
-          className="flex-1"
-          itemLayout="horizontal"
-          dataSource={data}
-          renderItem={(item, index) => (
-            <List.Item>
-              <List.Item.Meta
-                title={<div>{item.title}</div>}
-                description={<div>{item.desc}</div>}
-              />
-              <List.Item
-                actions={[<Button onClick={handleClick}>View</Button>]}
-              ></List.Item>
-            </List.Item>
-          )}
-        />
-        <Modal
-          title="Upload Document"
-          open={isModalOpen}
-          okButtonProps={{ className: "bg-blue-700 text-white hidden" }}
-          cancelButtonProps={{ className: "bg-red-700 text-white hidden" }}
-          onOk={handleOk}
-          onCancel={handleCancel}
-        >
+          </div>
           <Form
             form={form}
-            className="text-left"
+            className="text-left "
             name="nest-messages"
-            onFinish={onFinish}
+            // onFinish={onFinish}
             style={{
               maxWidth: 600,
             }}
@@ -162,15 +151,7 @@ const Training2 = () => {
             <Form.Item name={"name"} label="Name">
               <Input />
             </Form.Item>
-            <Form.Item
-              label="Date"
-              name="date"
-              rules={[
-                {
-                  message: "Please input!",
-                },
-              ]}
-            >
+            <Form.Item label="Date" name="date">
               <DatePicker />
             </Form.Item>
 
@@ -187,27 +168,50 @@ const Training2 = () => {
             </Form.Item>
             <Form.Item
               name="upload"
-              label="Upload Image"
+              action="/"
+              label="Upload Document"
               valuePropName="fileList"
-              // getValueFromEvent={normFile}
-              extra="Image must smaller than 2MB and in JPG/PNG format"
+              getValueFromEvent={normFile}
+              extra="Upload pdf or word file only. Max size: 2MB"
             >
-              <Upload
-                name="logo"
-                action="/upload.do"
-                listType="picture"
-                // beforeUpload={beforeUpload}
-              >
+              <Upload name="logo" listType="" beforeUpload={beforeUpload}>
                 <Button icon={<UploadOutlined />}>Click to upload</Button>
               </Upload>
             </Form.Item>
             <Form.Item>
-              <Button htmlType="submit" className="bg-blue-700 text-white">
+              <Button
+                htmlType="submit"
+                onClick={onFinish}
+                className="bg-blue-700 text-white"
+              >
                 Add
               </Button>
             </Form.Item>
           </Form>
-        </Modal>
+        </div>
+
+        <List
+          style={{
+            maxHeight: "calc(100vh - 25rem)",
+            height: "calc(100vh - 10rem)",
+            overflow: "auto",
+            width: "100%",
+          }}
+          className="flex-1"
+          itemLayout="horizontal"
+          dataSource={data}
+          renderItem={(item, index) => (
+            <List.Item>
+              <List.Item.Meta
+                title={<div>{item.title}</div>}
+                description={<div>{item.desc}</div>}
+              />
+              <List.Item
+                actions={[<Button onClick={handleClick}>View</Button>]}
+              ></List.Item>
+            </List.Item>
+          )}
+        />
       </div>
     </div>
   );
