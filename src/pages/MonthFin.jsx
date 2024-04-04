@@ -20,7 +20,7 @@ const MonthFin = () => {
 
     const [totalCredit, setTotalCredit] = useState(0);
     const [totalDebit, setTotalDebit] = useState(0);
-
+// console.log("month_id",month_id);
     useEffect(() => {
         const calculateBalance = () => {
             let creditTotal = 0;
@@ -118,6 +118,7 @@ const fetch_debit =async()=>{
 const { month: monthName, year } = location.state || {};
 const monthNumber = monthNameToNumber(monthName);
 const month_id = `${monthNumber}${year}`;
+// console.log('month',month_id);
 
 
   const [activeComponent, setActiveComponent] = useState('Finance_cred'); // State to determine which finance component to show
