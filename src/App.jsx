@@ -15,11 +15,16 @@ import CampPage from "./pages/CampPage";
 import AddCampPage from "./pages/AddCampPage";
 import AuthState from "./context/auth/AuthState";
 import PrivateRoute from "./components/PrivateRoute";
-import Finance from "./pages/Finance";
+import CampFinance from "./pages/CampFinance";
+import UnitFinance from "./pages/UnitFinance";
 import RequireAuth from "./components/RequireAuth";
 import Unauthorized from "./pages/Unauthorized";
 import DataState from "./context/data/DataState";
 import DBT from "./pages/DBT";
+import ImportExcelData from "./pages/Bulk_import";
+import Training2 from "./pages/Training2";
+import DocReview from "./components/Training2/DocReview";
+import MonthFin from "./pages/MonthFin";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -87,6 +92,8 @@ function App() {
                         <RequireAuth allowedRoles={[ROLES.co, ROLES.to]} />
                       }
                     >
+                      <Route path="/training2" element={<Training2 />} />
+                      <Route path="/training2/:id" element={<DocReview />} />
                       <Route path="/camp" element={<CampPage />} />
                       <Route path="/addcamp/:index" element={<AddCampPage />} />
                     </Route>
@@ -97,12 +104,18 @@ function App() {
                       }
                     >
                       <Route path="/campfin/:index" element={<Campfindash />} />
-                      <Route path="/finance" element={<Finance />} />
+                      <Route path="/campfinance" element={<CampFinance />} />
+                      <Route path="/unitfinance" element={<UnitFinance />} />
+                      <Route
+                        path="/unitfinance/:month"
+                        element={<MonthFin />}
+                      />
                     </Route>
                     {/* <Route path="/edit/:id" element={<CadetInfo />} /> */}
                     <Route path="/unauthorized" element={<Unauthorized />} />
                     <Route path="*" element={<h1>Not Found</h1>} />
                     <Route path="/dbt" element={<DBT />} />
+                    <Route path="/bulk_import" element={<ImportExcelData />} />
                   </Route>
                 </Routes>
               </BrowserRouter>

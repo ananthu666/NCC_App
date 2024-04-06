@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 import { DeleteFilled } from "@ant-design/icons";
 import { Navigate, useNavigate } from "react-router-dom";
 import { database } from "../../../firebase";
-import { doc, deleteDoc, updateDoc,arrayUnion } from "firebase/firestore";
-function Tablegrid({ data, loading,campid }) {
+import * as XLSX from "xlsx";
+import { doc, deleteDoc, updateDoc, arrayUnion } from "firebase/firestore";
+function Tablegrid({ data, loading, campid }) {
   const [searchText, setSearchText] = useState("");
   const handleDelete = async (id) => {
     try {
@@ -39,16 +40,16 @@ function Tablegrid({ data, loading,campid }) {
         // Iterate over each id and update the corresponding document in the "cadets" collection
         for (const id of allIds) {
           const cadetRef = doc(database, "cadets", id);
-    
+
           // Update the "regions" field of the cadet document with the specified campid
           await updateDoc(cadetRef, {
             camps: arrayUnion(campid),
           });
-    
+
           console.log(`Cadet with id ${id} updated successfully.`);
           // You can add additional logic or logging if needed
         }
-    
+
         console.log("All cadets updated successfully.");
       } catch (error) {
         console.error("Error updating cadets:", error.message);
@@ -176,11 +177,45 @@ function Tablegrid({ data, loading,campid }) {
     },
   ];
 
+  // Export data to excel
+
+  const exportData = (tableData) => {
+    const worksheet = XLSX.utils.json_to_sheet(tableData);
+    worksheet["A1"] = { v: "Sl No" };
+    worksheet["B1"] = { v: "Cadet No" };
+
+    worksheet["C1"] = { v: "Rank" };
+    worksheet["D1"] = { v: "Cadet Name" };
+    worksheet["E1"] = { v: "Institution" };
+    worksheet["F1"] = { v: "Activites/Achievements" };
+    worksheet["G1"] = { v: "Remarks" };
+    worksheet["H1"] = { v: "VEG/NONVEG" };
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const data = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+    });
+    saveAs(data, "Camp.xlsx");
+  };
+
   console.log(data);
 
   return (
     <div className="flex flex-col z-0">
       <div className="flex justify-end gap-2 items-center">
+        <div className="">
+          <Button
+            className="bg-blue-700 text-white"
+            onClick={() => exportData(data)}
+          >
+            Export
+          </Button>
+        </div>
         <div>
           <Button type="primar" onClick={promoteall}>
             Promote All

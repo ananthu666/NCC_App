@@ -1,6 +1,11 @@
 # React + Vite
+<<<<<<< HEAD
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules...
+=======
+Ncc App 
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+>>>>>>> 9ef51de4a2a08debd17bd64e40853e2d6b1e3a3f
 
 Currently, two official plugins are available:
 

@@ -1,7 +1,16 @@
 import React from "react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import { Button, Flex, Table, Input, Select, Popconfirm, message } from "antd";
+import {
+  Button,
+  Flex,
+  Table,
+  Input,
+  Select,
+  Popconfirm,
+  message,
+  Tag,
+} from "antd";
 import { useState, useEffect } from "react";
 import { DownloadOutlined } from "@ant-design/icons";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -11,6 +20,7 @@ import { database } from "../../../firebase";
 import { collection, updateDoc, doc } from "firebase/firestore";
 
 function Tablegrid({ data, loading }) {
+  const [selectedBloodGroup, setSelectedBloodGroup] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [selectedCamps, setSelectedCamps] = useState([]);
   const [selectedCollege, setSelectedCollege] = useState([]);
@@ -45,30 +55,65 @@ function Tablegrid({ data, loading }) {
     console.log("Deleted", id);
   };
 
+  // const applyFilters = (cadetList) => {
+  //   if (selectedCamps.length) {
+  //     cadetList = cadetList.filter((cadet) =>
+  //       selectedCamps.some((camp) =>
+  //         cadet.detailsOfCampsAttended.includes(camp)
+  //       )
+  //     );
+  //   }
+
+  //   if (selectedCollege.length) {
+  //     cadetList = cadetList.filter((cadet) =>
+  //       selectedCollege.includes(cadet.college)
+  //     );
+  //   }
+
+  //   if (selectedRank.length) {
+  //     cadetList = cadetList.filter((cadet) =>
+  //       selectedRank.includes(cadet.rank)
+  //     );
+  //   }
+
+  //   return cadetList;
+  // };
   const applyFilters = (cadetList) => {
     if (selectedCamps.length) {
-      cadetList = cadetList.filter((cadet) =>
-        selectedCamps.some((camp) =>
-          cadet.detailsOfCampsAttended.includes(camp)
-        )
+      cadetList = cadetList.filter(
+        (cadet) =>
+          cadet.detailsOfCampsAttended &&
+          selectedCamps.some((camp) =>
+            cadet.detailsOfCampsAttended.includes(camp)
+          )
       );
     }
 
     if (selectedCollege.length) {
-      cadetList = cadetList.filter((cadet) =>
-        selectedCollege.includes(cadet.college)
+      cadetList = cadetList.filter(
+        (cadet) => cadet.college && selectedCollege.includes(cadet.college)
       );
     }
 
     if (selectedRank.length) {
-      cadetList = cadetList.filter((cadet) =>
-        selectedRank.includes(cadet.rank)
+      cadetList = cadetList.filter(
+        (cadet) => cadet.rank && selectedRank.includes(cadet.rank)
+      );
+    }
+
+    if (selectedBloodGroup.length) {
+      cadetList = cadetList.filter(
+        (cadet) =>
+          cadet.bloodGroup && selectedBloodGroup.includes(cadet.bloodGroup)
       );
     }
 
     return cadetList;
   };
 
+  const handleBloodGroupChange = (value) => {
+    setSelectedBloodGroup(value || []);
+  };
   const handleCampsChange = (value) => {
     setSelectedCamps(value || []);
   };
@@ -119,6 +164,17 @@ function Tablegrid({ data, loading }) {
       value: "Mahatma Gandhi College, Tvpm",
     },
   ];
+
+  const bloodGroupColorMap = {
+    "a+": "volcano",
+    "b+": "green",
+    "ab+": "geekblue",
+    "o+": "gold",
+    "a-": "purple",
+    "b-": "cyan",
+    "ab-": "magenta",
+    "o-": "lime",
+  };
   const columns = [
     {
       title: "ID",
@@ -164,6 +220,19 @@ function Tablegrid({ data, loading }) {
       title: "Blood Group",
       dataIndex: "bloodGroup",
       key: "bloodGroup",
+      render: (bloodGroup) => (
+        <span>
+          {[bloodGroup].map((bloodGroup) => {
+            const color =
+              bloodGroupColorMap[bloodGroup.toLowerCase()] || "geekblue";
+            return (
+              <Tag color={color} key={bloodGroup}>
+                {bloodGroup.toUpperCase()}
+              </Tag>
+            );
+          })}
+        </span>
+      ),
     },
     {
       title: "Bank Account Number",
@@ -176,6 +245,7 @@ function Tablegrid({ data, loading }) {
       dataIndex: "height",
       key: "height",
       width: 100,
+      sorter: (a, b) => parseFloat(a.height) - parseFloat(b.height),
     },
     {
       title: "Camps Attended",
@@ -197,6 +267,7 @@ function Tablegrid({ data, loading }) {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      width: 200,
     },
     {
       title: "Gender",
@@ -223,7 +294,7 @@ function Tablegrid({ data, loading }) {
     },
     {
       title: "Date of Enrolment",
-      dataIndex: "dateOfEnrolment",
+      dataIndex: "enrollmentDate",
       key: "dateOfEnrolment",
       width: 130,
     },
@@ -234,7 +305,7 @@ function Tablegrid({ data, loading }) {
     },
     {
       title: "Father's Name",
-      dataIndex: "father'sName",
+      dataIndex: "fatherName",
       key: "father'sName",
       width: 180,
     },
@@ -261,7 +332,7 @@ function Tablegrid({ data, loading }) {
         String(record.bankAccountNumber)
           .toLowerCase()
           .includes(value.toLowerCase()) ||
-        String(record.height).toLowerCase().includ(value.toLowerCase()) ||
+        String(record.height).toLowerCase().includes(value.toLowerCase()) ||
         String(record.camps).toLowerCase().includes(value.toLowerCase()) ||
         String(record.category).toLowerCase().includes(value.toLowerCase()) ||
         String(record.division).toLowerCase().includes(value.toLowerCase()) ||
@@ -564,17 +635,50 @@ function Tablegrid({ data, loading }) {
     setFilteredData(temp);
   };
 
+  const bloodGroups = [
+    { label: "A+", value: "A+" },
+    { label: "A-", value: "A-" },
+    { label: "B+", value: "B+" },
+    { label: "B-", value: "B-" },
+    { label: "AB+", value: "AB+" },
+    { label: "AB-", value: "AB-" },
+    { label: "O+", value: "O+" },
+    { label: "O-", value: "O-" },
+  ];
+
+  // const onSearchHeight = (value) => {
+  //   // setSearchText(value);
+  //   const filteredData = data.filter((cadet) =>
+  //     String(cadet.height).toLowerCase().startsWith(value.toLowerCase())
+  //   );
+  //   setFilteredData(filteredData);
+  // };
+
+  const onSearchHeight = (value) => {
+    const filteredData = data.filter(
+      (cadet) => parseFloat(cadet.height) >= parseFloat(value)
+    );
+    setFilteredData(filteredData);
+  };
+
   useEffect(() => {
     filterData();
-  }, [data, selectedCamps, selectedCollege, selectedRank]);
+  }, [data, selectedCamps, selectedCollege, selectedRank, selectedBloodGroup]);
 
   return (
-    <div className="flex flex-col min-h-lvh z-0">
+    <div className="flex flex-1 flex-col min-h-lvh z-0">
       <div className="flex justify-end gap-2 items-center">
         <Button ghost danger onClick={to_ex_cadet}>
           Promote
         </Button>
-
+        <Select
+          onChange={handleBloodGroupChange}
+          mode="multiple"
+          placeholder="Filter by Blood Group"
+          allowClear
+          style={{ width: "20%" }}
+          options={bloodGroups}
+        />
         <Select
           onSearch={onSearch}
           onChange={handleCampsChange}
@@ -609,8 +713,8 @@ function Tablegrid({ data, loading }) {
         <Search
           placeholder="Search by height"
           className="self-end mr-3 py-4"
-          onChange={(e) => setSearchText(e.target.value)}
-          onSearch={onSearch}
+          onChange={(e) => e.target.value}
+          onSearch={onSearchHeight}
           style={{
             width: 200,
           }}
@@ -654,7 +758,7 @@ function Tablegrid({ data, loading }) {
         }}
         dataSource={filteredData}
         scroll={{
-          x: 3000,
+          x: 4000,
           y: 550,
         }}
         pagination={{

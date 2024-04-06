@@ -10,6 +10,9 @@ import {
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { Link, useNavigate } from "react-router-dom";
+import { icons } from "antd/es/image/PreviewGroup";
+import logo from "../assets/NCC.png";
+import "./SideBar.css";
 
 const SideBar = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -53,18 +56,17 @@ const SideBar = () => {
       <ContainerOutlined />
     ),
 
-    getItem("Cadet Registration", "reg", <UserAddOutlined />, [
-      getItem(<Link to="/addcadet">Individual Registration</Link>, "add"),
-      getItem(<Link to="/dashboard">Import Cadets</Link>, "import"),
-    ]),
-    getItem("Camp", "camp", <TeamOutlined />, [
-      getItem(<Link to="/dashboard">Training 1</Link>, "t1"),
-      getItem(<Link to="/dashboard">Training 2</Link>, "t2"),
-      getItem(<Link to="/camp">Training 3</Link>, "t3"),
+    getItem("Training", "training", <TeamOutlined />, [
+      getItem("Training 1", "t1", null, [
+        getItem(<Link to="/addcadet">Individual Registration</Link>, "add"),
+        getItem(<Link to="/bulk_import">Import Cadets</Link>, "import"),
+      ]),
+      getItem(<Link to="/training2">Training 2</Link>, "t2"),
+      getItem(<Link to="/camp">Camp</Link>, "t3"),
     ]),
     getItem("Finance", "fin", <MoneyCollectOutlined />, [
-      getItem(<Link to="/dashboard">Unit Finance</Link>, "income"),
-      getItem(<Link to="/finance">Camp Finance</Link>, "expense"),
+      getItem(<Link to="/unitfinance">Unit Finance</Link>, "income"),
+      getItem(<Link to="/campfinance">Camp Finance</Link>, "expense"),
       getItem(<Link to="/dbt">Logistics</Link>, "logistics"),
     ]),
 
