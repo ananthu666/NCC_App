@@ -1,19 +1,21 @@
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import SideBar from "../components/SideBar";
 import { UploadOutlined } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
-  Avatar,
   Button,
   Form,
   List,
   Modal,
-  Skeleton,
   Input,
   InputNumber,
   DatePicker,
   Upload,
 } from "antd";
+import { database } from "../../firebase";
+import { collection, addDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const Training2 = () => {
   const [form] = Form.useForm();
@@ -65,54 +67,55 @@ const Training2 = () => {
     setIsModalOpen(false);
   };
 
-  const onFinish = () => {
-    const formValues = form.getFieldsValue();
-    const newData = {
-      title: formValues.name,
-      date: formValues.date, // Use the selected year
-      desc: formValues.desc,
-    };
-    setData((prevData) => [...prevData, newData]); // Use callback form of setData
-    setIsModalOpen(false);
-
-    // Close the modal
-  };
-  useEffect(() => {
-    console.log(data); // Print data whenever it changes
-  }, [data]);
-
-  const props = {
-    name: "file",
-    action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
-    headers: {
-      authorization: "authorization-text",
-    },
-    onChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
+  const onFinish = async () => {
+    try {
+      const formValues = await form.validateFields();
+      const { name, date, desc, upload } = formValues;
+  
+      if (!upload || upload.length === 0) {
+        throw new Error('No file selected for upload');
       }
-      if (info.file.status === "done") {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
+  
+      // Assuming the file to upload is the first file in the upload array
+      const file = upload[0].originFileObj;
+      if (!file) {
+        throw new Error('No file found');
       }
-    },
-  };
-  const beforeUpload = (file) => {
-    // const isWordOrPdf =
-    //   file.type === "application/msword" ||
-    //   file.type === "application/pdf" ||
-    //   file.type ===
-    //     "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-    // if (!isWordOrPdf) {
-    //   message.error("You can only upload Word or PDF files!");
-    // }
-    // const isLt2M = file.size / 1024 / 1024 < 2;
-    // if (!isLt2M) {
-    //   message.error("File must be smaller than 2MB!");
-    // }
-    // console.log(file);
-    // return isWordOrPdf && isLt2M;
+  
+      // Create a reference to the file in Firebase Storage
+      // Make sure to use a unique identifier for each file's path (e.g., a timestamp or a unique ID)
+      // Here I'm using `file.name` but consider a more unique approach
+      const storage = getStorage(); // Move this line into the function
+  
+      const storageRef = ref(storage, `pdf/${file.name}`);
+  
+      // Upload the file to Firebase Storage
+      const uploadResult = await uploadBytes(storageRef, file);
+      console.log('Uploaded a blob or file!', uploadResult);
+  
+      // After a successful upload, get the download URL
+      const downloadURL = await getDownloadURL(uploadResult.ref);
+      console.log('File available at', downloadURL);
+  
+      // Save form data and file download URL to the database
+      const newData = {
+        title: name,
+        date: date.format('YYYY-MM-DD'),
+        desc: desc,
+        fileURL: downloadURL,
+      };
+  
+      // Add document to Firestore collection
+      const docRef = await addDoc(collection(database, 'Training_2'), newData);
+      console.log('Document written with ID: ', docRef.id);
+  
+      // Update state with new data
+      setData((prevData) => [...prevData, newData]);
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle errors, e.g., show a notification to the user
+    }
   };
 
   const normFile = (e) => {
@@ -120,61 +123,46 @@ const Training2 = () => {
     if (Array.isArray(e)) {
       return e;
     }
-    // Check if e contains a fileList property
-    if (e && e.fileList && Array.isArray(e.fileList)) {
-      return e.fileList;
-    }
-    // If neither array nor object with fileList property, return null or an empty array
-    return null; // or [] depending on how you want to handle this case
+    return e && e.fileList;
   };
 
   return (
-    <div className="flex gap-4 ">
-      <SideBar className="" />
-      <div className="flex-1 flex mr-4 flex-col rounded-md justify-center self-center  bg-white p-4 h-full overflow-auto">
+    <div className="flex gap-4">
+      <SideBar />
+      <div className="flex-1 flex mr-4 flex-col rounded-md justify-center self-center bg-white p-4 h-full overflow-auto">
         <div className="flex-1 flex flex-col">
-          <div className=" flex flex-1 self-start justify-start font-poppins">
+          <div className="flex flex-1 self-start justify-start font-poppins">
             <div className="text-3xl text-left font-semibold mb-3">
               Documents
             </div>
           </div>
           <Form
             form={form}
-            className="text-left "
+            className="text-left"
             name="nest-messages"
-            // onFinish={onFinish}
             style={{
               maxWidth: 600,
             }}
             validateMessages={validateMessages}
           >
-            <Form.Item name={"name"} label="Name">
+            <Form.Item name="name" label="Name" rules={[{ required: true }]}>
               <Input />
             </Form.Item>
-            <Form.Item label="Date" name="date">
+            <Form.Item name="date" label="Date" rules={[{ required: true }]}>
               <DatePicker />
             </Form.Item>
-
-            <Form.Item
-              name={"desc"}
-              label="Description"
-              rules={[
-                {
-                  type: "text",
-                },
-              ]}
-            >
+            <Form.Item name="desc" label="Description">
               <Input.TextArea />
             </Form.Item>
             <Form.Item
               name="upload"
-              action="/"
               label="Upload Document"
               valuePropName="fileList"
               getValueFromEvent={normFile}
               extra="Upload pdf or word file only. Max size: 2MB"
+              rules={[{ required: true }]}
             >
-              <Upload name="logo" listType="" beforeUpload={beforeUpload}>
+              <Upload beforeUpload={() => false}>
                 <Button icon={<UploadOutlined />}>Click to upload</Button>
               </Upload>
             </Form.Item>
@@ -206,9 +194,7 @@ const Training2 = () => {
                 title={<div>{item.title}</div>}
                 description={<div>{item.desc}</div>}
               />
-              <List.Item
-                actions={[<Button onClick={handleClick}>View</Button>]}
-              ></List.Item>
+              <List.Item actions={[<Button onClick={handleClick}>View</Button>]}></List.Item>
             </List.Item>
           )}
         />
