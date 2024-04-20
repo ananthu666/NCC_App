@@ -150,7 +150,13 @@ const MonthFin = () => {
     switch (activeComponent) {
       case "Finance_cred":
         return (
-          <Finance_cred camp_id={month_id} data={cred_data} loading={loading} />
+          <div className="flex justify-center">
+            <Finance_cred
+              camp_id={month_id}
+              data={cred_data}
+              loading={loading}
+            />
+          </div>
         );
       case "Finance_deb":
         return (
@@ -170,9 +176,9 @@ const MonthFin = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex min-h-screen w-full">
       <SideBar className="" />
-      <div style={styles.cont}>
+      <div className="w-full ">
         <div className="w-full font-poppins self-start">
           <TopBar name={`${monthName} ${year}`} />
         </div>
@@ -217,7 +223,7 @@ const MonthFin = () => {
         </div>
         {/* Render the active finance component */}
         {renderFinanceComponent()}
-        <div>
+        <div className="flex h-2/6 ">
           <BalanceSheet totalDebit={totalDebit} totalCredit={totalCredit} />
         </div>
       </div>
