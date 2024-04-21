@@ -1,12 +1,22 @@
 import React from "react";
-import { Button, Flex, Table, Input, Select, Popconfirm, message } from "antd";
+import {
+  Button,
+  Flex,
+  Table,
+  Input,
+  Select,
+  Popconfirm,
+  message,
+  DatePicker,
+} from "antd";
 import { useState, useEffect } from "react";
 import { DeleteFilled } from "@ant-design/icons";
 import { Navigate, useNavigate } from "react-router-dom";
 import { database } from "../../../../firebase";
-import { doc, deleteDoc, updateDoc,arrayUnion } from "firebase/firestore";
-function Tablegrid({ data, loading,campid }) {
-  console.log("!!!!!!!!!!",data);
+import { doc, deleteDoc, updateDoc, arrayUnion } from "firebase/firestore";
+function Tablegrid({ data, loading, campid }) {
+  const [toDate, setToDate] = useState(null);
+  const [fromDate, setFromDate] = useState(null);
   const [searchText, setSearchText] = useState("");
   const handleDelete = async (id) => {
     try {
@@ -26,9 +36,7 @@ function Tablegrid({ data, loading,campid }) {
   const onSearch = (value) => setSearchText(value);
 
   // promoting all cadets in the camp
-  
 
-   
   const columns = [
     {
       title: "Sl NO",
@@ -58,9 +66,8 @@ function Tablegrid({ data, loading,campid }) {
       dataIndex: "onwhataccount",
       key: "on_what_account",
       width: 200,
-      
     },
-    
+
     {
       title: "Cash",
       dataIndex: "cash",
@@ -139,8 +146,7 @@ function Tablegrid({ data, loading,campid }) {
       key: "mode_of_payment",
       width: 120,
     },
-    
-    
+
     {
       title: "Delete",
       fixed: "right",
@@ -199,15 +205,23 @@ function Tablegrid({ data, loading,campid }) {
     },
   ];
 
-  console.log(data);
+  const onChangeFrom = (date, dateString) => {
+    setFromDate(dateString);
+    console.log(fromDate);
+  };
+
+  const onChangeTo = (date, dateString) => {
+    setToDate(dateString);
+    1;
+    console.log(toDate);
+  };
 
   return (
-    <div className="flex flex-col z-0">
-        <div style={{textAlign:"center",color:"blue",fontSize:"25px"}}>
-          PAYMENTS (DEBITS)
-        </div>
+    <div className="flex flex-col z-0 bg-white w-full m-3 items-center py-4 rounded-lg">
+      <div style={{ textAlign: "center", color: "blue", fontSize: "25px" }}>
+        PAYMENTS (DEBITS)
+      </div>
       <div className="flex justify-end gap-2 items-center">
-
         <Search
           placeholder="Input search text"
           className="self-end mr-3 py-4"
@@ -217,6 +231,14 @@ function Tablegrid({ data, loading,campid }) {
             width: 200,
           }}
         />
+        <div className="flex justify-center items-center  gap-2 ">
+          <label htmlFor="fromdate">From </label>
+          <DatePicker onChange={onChangeFrom} id="fromdate" />
+        </div>
+        <div className="flex justify-center items-center  gap-2 ">
+          <label htmlFor="todate">To </label>
+          <DatePicker onChange={onChangeTo} id="todate" />
+        </div>
       </div>
       <Table
         rowKey="id"
