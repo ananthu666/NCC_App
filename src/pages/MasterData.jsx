@@ -45,6 +45,19 @@ const Home = () => {
         }
         cadetList.push(cadet);
       });
+      // convert remark to string but look like dict
+      cadetList.forEach((cadet) => {
+        if (cadet.remarks) {
+          // Iterate through each map in the remarks array and format it
+          const formattedRemarks = cadet.remarks.map((remark) => {
+            // Convert each map into a string in the format "key: value"
+            return Object.keys(remark).map((key) => `${key}: ${remark[key]}`).join(", ");
+          });
+          // Join all formatted remarks into a single string
+          cadet.remarks = formattedRemarks.join("; "); // Change the separator as per your requirement
+        }
+      });
+      
       setCadets(cadetList);
       setLoading(false);
     });
@@ -68,6 +81,19 @@ const Home = () => {
         }
         exCadetList.push(cadet);
       });
+      
+      exCadetList.forEach((cadet) => {
+        if (cadet.remarks) {
+          // Iterate through each map in the remarks array and format it
+          const formattedRemarks = cadet.remarks.map((remark) => {
+            // Convert each map into a string in the format "key: value"
+            return Object.keys(remark).map((key) => `${key}: ${remark[key]}`).join(", ");
+          });
+          // Join all formatted remarks into a single string
+          cadet.remarks = formattedRemarks.join("; "); // Change the separator as per your requirement
+        }
+      });
+      
       setExCadets(exCadetList);
       setLoading(false);
     });

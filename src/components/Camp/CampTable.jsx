@@ -34,16 +34,20 @@ function Tablegrid({ data, loading, campid }) {
     // If the user confirms, proceed with the action
     if (userConfirmation) {
       // Extract all id from data
+      console.log(data);
       const allIds = data.map((item) => item.id);
 
       try {
         // Iterate over each id and update the corresponding document in the "cadets" collection
         for (const id of allIds) {
+          const cadetRem = data.find((item) => item.id === id).cadet_rem; // Get cadet_rem value
           const cadetRef = doc(database, "cadets", id);
+          // const cadetRef = doc(database, "cadets", id);
 
           // Update the "regions" field of the cadet document with the specified campid
           await updateDoc(cadetRef, {
             camps: arrayUnion(campid),
+            remarks: cadetRem
           });
 
           console.log(`Cadet with id ${id} updated successfully.`);
@@ -107,10 +111,34 @@ function Tablegrid({ data, loading, campid }) {
       key: "activities",
       width: 250,
     },
+    // {
+    //   title: "Remarks",
+    //   dataIndex: "cadet_rem",
+    //   key: "remarks",
+    //   width: 200,
+    // },
     {
-      title: "Remarks",
-      dataIndex: "cadet_rem",
-      key: "remarks",
+      title: "Awards",
+      dataIndex: "cadet_awards",
+      key: "awards",
+      width: 200,
+    },
+    {
+      title: "Firing Points",
+      dataIndex: "cadet_firing_points",
+      key: "firing_points",
+      width: 200,
+    },
+    {
+      title: "Cultural Activities",
+      dataIndex: "cadet_cultural_activities",
+      key: "cultural_activities",
+      width: 200,
+    },
+    {
+      title: "Competetions Attended",
+      dataIndex: "cadet_competetions_attended",
+      key: "competetions_attended",
       width: 200,
     },
     {

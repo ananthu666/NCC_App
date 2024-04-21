@@ -68,6 +68,7 @@ const CadetForm = ({ data = {} }) => {
         bankAccountNumber:
           formValues.bankAccountNumber || "Default Bank Account Number",
         height: formValues.height || "Default Height",
+        aadhar: formValues.aadhar || "Default Aadhar",
         category: formValues.category || "Default Category",
         division: formValues.division || "Default Division",
         email: formValues.email || "default@example.com",
@@ -140,7 +141,7 @@ const CadetForm = ({ data = {} }) => {
           />
         </div>
         <Col>
-          <Form.Item name="id" label="ID" rules={[{ required: false }]}>
+          <Form.Item name="id" label="Cadet No" rules={[{ required: false }]}>
             <Input />
           </Form.Item>
 
@@ -181,6 +182,9 @@ const CadetForm = ({ data = {} }) => {
           </Form.Item>
 
           <Form.Item name="height" label="Height" rules={[{ required: false }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="aadhar" label="Aadhar" rules={[{ required: false }]}>
             <Input />
           </Form.Item>
 
