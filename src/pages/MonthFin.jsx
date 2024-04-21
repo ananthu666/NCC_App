@@ -223,9 +223,9 @@ const MonthFin = () => {
         </div>
         {/* Render the active finance component */}
         {renderFinanceComponent()}
-        <div className="flex h-2/6 ">
+        {/* <div className="flex h-2/6 ">
           <BalanceSheet totalDebit={totalDebit} totalCredit={totalCredit} />
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -1,7 +1,8 @@
 import React from "react";
 
-const BalanceSheet = ({ totalCredit, totalDebit }) => {
+const BalanceSheet = ({ retrievedData }) => {
   const columns = [
+
     "Balance",
     "Cash",
     "Bank",
@@ -10,53 +11,62 @@ const BalanceSheet = ({ totalCredit, totalDebit }) => {
     "Messing Cadets",
     "Incidentals",
     "Rank pay/Honorarium",
+    
     "TA/DA Civilians",
     "POL",
-    "Ship Modeling",
+    "Ship Modelling",
   ];
 
+  // Function to filter data until yesterday
+  const getDataUntilYesterday = (data) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set to the beginning of today
+    return data.filter(item => new Date(item.date) < today);
+  }
+
+  // Function to filter today's data
+  const getTodayData = (data) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set to the beginning of today
+    return data.filter(item => new Date(item.date) >= today);
+  }
+
+  // Define the columns you want to sum
+  const columnsToSum = ["cash", "bank","ta_off", "ta_da_civil", "messing_off", "messing_cad", "incidentials", "rank_pay" ,"pol", "ship_modelling"];
+
+  // Calculate the sum of each column for data until yesterday
+  const yesterdayData = getDataUntilYesterday(retrievedData);
+  const yesterdaySums = {};
+  columnsToSum.forEach(column => {
+    yesterdaySums[column] = yesterdayData.reduce((accumulator, item) => accumulator + (parseInt(item[column]) || 0), 0);
+  });
+
+  // Calculate the sum of each column for today's data
+  const todayData = getTodayData(retrievedData);
+  const todaySums = {};
+  columnsToSum.forEach(column => {
+    todaySums[column] = todayData.reduce((accumulator, item) => accumulator + (parseInt(item[column]) || 0), 0);
+  });
+
+  // Construct the list
   const data = [
     {
       Balance: "Total",
-      Cash: 500,
-      Bank: 1500,
-      "TA/DA Officers/Cadets": 200,
-      "Messing Officers": 100,
-      "Messing Cadets": 150,
-      Incidentals: 50,
-      "Rank pay/Honorarium": 300,
-      "TA/DA Civilians": 150,
-      POL: 200,
-      "Ship Modeling": 100,
+      ...todaySums
     },
     {
-      Balance: "Grand Total",
-      Cash: 1000,
-      Bank: 2500,
-      "TA/DA Officers/Cadets": 400,
-      "Messing Officers": 200,
-      "Messing Cadets": 300,
-      Incidentals: 100,
-      "Rank pay/Honorarium": 600,
-      "TA/DA Civilians": 300,
-      POL: 400,
-      "Ship Modeling": 200,
+      Balance: "Grand Total", // You can adjust this label as needed
+      ...yesterdaySums
     },
     {
-      Balance: "Col Total",
-      Cash: 1000,
-      Bank: 2500,
-      "TA/DA Officers/Cadets": 400,
-      "Messing Officers": 200,
-      "Messing Cadets": 300,
-      Incidentals: 100,
-      "Rank pay/Honorarium": 600,
-      "TA/DA Civilians": 300,
-      POL: 400,
-      "Ship Modeling": 200,
-    },
-    // Add more data objects here
+      Balance: "Col Total", // You can adjust this label as needed
+      ...todaySums
+    }
+    // Add more objects to the list if needed
   ];
+
+  console.log(data);
+  
   return (
     <div className="flex gap-3 bg-white h-full w-full m-3 rounded-lg p-2 ">
       <div className="container mx-auto">

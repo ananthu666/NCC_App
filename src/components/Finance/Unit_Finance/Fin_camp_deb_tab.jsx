@@ -5,12 +5,13 @@ import { DeleteFilled } from "@ant-design/icons";
 import { Navigate, useNavigate } from "react-router-dom";
 import { database } from "../../../../firebase";
 import { doc, deleteDoc, updateDoc,arrayUnion } from "firebase/firestore";
+import BalanceSheet from "./Balance_sheet";
 function Tablegrid({ data, loading,campid }) {
   console.log("!!!!!!!!!!",data);
   const [searchText, setSearchText] = useState("");
   const handleDelete = async (id) => {
     try {
-      await deleteDoc(doc(database, "camp_debit", id));
+      await deleteDoc(doc(database, "unit_debit", id));
       console.log("Document successfully deleted!");
       // not a alert just a message
       message.success("Document successfully deleted!");
@@ -238,6 +239,9 @@ function Tablegrid({ data, loading,campid }) {
         loading={loading}
         showSizeChanger="false"
       />
+      <div className="flex h-2/5">
+          <BalanceSheet retrievedData={data}/>
+        </div>
     </div>
   );
 }
