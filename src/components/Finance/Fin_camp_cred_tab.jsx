@@ -4,9 +4,10 @@ import { useState, useEffect } from "react";
 import { DeleteFilled } from "@ant-design/icons";
 import { Navigate, useNavigate } from "react-router-dom";
 import { database } from "../../../firebase";
-import { doc, deleteDoc, updateDoc,arrayUnion } from "firebase/firestore";
-function Tablegrid({ data, loading,campid }) {
-  console.log("!!!!!!!!!!",data);
+import { doc, deleteDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import BalanceSheet from "./Unit_Finance/Balance_sheet";
+function Tablegrid({ data, loading, campid }) {
+  console.log("!!!!!!!!!!", data);
   const [searchText, setSearchText] = useState("");
   const handleDelete = async (id) => {
     try {
@@ -26,9 +27,7 @@ function Tablegrid({ data, loading,campid }) {
   const onSearch = (value) => setSearchText(value);
 
   // promoting all cadets in the camp
-  
 
-   
   const columns = [
     {
       title: "Sl NO",
@@ -58,9 +57,8 @@ function Tablegrid({ data, loading,campid }) {
       dataIndex: "onwhataccount",
       key: "on_what_account",
       width: 200,
-      
     },
-    
+
     {
       title: "Cash",
       dataIndex: "cash",
@@ -139,8 +137,7 @@ function Tablegrid({ data, loading,campid }) {
       key: "mode_of_payment",
       width: 120,
     },
-    
-    
+
     {
       title: "Delete",
       fixed: "right",
@@ -203,11 +200,10 @@ function Tablegrid({ data, loading,campid }) {
 
   return (
     <div className="flex flex-col z-0">
-        <div style={{textAlign:"center",color:"blue",fontSize:"25px"}}>
-          PAYMENTS (CREDITS)
-        </div>
+      <div style={{ textAlign: "center", color: "blue", fontSize: "25px" }}>
+        PAYMENTS (CREDITS)
+      </div>
       <div className="flex justify-end gap-2 items-center">
-
         <Search
           placeholder="Input search text"
           className="self-end mr-3 py-4"
@@ -238,6 +234,9 @@ function Tablegrid({ data, loading,campid }) {
         loading={loading}
         showSizeChanger="false"
       />
+      <div className="">
+        <BalanceSheet />
+      </div>
     </div>
   );
 }
