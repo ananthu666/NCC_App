@@ -25,6 +25,8 @@ import ImportExcelData from "./pages/Bulk_import";
 import Training2 from "./pages/Training2";
 import DocReview from "./components/Training2/DocReview";
 import MonthFin from "./pages/MonthFin";
+import Clothing_dash from "./pages/Clothing_dash";
+import Clothing from "./pages/Clothing";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -115,6 +117,8 @@ function App() {
                     <Route path="/unauthorized" element={<Unauthorized />} />
                     <Route path="*" element={<h1>Not Found</h1>} />
                     <Route path="/dbt" element={<DBT />} />
+                    <Route path="/clothing_dash" element={<Clothing_dash />} />
+                    <Route path="/clothing/:ncc_no" element={<Clothing />} />
                     <Route path="/bulk_import" element={<ImportExcelData />} />
                   </Route>
                 </Routes>
