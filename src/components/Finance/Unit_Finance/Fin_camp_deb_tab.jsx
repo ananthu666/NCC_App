@@ -13,17 +13,10 @@ import { useState, useEffect } from "react";
 import { DeleteFilled } from "@ant-design/icons";
 import { Navigate, useNavigate } from "react-router-dom";
 import { database } from "../../../../firebase";
-<<<<<<< HEAD
-import { doc, deleteDoc, updateDoc,arrayUnion } from "firebase/firestore";
-import BalanceSheet from "./Balance_sheet";
-function Tablegrid({ data, loading,campid }) {
-  console.log("!!!!!!!!!!",data);
-=======
 import { doc, deleteDoc, updateDoc, arrayUnion } from "firebase/firestore";
 function Tablegrid({ data, loading, campid }) {
   const [toDate, setToDate] = useState(null);
   const [fromDate, setFromDate] = useState(null);
->>>>>>> ec10b00302b316e4ba4594299eac9a2cdb72e069
   const [searchText, setSearchText] = useState("");
   const handleDelete = async (id) => {
     try {
