@@ -25,6 +25,7 @@ import ImportExcelData from "./pages/Bulk_import";
 import Training2 from "./pages/Training2";
 import DocReview from "./components/Training2/DocReview";
 import MonthFin from "./pages/MonthFin";
+import CampFinDay from "./pages/CampFinDay";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -103,7 +104,12 @@ function App() {
                         <RequireAuth allowedRoles={[ROLES.co, ROLES.cs]} />
                       }
                     >
-                      <Route path="/campfin/:index" element={<Campfindash />} />
+                      <Route
+                        path="/campfin/:index/:ind"
+                        element={<Campfindash />}
+                      />
+
+                      <Route path="/campfin/:index" element={<CampFinDay />} />
                       <Route path="/campfinance" element={<CampFinance />} />
                       <Route path="/unitfinance" element={<UnitFinance />} />
                       <Route
