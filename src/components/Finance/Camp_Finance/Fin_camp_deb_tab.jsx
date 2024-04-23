@@ -3,9 +3,10 @@ import { Button, Flex, Table, Input, Select, Popconfirm, message } from "antd";
 import { useState, useEffect } from "react";
 import { DeleteFilled } from "@ant-design/icons";
 import { Navigate, useNavigate } from "react-router-dom";
-import { database } from "../../../firebase";
+import { database } from "../../../../firebase";
+import BalanceSheet from "../Unit_Finance/Balance_sheet";
 import { doc, deleteDoc, updateDoc,arrayUnion } from "firebase/firestore";
-function Tablegrid({ data, loading,campid }) {
+function Tablegrid({ data, loading,campid, total_deb,grandtotal}) {
   console.log("!!!!!!!!!!",data);
   const [searchText, setSearchText] = useState("");
   const handleDelete = async (id) => {
@@ -238,6 +239,9 @@ function Tablegrid({ data, loading,campid }) {
         loading={loading}
         showSizeChanger="false"
       />
+      <div className="">
+        <BalanceSheet retrievedData={total_deb} grandtotal={grandtotal}/>
+      </div>
     </div>
   );
 }

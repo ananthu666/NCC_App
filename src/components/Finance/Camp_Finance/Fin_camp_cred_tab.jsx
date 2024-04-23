@@ -3,11 +3,14 @@ import { Button, Flex, Table, Input, Select, Popconfirm, message } from "antd";
 import { useState, useEffect } from "react";
 import { DeleteFilled } from "@ant-design/icons";
 import { Navigate, useNavigate } from "react-router-dom";
-import { database } from "../../../firebase";
+import { database } from "../../../../firebase";
 import { doc, deleteDoc, updateDoc, arrayUnion } from "firebase/firestore";
-import BalanceSheet from "./Unit_Finance/Balance_sheet";
-function Tablegrid({ data, loading, campid }) {
-  console.log("!!!!!!!!!!", data);
+import BalanceSheet from "../Unit_Finance/Balance_sheet";
+function Tablegrid({ data, loading, camp_id ,total_cred,grandtotal}) {
+  console.log("!!!!!!!!!!data", data);
+  console.log("!!!!!!!!!!index", camp_id);
+  console.log("!!!!!!!!!!total_cred", total_cred);
+  console.log("!!!!!!!!!!grandtotal", grandtotal);
   const [searchText, setSearchText] = useState("");
   const handleDelete = async (id) => {
     try {
@@ -235,7 +238,7 @@ function Tablegrid({ data, loading, campid }) {
         showSizeChanger="false"
       />
       <div className="">
-        <BalanceSheet />
+        <BalanceSheet retrievedData={total_cred} grandtotal={grandtotal}/>
       </div>
     </div>
   );

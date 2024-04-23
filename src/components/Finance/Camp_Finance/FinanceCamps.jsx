@@ -1,6 +1,6 @@
 import React from "react";
 import { Card } from "antd";
-import { database } from "../../../firebase";
+import { database } from "../../../../firebase";
 import {
   doc,
   collection,
@@ -45,7 +45,7 @@ function TextExample() {
 
   const HandleCardClick = (index) => {
     console.log(`Card clicked with name: ${index}`);
-    navigate(`/campfin/${index}`, { state: { camp_name: index } });
+    navigate(`/campfin/${index}`, { state: index  });
   };
   useEffect(() => {
     getCamps();
@@ -63,7 +63,7 @@ function TextExample() {
             textAlign: "center",
             margin: "1rem",
           }}
-          onClick={() => HandleCardClick(item.camp_name)}
+          onClick={() => HandleCardClick(item)}
         >
           <Meta title={item.camp_name} description={item.camp_commander} />
         </Card>

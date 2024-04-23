@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { database } from "../../../firebase";
+import { database } from "../../../../firebase";
 import {
   doc,
   collection,
@@ -26,7 +26,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { data } from "autoprefixer";
 const { Option } = Select;
 
-const CadetForm=({camp_id})=>
+const CadetForm=({camp_id,camp_day,})=>
 {
   console.log(camp_id);
   const [form1] = Form.useForm();
@@ -36,33 +36,35 @@ const CadetForm=({camp_id})=>
       console.log(formValues);
       try {
         // Assuming you have a Firestore reference named citiesRef
-        const cadetsRef = collection(database, "camp_credit");
-  
+        const cadetsRef = collection(database, "camp_debit");
+        const index_count = 0;
         // Data to be sent
         const data = {
           vrno: formValues.vrno||1,
           towhom: formValues.towhom||'ananthu',
           onwhataccount: formValues.onwhataccount||'onwhataccount',
-          cash: formValues.cash||'cash',
-          bank: formValues.bank||'bank',
-          ta_off: formValues.ta_off||'ta_off',
-          messing_off: formValues.messing_off||'messing_off',
-          messing_cad: formValues.messing_cad||'messing_cad',
-          incidentials: formValues.incidentials||'incidentials',
-          rank_pay: formValues.rank_pay||'rank_pay',
-          ta_da_civil: formValues.ta_da_civil||'ta_da_civil',
-          pol: formValues.pol||'pol',
+          cash: formValues.cash||'0',
+          bank: formValues.bank||'0',
+          ta_off: formValues.ta_off||'2300',
+          messing_off: formValues.messing_off||'5400',
+          messing_cad: formValues.messing_cad||'2108',
+          incidentials: formValues.incidentials||'4340',
+          rank_pay: formValues.rank_pay||'1910',
+          ta_da_civil: formValues.ta_da_civil||'1540',
+          pol: formValues.pol||'7383',
           security_depo: formValues.security_depo||'security_depo',
           suspense: formValues.suspense||'suspense',
           initials_of_off: formValues.initials_of_off||'initials_of_off',
           camp_id: camp_id,
-          ship_modelling: formValues.ship_modelling||'ship_modelling',
+          ship_modelling: formValues.ship_modelling||'1432',
           mode_of_payment: formValues.mode_of_payment||'mode_of_payment',
+          day_count:camp_day,
+          date: new Date().toLocaleDateString(),
           
 
           
         };
-        const documentRef = doc(cadetsRef, formValues.vrno);
+        const documentRef = doc(cadetsRef, camp_id+'_'+formValues.vrno);
         await setDoc(documentRef, data);
         console.log("Data successfully sent to Firestore!");
       } catch (error) {
@@ -74,7 +76,7 @@ const CadetForm=({camp_id})=>
   return (
     <div className="flex">
     <Card
-      title="Camp Credit  Form"
+      title="Camp Debit  Form"
       className="flex-1 overflow-x-hidden  my-4 mx-3 py-2 px-4"
     >
       <Form
