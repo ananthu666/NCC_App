@@ -5,7 +5,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { useParams, useLocation } from "react-router-dom";
 import Table from "../components/Finance/Logistics/Clothing_Table";
 import { database } from "../../firebase";
-import { doc, setDoc, getDocs } from "firebase/firestore";
+import { doc, setDoc, getDocs, deleteDoc } from "firebase/firestore";
 import { collection } from "firebase/firestore";
 
 const Clothing = () => {
@@ -20,6 +20,7 @@ const Clothing = () => {
         const querySnapshot = await getDocs(cadetsRef);
         const data = [];
         querySnapshot.forEach((doc) => {
+          console.log(data);
           const docData = doc.data();
           if (docData.no === ncc_no) {
             data.push(docData);
@@ -32,6 +33,31 @@ const Clothing = () => {
     };
     fetchDataFromFirestore();
   }, [ncc_no]);
+
+  const onDeleteItem = async (record) => {
+    try {
+      const cadetsRef = collection(database, "clothing");
+      const querySnapshot = await getDocs(cadetsRef);
+
+      querySnapshot.forEach(async (doc) => {
+        const docData = doc.data();
+
+        if (docData.no === record.no && docData.item === record.item) {
+          // Delete the document from Firestore
+          await deleteDoc(doc.ref);
+          console.log("Document successfully deleted!");
+
+          // Update the state by filtering out the deleted item
+          const updatedItems = items.filter(
+            (item) => item.no !== record.no || item.item !== record.item
+          );
+          setItems(updatedItems);
+        }
+      });
+    } catch (error) {
+      console.error("Error deleting data from Firestore:", error);
+    }
+  };
 
   const handleAddItem = async (formValues) => {
     try {
@@ -68,13 +94,17 @@ const Clothing = () => {
         </Row>
         <Row gutter={20}>
           <Col span={15}>
-            <Table clothes={items} className="issueTable" />
+            <Table
+              clothes={items}
+              onDeleteItem={onDeleteItem}
+              className="issueTable"
+            />
           </Col>
         </Row>
       </Card>
       <style>{`
       .container {
-          height: 95vh; /* Set container height to 80% of viewport height */
+          height: 500vh; /* Set container height to 80% of viewport height */
           overflow: auto; /* Add scrollbar when content exceeds the container height */
           margin: 0px auto; /* Center the container horizontally */
           max-width: 100%; /* Set a maximum width for the container */
@@ -135,7 +165,7 @@ const AddItemForm = ({ handleAddItem }) => {
         </Form.Item>
 
         <Form.Item
-          name="retentionOrLifecycle"
+          name="type"
           label="Retention or Lifecycle"
           rules={[
             {
@@ -203,10 +233,10 @@ const formStyles = {
   flexWrap: "wrap",
   justifyContent: "space-between",
   alignItems: "center",
-  maxWidth: "900px",
+  maxWidth: "1000px",
   backgroundColor: "#f5f5f5",
   borderRadius: "4px",
-  padding: "16px",
+  padding: "20px",
 };
 
 const formItemStyles = {

@@ -138,7 +138,7 @@ const Clothing_dash = () => {
 
       <style>{`
         .container {
-          height: 95vh; /* Set container height to 80% of viewport height */
+          height: 100vh; /* Set container height to 80% of viewport height */
           overflow: auto; /* Add scrollbar when content exceeds the container height */
           margin: 0px auto; /* Center the container horizontally */
           max-width: 1000px; /* Set a maximum width for the container */
@@ -151,7 +151,7 @@ const Clothing_dash = () => {
         .clothing-card {
           width: 100%; /* Make the card take up the full width of the container */
           margin: 0; /* Remove any margin from the card */
-          height: 95vh;
+          height: 500vh;
         }
 
         .item-list {
