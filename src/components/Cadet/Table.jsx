@@ -254,6 +254,12 @@ function Tablegrid({ data, loading }) {
       width: 100,
     },
     {
+      title: "Camps Remarks",
+      dataIndex: "remarks",
+      key: "remarks",
+      width: 200,
+    },
+    {
       title: "Category",
       dataIndex: "category",
       key: "category",
@@ -278,6 +284,12 @@ function Tablegrid({ data, loading }) {
       title: "IFSC Code",
       dataIndex: "ifscCode",
       key: "ifscCode",
+      width: 130,
+    },
+    {
+      title: "Aadhar No",
+      dataIndex: "aadhar",
+      key: "aadhar",
       width: 130,
     },
     {

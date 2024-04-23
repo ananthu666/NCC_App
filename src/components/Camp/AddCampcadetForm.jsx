@@ -51,14 +51,13 @@ const CadetForm=({campdata,index})=>
           cadet_name: formValues.cadetname ||1,
           cadet_insti: formValues.institution ||1,
           cadet_act: formValues.activities ||1,
-          cadet_rem: formValues.remarks ||1,
           cadet_veg: formValues.veg ||"veg",
           campid: index,
-          
-          
-  
-          
-          
+          cadet_awards: formValues.awards ||1,
+          cadet_firing_points: formValues.firing_points ||1,
+          cadet_cultural_activities: formValues.cultural_activities ||1,
+          cadet_competetions_attended: formValues.competetions_attended ||1,
+          cadet_rem: [{"Awards":formValues.awards},{"Firing Points":formValues.firing_points},{"Cultural Activities":formValues.cultural_activities},{"Competetions Attended":formValues.competetions_attended}],
         };
         console.log(data);
         const documentRef = doc(cadetsRef, formValues.cadetnum);
@@ -146,6 +145,7 @@ const CadetForm=({campdata,index})=>
               remarks: campdata[i].cadet_rem,
               veg: campdata[i].cadet_veg,
               
+              
             });
             console.log("found in camp");
             flag=1;
@@ -229,6 +229,21 @@ const CadetForm=({campdata,index})=>
           >
             <Input />
           </Form.Item>
+          <Form.Item
+            name="awards"
+            label="Awards"
+            rules={[{ required: false }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="firing_points"
+            label="Firing Points"
+            rules={[{ required: false }]}
+          >
+            <Input />
+          </Form.Item>
+          
 
           <Form.Item>
             <Button htmlType="submit"  style={styles.btn}>
@@ -262,7 +277,21 @@ const CadetForm=({campdata,index})=>
               
             </Select>
           </Form.Item>
+          <Form.Item
+            name="cultural_activities"
+            label="Culture Activities"
+            rules={[{ required: false }]}
+          >
+            <Input />
+          </Form.Item>
 
+          <Form.Item
+            name="competetions_attended"
+            label="Competetions Attended"
+            rules={[{ required: false }]}
+          >
+            <Input />
+          </Form.Item>
           
           
         </Col>
