@@ -20,6 +20,8 @@ const [day, setday] = useState("");
 const location = useLocation();
 const camp = location.state;
 // console.log('camp',camp);
+const sum=parseInt(camp.camp_bal.cash)+parseInt(camp.camp_bal.bank)+parseInt(camp.camp_bal.ta_off)+parseInt(camp.camp_bal.ta_da_civil)+parseInt(camp.camp_bal.messing_off)+parseInt(camp.camp_bal.messing_cad)+parseInt(camp.camp_bal.incidentials)+parseInt(camp.camp_bal.rank_pay)+parseInt(camp.camp_bal.pol)+parseInt(camp.camp_bal.ship_modelling);
+// console.log('campsum',sum);
 const fetch_cred =async()=>{
     try {
         
@@ -101,7 +103,7 @@ const writeprevdata = async (index) => {
   }
   try {
     const campref = collection(database, "camp_in_out");
-    const documentRef = doc(campref);
+    const documentRef = doc(campref,camp.camp_name+"_"+index);
     await setDoc(documentRef, newdata);
     console.log("Document written with ID: ", documentRef.id);
   } catch (e) {
@@ -284,12 +286,12 @@ const writeprevdata = async (index) => {
               <br />
               <Typography.Text>End Date: {camp.end_date}</Typography.Text>
               <br />
-              <Typography.Text>Location: {camp.location}</Typography.Text>
+              <Typography.Text>Location: {camp.camp_area}</Typography.Text>
               <br />
-              <Typography.Text>Organizer: {camp.organizer}</Typography.Text>
+              <Typography.Text>Commander: {camp.camp_commander}</Typography.Text>
               <br />
-              <Typography.Text>
-                Organizer Contact: {camp.organizer_contact}
+              <Typography.Text style={{fontSize:"20px", fontWeight:"bold" ,color:"green"}}>
+                Grand Balance: {sum}
               </Typography.Text>
             </div>
             <div className="">

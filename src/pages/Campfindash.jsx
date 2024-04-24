@@ -6,8 +6,9 @@ import Finance_deb from '../components/Finance/Camp_Finance/Fin_camp_deb_tab';
 import Finance_add_cred from '../components/Finance/Camp_Finance/Fin_camp_add_cred';
 import Finance_add_deb from '../components/Finance/Camp_Finance/Fin_camp_add_deb';
 import { database } from "../../firebase";
-import { onSnapshot, collection, query, where } from "firebase/firestore";
+import { onSnapshot, collection, query, where,getDocs,updateDoc } from "firebase/firestore";
 import { useLocation } from 'react-router-dom';
+import { data } from 'autoprefixer';
 
 function Campfindash() {
     const { index } = useParams();
@@ -18,9 +19,118 @@ function Campfindash() {
     const [totalCredited, setTotalCredited] = useState({});
     const [totalDebited, setTotalDebited] = useState({});
     const [grandtotal, setGrandtotal] = useState({});
-    const [closingbalance, setClosingbalance] = useState(0);
-    const { camp_name } = location.state || {};
+    const [trackgrandtotal, setTrackGrandtotal] = useState({});
+    const [closingbalance, setClosingbalance] = useState({});
+    const [openingbalance , setOpeningbalance] = useState({});
+    const { camp_name } = location.state || {}; 
+    
+    const fetchopebal = async () => {
+        try {
+            const q = query(
+                collection(database, "camp_main"),
+                where("camp_name", "==", index)
+            );
+            const querySnapshot = await getDocs(q);
+            const val=[];
+            querySnapshot.forEach((doc) => {
+                val.push(doc.data()); 
+            });
+            // console.log("val",val[0].camp_bal)
+            let totalopb = { Cash: 0, Bank: 0, 'TA/DA Officers/Cadets': 0, 'Messing Officers': 0, 'Messing Cadets': 0, Incidentals: 0, 'Rank pay/Honorarium': 0, 'TA/DA Civilians': 0, POL: 0, 'Ship Modelling': 0 };
+            
+                totalopb.Cash += parseFloat(val[0].camp_bal.cash || 0);
+                totalopb.Bank += parseFloat(val[0].camp_bal.bank || 0);
+                totalopb['TA/DA Officers/Cadets'] += parseInt(val[0].camp_bal.ta_off);
+                totalopb['Messing Officers'] += parseInt(val[0].camp_bal.messing_off);
+                totalopb['Messing Cadets'] += parseInt(val[0].camp_bal.messing_cad);
+                totalopb.Incidentals += parseInt(val[0].camp_bal.incidentials);
+                totalopb['Rank pay/Honorarium'] += parseInt(val[0].camp_bal.rank_pay);
+                totalopb['TA/DA Civilians'] += parseInt(val[0].camp_bal.ta_da_civil);
+                totalopb.POL += parseInt(val[0].camp_bal.pol);
+                totalopb['Ship Modelling'] += parseInt(val[0].camp_bal.ship_modelling);
+                console.log("totalopb",totalopb);
+            setOpeningbalance(totalopb);
+            
+        } catch (error) {
+            console.error("Error fetching credits:", error);
+        }
+        
+    }
 
+    useEffect(() => {
+         fetchopebal();
+    }, []);
+    const handletheclose = async () => {
+        console.log("closing balance", grandtotal);
+        
+    
+        try {
+            const q = query(
+                collection(database, "camp_in_out"),
+                where("camp_name", "==", index),
+                where("camp_day", "==", camp_name.camp_day)
+            );
+    
+            const querySnapshot = await getDocs(q);
+            const docRef = querySnapshot.docs[0].ref;
+            // get data
+            const val=[];
+            querySnapshot.forEach((doc) => {
+                val.push(doc.data());
+            });
+            console.log("val----",val[0].opening_bal);
+            // for each value of opening_bal -  grand_total
+            let closingbal = { Cash: 0, Bank: 0, 'TA/DA Officers/Cadets': 0, 'Messing Officers': 0, 'Messing Cadets': 0, Incidentals: 0, 'Rank pay/Honorarium': 0, 'TA/DA Civilians': 0, POL: 0, 'Ship Modelling': 0 };
+            for (let key in val[0].opening_bal) {
+                closingbal[key] = val[0].opening_bal[key] - grandtotal[key];
+            }
+            console.log("closingbal",closingbal);
+            
+            await updateDoc(docRef, { closing_bal: closingbal });
+            console.log("Closing balance updated successfully!");
+        } catch (error) {
+            console.error("Error updating closing balance:", error);
+        }
+    };
+    
+    console.log("camp_name",camp_name.camp_day);
+    useEffect(() => {
+        const fetchinout = async () => {
+            console.log("helo");
+            try {
+                const q = query(
+                    collection(database, "camp_in_out"),
+                    where("camp_name", "==", index),
+                    where("camp_day", "==", camp_name.camp_day),
+                );
+    
+                const querySnapshot = await getDocs(q);
+                const docRef = querySnapshot.docs[0].ref;
+                console.log("querySnapshot", querySnapshot.docs[0].data());
+                // querySnapshot.forEach((doc) => {
+                //     // doc.data() is never undefined for query doc snapshots
+                //     console.log(doc.id, " => ", doc.data());
+                // });
+                if(querySnapshot.docs[0].data().opening_bal==0){
+                    await updateDoc(docRef, { opening_bal: openingbalance });
+                    
+                    console.log("Opening balance updated successfully!");
+                    
+                }
+                // if(closingbalance.length<0 && querySnapshot.docs[0].data().closing_bal==0){
+                //     await updateDoc(docRef, { closing_bal: grandtotal });
+                //     console.log("Closing balance updated successfully!");
+                // }
+            } catch (error) {
+                console.error("Error fetching credits:", error);
+                
+            }
+        };
+    
+        fetchinout();
+    
+    }, []); // Empty dependency array means the effect runs only once
+    
     const fetch_cred = async () => {
         try {
             setLoading(true);
@@ -86,7 +196,7 @@ function Campfindash() {
         };
         fetchData();
     }, []);
-    console.log("====grandtotal", grandtotal)
+    // console.log("====grandtotal", grandtotal)
     useEffect(() => {
         let totalcredited = { Cash: 0, Bank: 0, 'TA/DA Officers/Cadets': 0, 'Messing Officers': 0, 'Messing Cadets': 0, Incidentals: 0, 'Rank pay/Honorarium': 0, 'TA/DA Civilians': 0, POL: 0, 'Ship Modelling': 0 };
         let totaldebited = { Cash: 0, Bank: 0, 'TA/DA Officers/Cadets': 0, 'Messing Officers': 0, 'Messing Cadets': 0, Incidentals: 0, 'Rank pay/Honorarium': 0, 'TA/DA Civilians': 0, POL: 0, 'Ship Modelling': 0 };
@@ -125,6 +235,7 @@ function Campfindash() {
             grandt[key] = totalcredited[key] - totaldebited[key];
         }
         setGrandtotal(grandt);
+        
     }, [credit_data, debit_data]);
     // console.log('totalDebited',totalDebited);
     // console.log('totalCredited',totalCredited);
@@ -139,9 +250,9 @@ function Campfindash() {
     const renderFinanceComponent = () => {
         switch (activeComponent) {
             case 'Finance_cred':
-                return <Finance_cred camp_id={index} data={credit_data} total_cred={totalCredited} grandtotal={grandtotal}/>;
+                return <Finance_cred camp_id={index} camp_day={camp_name.camp_day} data={credit_data} total_cred={totalCredited} grandtotal={grandtotal} />;
             case 'Finance_deb':
-                return <Finance_deb camp_id={index} data={debit_data} total_deb={totalDebited}  grandtotal={grandtotal}/>;
+                return <Finance_deb camp_id={index} camp_day={camp_name.camp_day}  data={debit_data} total_deb={totalDebited}  grandtotal={grandtotal} />;
             case 'Finance_add_cred':
                 return <Finance_add_cred camp_id={index} camp_day={camp_name.camp_day} />;
             case 'Finance_add_deb':
@@ -160,6 +271,9 @@ function Campfindash() {
                     <button onClick={() => toggleComponent('Finance_deb')} style={styles.btn}>Debit</button>
                     <button onClick={() => toggleComponent('Finance_add_cred')} style={styles.btn}>Add Credit</button>
                     <button onClick={() => toggleComponent('Finance_add_deb')} style={styles.btn}>Add Debit</button>
+                
+                    <button onClick={handletheclose} style={styles.closebtn}>Close the Transactions</button>
+                
                 </div>
                 {renderFinanceComponent()}
             </div>
@@ -190,5 +304,18 @@ const styles = {
         width: "100%",
         justifyContent: "center",
         alignItems: "center"
+    },
+    closebtn: {
+        margin: "20px",
+        padding: "10px",
+        fontSize: "30px",
+        color: "white",
+        backgroundColor: "red",
+        borderRadius: "10px",
+        cursor: "pointer",
+        
+        position: "absolute",
+        right: "0"
+
     }
 };

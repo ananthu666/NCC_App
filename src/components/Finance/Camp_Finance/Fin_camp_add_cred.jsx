@@ -30,7 +30,53 @@ const CadetForm=({camp_id,camp_day})=>
 {
   console.log(camp_id);
   console.log('camp_day',camp_day);
-  
+  const addtomaincamp = async () => {
+    const formValues = form1.getFieldsValue();
+    const data = {camp_bal:{
+      vrno: formValues.vrno||1,
+      towhom: formValues.towhom||'ananthu',
+      onwhataccount: formValues.onwhataccount||'onwhataccount',
+      cash: formValues.cash||'0',
+      bank: formValues.bank||'0',
+      ta_off: formValues.ta_off||'1200',
+      messing_off: formValues.messing_off||'3000',
+      messing_cad: formValues.messing_cad||'208',
+      incidentials: formValues.incidentials||'430',
+      rank_pay: formValues.rank_pay||'190',
+      ta_da_civil: formValues.ta_da_civil||'540',
+      pol: formValues.pol||'783',
+      security_depo: formValues.security_depo||'security_depo',
+      suspense: formValues.suspense||'suspense',
+      initials_of_off: formValues.initials_of_off||'initials_of_off',
+      camp_id: camp_id,
+      ship_modelling: formValues.ship_modelling||'432',
+      mode_of_payment: formValues.mode_of_payment||'mode_of_payment',
+      day_count:camp_day,
+      date: new Date().toLocaleDateString(),
+      }
+    };
+    try {
+      // Assuming you have a Firestore reference named camp_main
+      const cadetsRef = collection(database, "camp_main");
+      // update the reference
+      const documentRef = doc(cadetsRef, camp_id);
+      await updateDoc(documentRef, data);
+      console.log("Data successfully sent to Firestore!");
+    } catch (error) {
+      console.error("Error sending data to Firestore:", error);
+    }
+    form1.resetFields();
+  };
+
+
+
+
+
+
+
+
+
+
   const [form1] = Form.useForm();
   // add to database ****************************************
     const addcampcredit = async () => {
@@ -77,9 +123,11 @@ const CadetForm=({camp_id,camp_day})=>
     
   return (
     <div className="flex">
+      
     <Card
       title="Camp Credit  Form"
       className="flex-1 overflow-x-hidden  my-4 mx-3 py-2 px-4"
+      
     >
       <Form
         
@@ -173,6 +221,11 @@ const CadetForm=({camp_id,camp_day})=>
           </Form.Item>
           </Col>
           <Col>
+          <Form.Item>
+            <Button style={styles.powerbtn } onClick={addtomaincamp} >
+             Initial Credits
+            </Button>
+          </Form.Item>
           <Form.Item
             name="rank_pay"
             label="Rank Pay"
@@ -242,3 +295,15 @@ const CadetForm=({camp_id,camp_day})=>
 };
 
 export default CadetForm;
+
+const styles={
+  powerbtn:{
+    backgroundColor: 'green',
+    color: 'white',
+    fontWeight: 'bold',
+    borderRadius: '10px',
+    marginBottom: '10px',
+    position :'fixed',
+    right: '70px',
+  }
+}

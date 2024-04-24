@@ -4,13 +4,43 @@ import { useState, useEffect } from "react";
 import { DeleteFilled } from "@ant-design/icons";
 import { Navigate, useNavigate } from "react-router-dom";
 import { database } from "../../../../firebase";
-import { doc, deleteDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { doc, deleteDoc,query,collection,where,getDocs, } from "firebase/firestore";
 import BalanceSheet from "../Unit_Finance/Balance_sheet";
-function Tablegrid({ data, loading, camp_id ,total_cred,grandtotal}) {
-  console.log("!!!!!!!!!!data", data);
-  console.log("!!!!!!!!!!index", camp_id);
-  console.log("!!!!!!!!!!total_cred", total_cred);
-  console.log("!!!!!!!!!!grandtotal", grandtotal);
+function Tablegrid({ data, loading, camp_id,camp_day ,total_cred,grandtotal,closebal}) {
+  // console.log("!!!!!!!!!!data", data);
+  // console.log("!!!!!!!!!!index", camp_id);
+  // console.log("!!!!!!!!!!total_cred", total_cred);
+  // console.log("!!!!!!!!!!grandtotal", grandtotal);
+  
+
+  const fetch_close = async () => {
+    try {
+        const q = query(
+            collection(database, "camp_in_out"),
+            where("camp_name", "==",camp_id),
+            where("camp_day", "==",camp_day)
+        );
+
+        const querySnapshot = await getDocs(q);
+        const docRef = querySnapshot.docs[0].ref;
+        // get data
+        const val=[];
+        querySnapshot.forEach((doc) => {
+            val.push(doc.data());
+        });
+        console.log("val----",val[0].close_bal);
+      }
+      catch (e) {
+        console.error("Error adding document: ", e);
+      }
+    };
+  //
+  useEffect(() => {
+    // fetch_close();
+  }, []);
+  //
+
+  console.log("!!!!!!!!!!closebal", closebal);
   const [searchText, setSearchText] = useState("");
   const handleDelete = async (id) => {
     try {
@@ -199,7 +229,7 @@ function Tablegrid({ data, loading, camp_id ,total_cred,grandtotal}) {
     },
   ];
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <div className="flex flex-col z-0">
@@ -238,7 +268,7 @@ function Tablegrid({ data, loading, camp_id ,total_cred,grandtotal}) {
         showSizeChanger="false"
       />
       <div className="">
-        <BalanceSheet retrievedData={total_cred} grandtotal={grandtotal}/>
+        <BalanceSheet retrievedData={total_cred} grandtotal={grandtotal} />
       </div>
     </div>
   );

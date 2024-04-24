@@ -106,10 +106,16 @@
 
 // export default BalanceSheet;
 import React from "react";
+import { database } from "../../../../firebase";
+import { doc, deleteDoc, collection, getDocs,where } from "firebase/firestore";
+import { useEffect,useState } from "react";
+
 
 const BalanceSheet = ({ retrievedData,grandtotal }) => {
-  console.log("retrieved data", retrievedData);
-  console.log("grandtotal", grandtotal);
+  // console.log("retrieved data", retrievedData);
+  // console.log("grandtotal", grandtotal);
+  const [closebal,setClosebal]=useState([]);
+
 
   const columns = [
     "Balance",
@@ -124,7 +130,34 @@ const BalanceSheet = ({ retrievedData,grandtotal }) => {
     "POL",
     "Ship Modelling",
   ];
+  const fetchclose=async()=>
+  {
+    
+    try{
+      const querySnapshot = await getDocs(
+        collection(database, "camp_in_out"),
+        where("camp_day", "==", "Day_3")
+      );
+      
 
+      let closedata=[];
+      querySnapshot.forEach((doc) => {
+        closedata.push(doc.data());
+      });
+      console.log("]]]]]",closedata);
+      
+    }
+    catch(error)
+    {
+      console.log("error",error);
+    }
+  }
+useEffect(() =>
+{
+  fetchclose();
+}
+,[]);
+console.log("close",closebal);
   // Construct the list
   const data = [
     {
@@ -137,7 +170,7 @@ const BalanceSheet = ({ retrievedData,grandtotal }) => {
     },
     {
       Balance: "Col Total", // You can adjust this label as needed
-      // ...todaySums
+      // ...closebal,
     }
     // Add more objects to the list if needed
   ];

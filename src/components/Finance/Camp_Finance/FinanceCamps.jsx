@@ -44,8 +44,8 @@ function TextExample() {
   const navigate = useNavigate();
 
   const HandleCardClick = (index) => {
-    console.log(`Card clicked with name: ${index}`);
-    navigate(`/campfin/${index}`, { state: index  });
+    console.log(`Card clicked with name: ${index.camp_name}`);
+    navigate(`/campfin/${index.camp_name}`, { state: index  });
   };
   useEffect(() => {
     getCamps();
