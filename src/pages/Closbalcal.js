@@ -48,7 +48,7 @@ const inoutCopy = [...inout];
 
        // Subtract the closing balance of the current day from the opening balance
        Object.keys(openingBalance).forEach(key => {
-           openingBalance[key] -= closingBalance[key];
+        openingBalance[key]=parseInt(openingBalance[key]) + parseInt(closingBalance[key]?closingBalance[key]:0);
        });
        
        // Save the opening and closing balances for the current day
@@ -63,7 +63,8 @@ const inoutCopy = [...inout];
        balancesList[day.camp_day] = balances;
    });
    console.log('balancesList',balancesList["Day_1"]);
-   return balancesList;
+   const returndata=[balancesList,openingBalance];
+   return returndata;
 };
 
 export default Processdata;

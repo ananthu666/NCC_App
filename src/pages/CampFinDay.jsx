@@ -21,11 +21,28 @@ const [day, setday] = useState("");
 const location = useLocation();
 const camp = location.state;
 const [Balance, setBalance] = useState({});
+console.log("camp",camp.camp_date);
 
 
-let  sum=0;
-if(camp.camp_bal!={})
-    sum=parseInt(camp.camp_bal.ta_off)+parseInt(camp.camp_bal.ta_da_civil)+parseInt(camp.camp_bal.messing_off)+parseInt(camp.camp_bal.messing_cad)+parseInt(camp.camp_bal.incidentials)+parseInt(camp.camp_bal.rank_pay)+parseInt(camp.camp_bal.pol)+parseInt(camp.camp_bal.ship_modelling);
+let sum = 0;
+const propertiesToSum = [
+    'Incidentals',
+    'Messing Cadets',
+    'Messing Officers',
+    'POL',
+    'Rank pay/Honorarium',
+    'Ship Modelling',
+    'TA/DA Civilians',
+    'TA/DA Officers/Cadets'
+];
+console.log("newdata",newdata);
+propertiesToSum.forEach(property => {
+    // Check if the property exists in newdata and is a valid number
+    if (newdata.hasOwnProperty(property) && !isNaN(parseInt(newdata[property]))) {
+        sum += parseInt(newdata[property]);
+    }
+});
+console.log(sum);
 const fetalldays=async()=>
 {
   try {
@@ -61,7 +78,11 @@ useEffect(() => {
 }, []);
 useEffect(() => {
   // Processdata(inout,camp.camp_bal)
-  setBalance(Processdata(inout,camp.camp_bal));
+  // setBalance(Processdata(inout,camp.camp_bal));
+  const retrundata=Processdata(inout,camp.camp_bal);
+  setBalance(retrundata[0]);
+  setnewdata(retrundata[1]);
+  console.log("///////",newdata.Incidentals);
 }, [inout]);
 
 
@@ -189,7 +210,7 @@ const writeprevdata = async (index) => {
                 const balance = totalIncome - totalExpense;
                 dataList.push({
                   camp_day: item,
-                  date: credItems[0].date,
+                  // date: credItems[0].date,
                   total_expense: totalExpense,
                   total_income: totalIncome,
                   balance: balance

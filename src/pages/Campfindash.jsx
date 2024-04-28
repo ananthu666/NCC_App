@@ -8,7 +8,8 @@ import Finance_add_deb from '../components/Finance/Camp_Finance/Fin_camp_add_deb
 import { database } from "../../firebase";
 import { onSnapshot, collection, query, where,getDocs,updateDoc } from "firebase/firestore";
 import { useLocation } from 'react-router-dom';
-import { data } from 'autoprefixer';
+// import { data } from 'autoprefixer';
+import { message}  from 'antd';
 
 function Campfindash() {
     const { index } = useParams();
@@ -83,6 +84,7 @@ function Campfindash() {
             
             await updateDoc(docRef, { closing_bal: grandtotal });
             console.log("Closing balance updated successfully!");
+            message.success("Balance updated successfully!");
         } catch (error) {
             console.error("Error updating closing balance:", error);
         }
