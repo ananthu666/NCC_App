@@ -43,8 +43,8 @@ const CadetForm=({camp_id,camp_day,})=>
           vrno: formValues.vrno||1,
           towhom: formValues.towhom||'ananthu',
           onwhataccount: formValues.onwhataccount||'BankAccount',
-          cash: formValues.cash||'0',
-          bank: formValues.bank||'0',
+          // cash: formValues.cash||'0',
+          // bank: formValues.bank||'0',
           ta_off: formValues.ta_off||'0',
           messing_off: formValues.messing_off||'0',
           messing_cad: formValues.messing_cad||'0',
@@ -120,7 +120,7 @@ const CadetForm=({camp_id,camp_day,})=>
             <Input />
           </Form.Item>
 
-          <Form.Item
+          {/* <Form.Item
             name="cash"
             label="Cash"
             rules={[{ required: false}]}
@@ -134,7 +134,7 @@ const CadetForm=({camp_id,camp_day,})=>
             rules={[{ required: false}]}
           >
             <Input />
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item
             name="ta_off"
             label="TA/DA Officers/Cadets"
@@ -158,7 +158,7 @@ const CadetForm=({camp_id,camp_day,})=>
           </Form.Item>
           <Form.Item
             name="incidentials"
-            label="Incidentials"
+            label="Incidentals"
             rules={[{ required: false}]}
           >
             <Input />

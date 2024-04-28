@@ -3,12 +3,12 @@ import { collection, getDocs, where } from "firebase/firestore";
 import { database } from "../../../../firebase";
 
 const BalanceSheet = ({ retrievedData, grandtotal, bal }) => {
-  const [closebal, setClosebal] = useState([]);
+  // const [closebal, setClosebal] = useState([]);
   
   const columns = [
     "Balance",
-    "Cash",
-    "Bank",
+    // "Cash",
+    // "Bank",
     "TA/DA Officers/Cadets",
     "Messing Officers",
     "Messing Cadets",
@@ -19,27 +19,27 @@ const BalanceSheet = ({ retrievedData, grandtotal, bal }) => {
     "Ship Modelling",
   ];
 
-  useEffect(() => {
-    const fetchClose = async () => {
-      try {
-        const querySnapshot = await getDocs(
-          collection(database, "camp_in_out"),
-          where("camp_day", "==", "Day_3")
-        );
+  // useEffect(() => {
+  //   const fetchClose = async () => {
+  //     try {
+  //       const querySnapshot = await getDocs(
+  //         collection(database, "camp_in_out"),
+  //         where("camp_day", "==", "Day_3")
+  //       );
 
-        let closedata = [];
-        querySnapshot.forEach((doc) => {
-          closedata.push(doc.data());
-        });
+  //       let closedata = [];
+  //       querySnapshot.forEach((doc) => {
+  //         closedata.push(doc.data());
+  //       });
         
-        setClosebal(closedata);
-      } catch (error) {
-        console.log("Error fetching closing data:", error);
-      }
-    };
+  //       setClosebal(closedata);
+  //     } catch (error) {
+  //       console.log("Error fetching closing data:", error);
+  //     }
+  //   };
 
-    fetchClose();
-  }, []);
+  //   fetchClose();
+  // }, []);
 
   // Construct the list
   const data = [

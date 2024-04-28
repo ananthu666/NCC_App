@@ -1,7 +1,7 @@
 const Processdata = (inout, bal) => {
    const keyMap = {
-      'bank': 'Bank',
-      'cash': 'Cash',
+    //   'bank': 'Bank',
+    //   'cash': 'Cash',
       'ta_da_civil': 'TA/DA Civilians',
       'messing_off': 'Messing Officers',
       'messing_cad': 'Messing Cadets',

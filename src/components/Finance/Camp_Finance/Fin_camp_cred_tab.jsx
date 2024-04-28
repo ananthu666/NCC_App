@@ -7,38 +7,38 @@ import { database } from "../../../../firebase";
 import { doc, deleteDoc,query,collection,where,getDocs, } from "firebase/firestore";
 import BalanceSheet from "../Unit_Finance/Balance_sheet";
 function Tablegrid({ data, loading, camp_id,camp_day ,total_cred,grandtotal,balancesheet}) {
-  // console.log("!!!!!!!!!!data", data);
+  console.log("!!!!!!!!!!data", data);
   // console.log("!!!!!!!!!!index", camp_id);
   // console.log("!!!!!!!!!!total_cred", total_cred);
   // console.log("!!!!!!!!!!grandtotal", grandtotal);
   // console.log("!!!!!!!!!!balsheet", balancesheet);
   
 
-  const fetch_close = async () => {
-    try {
-        const q = query(
-            collection(database, "camp_in_out"),
-            where("camp_name", "==",camp_id),
-            where("camp_day", "==",camp_day)
-        );
+  // const fetch_close = async () => {
+  //   try {
+  //       const q = query(
+  //           collection(database, "camp_in_out"),
+  //           where("camp_name", "==",camp_id),
+  //           where("camp_day", "==",camp_day)
+  //       );
 
-        const querySnapshot = await getDocs(q);
-        const docRef = querySnapshot.docs[0].ref;
-        // get data
-        const val=[];
-        querySnapshot.forEach((doc) => {
-            val.push(doc.data());
-        });
-        console.log("val----",val[0].close_bal);
-      }
-      catch (e) {
-        console.error("Error adding document: ", e);
-      }
-    };
-  //
-  useEffect(() => {
-    // fetch_close();
-  }, []);
+  //       const querySnapshot = await getDocs(q);
+  //       const docRef = querySnapshot.docs[0].ref;
+  //       // get data
+  //       const val=[];
+  //       querySnapshot.forEach((doc) => {
+  //           val.push(doc.data());
+  //       });
+  //       console.log("val----",val[0].close_bal);
+  //     }
+  //     catch (e) {
+  //       console.error("Error adding document: ", e);
+  //     }
+  //   };
+  // //
+  // useEffect(() => {
+  //   // fetch_close();
+  // }, []);
   //
 
   
@@ -92,19 +92,25 @@ function Tablegrid({ data, loading, camp_id,camp_day ,total_cred,grandtotal,bala
       key: "on_what_account",
       width: 200,
     },
+    {
+      title: "Incidentals",
+      dataIndex: "incidentials",
+      key: "incidentals",
+      width: 200,
+    },
 
-    {
-      title: "Cash",
-      dataIndex: "cash",
-      key: "cash",
-      width: 160,
-    },
-    {
-      title: "Bank",
-      dataIndex: "bank",
-      key: "bank",
-      width: 160,
-    },
+    // {
+    //   title: "Cash",
+    //   dataIndex: "cash",
+    //   key: "cash",
+    //   width: 160,
+    // },
+    // {
+    //   title: "Bank",
+    //   dataIndex: "bank",
+    //   key: "bank",
+    //   width: 160,
+    // },
     {
       title: "TA/DA Officers/Cadets",
       dataIndex: "ta_off",

@@ -40,10 +40,10 @@ function Campfindash() {
                 val.push(doc.data()); 
             });
             
-            let totalopb = { Cash: 0, Bank: 0, 'TA/DA Officers/Cadets': 0, 'Messing Officers': 0, 'Messing Cadets': 0, Incidentals: 0, 'Rank pay/Honorarium': 0, 'TA/DA Civilians': 0, POL: 0, 'Ship Modelling': 0 };
+            let totalopb = {  'TA/DA Officers/Cadets': 0, 'Messing Officers': 0, 'Messing Cadets': 0, Incidentals: 0, 'Rank pay/Honorarium': 0, 'TA/DA Civilians': 0, POL: 0, 'Ship Modelling': 0 };
             
-                totalopb.Cash += parseFloat(val[0].camp_bal.cash || 0);
-                totalopb.Bank += parseFloat(val[0].camp_bal.bank || 0);
+                // totalopb.Cash += parseFloat(val[0].camp_bal.cash || 0);
+                // totalopb.Bank += parseFloat(val[0].camp_bal.bank || 0);
                 totalopb['TA/DA Officers/Cadets'] += parseInt(val[0].camp_bal.ta_off);
                 totalopb['Messing Officers'] += parseInt(val[0].camp_bal.messing_off);
                 totalopb['Messing Cadets'] += parseInt(val[0].camp_bal.messing_cad);
@@ -187,12 +187,12 @@ function Campfindash() {
     }, []);
     
     useEffect(() => {
-        let totalcredited = { Cash: 0, Bank: 0, 'TA/DA Officers/Cadets': 0, 'Messing Officers': 0, 'Messing Cadets': 0, Incidentals: 0, 'Rank pay/Honorarium': 0, 'TA/DA Civilians': 0, POL: 0, 'Ship Modelling': 0 };
-        let totaldebited = { Cash: 0, Bank: 0, 'TA/DA Officers/Cadets': 0, 'Messing Officers': 0, 'Messing Cadets': 0, Incidentals: 0, 'Rank pay/Honorarium': 0, 'TA/DA Civilians': 0, POL: 0, 'Ship Modelling': 0 };
+        let totalcredited = {  'TA/DA Officers/Cadets': 0, 'Messing Officers': 0, 'Messing Cadets': 0, Incidentals: 0, 'Rank pay/Honorarium': 0, 'TA/DA Civilians': 0, POL: 0, 'Ship Modelling': 0 };
+        let totaldebited = { 'TA/DA Officers/Cadets': 0, 'Messing Officers': 0, 'Messing Cadets': 0, Incidentals: 0, 'Rank pay/Honorarium': 0, 'TA/DA Civilians': 0, POL: 0, 'Ship Modelling': 0 };
 
         credit_data.forEach(item => {
-            totalcredited.Cash += parseFloat(item.cash || 0);
-            totalcredited.Bank += parseFloat(item.bank || 0);
+            // totalcredited.Cash += parseFloat(item.cash || 0);
+            // totalcredited.Bank += parseFloat(item.bank || 0);
             totalcredited['TA/DA Officers/Cadets'] += parseInt(item.ta_off) + parseInt(item.ta_da_civil);
             totalcredited['Messing Officers'] += parseInt(item.messing_off);
             totalcredited['Messing Cadets'] += parseInt(item.messing_cad);
@@ -205,8 +205,8 @@ function Campfindash() {
         setTotalCredited(totalcredited);
 
         debit_data.forEach(item => {
-            totaldebited.Cash += parseFloat(item.cash || 0);
-            totaldebited.Bank += parseFloat(item.bank || 0);
+            // totaldebited.Cash += parseFloat(item.cash || 0);
+            // totaldebited.Bank += parseFloat(item.bank || 0);
             totaldebited['TA/DA Officers/Cadets'] += parseInt(item.ta_off) + parseInt(item.ta_da_civil);
             totaldebited['Messing Officers'] += parseInt(item.messing_off);
             totaldebited['Messing Cadets'] += parseInt(item.messing_cad);
@@ -219,7 +219,7 @@ function Campfindash() {
         setTotalDebited(totaldebited);
         // calculate grand total for credit and debit as same array 
         // for each value of total credit subtract total debit
-        let grandt = { Cash: 0, Bank: 0, 'TA/DA Officers/Cadets': 0, 'Messing Officers': 0, 'Messing Cadets': 0, Incidentals: 0, 'Rank pay/Honorarium': 0, 'TA/DA Civilians': 0, POL: 0, 'Ship Modelling': 0 };
+        let grandt = {  'TA/DA Officers/Cadets': 0, 'Messing Officers': 0, 'Messing Cadets': 0, Incidentals: 0, 'Rank pay/Honorarium': 0, 'TA/DA Civilians': 0, POL: 0, 'Ship Modelling': 0 };
         for (let key in totalcredited) {
             grandt[key] = totalcredited[key] - totaldebited[key];
         }

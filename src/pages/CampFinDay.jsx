@@ -25,7 +25,7 @@ const [Balance, setBalance] = useState({});
 
 let  sum=0;
 if(camp.camp_bal!={})
-    sum=parseInt(camp.camp_bal.cash)+parseInt(camp.camp_bal.bank)+parseInt(camp.camp_bal.ta_off)+parseInt(camp.camp_bal.ta_da_civil)+parseInt(camp.camp_bal.messing_off)+parseInt(camp.camp_bal.messing_cad)+parseInt(camp.camp_bal.incidentials)+parseInt(camp.camp_bal.rank_pay)+parseInt(camp.camp_bal.pol)+parseInt(camp.camp_bal.ship_modelling);
+    sum=parseInt(camp.camp_bal.ta_off)+parseInt(camp.camp_bal.ta_da_civil)+parseInt(camp.camp_bal.messing_off)+parseInt(camp.camp_bal.messing_cad)+parseInt(camp.camp_bal.incidentials)+parseInt(camp.camp_bal.rank_pay)+parseInt(camp.camp_bal.pol)+parseInt(camp.camp_bal.ship_modelling);
 const fetalldays=async()=>
 {
   try {
@@ -178,12 +178,12 @@ const writeprevdata = async (index) => {
                 // console.log("credItem",credItems);
                 credItems.forEach(credItem =>
                   {
-                     totalIncome += parseFloat(credItem.cash || credItem.bank) + parseInt(credItem.ta_off) + parseInt(credItem.ta_da_civil) + parseInt(credItem.messing_off) + parseInt(credItem.messing_cad) + parseInt(credItem.incidentials) + parseInt(credItem.rank_pay) + parseInt(credItem.pol) + parseInt(credItem.ship_modelling);
+                     totalIncome += parseInt(credItem.ta_off) + parseInt(credItem.ta_da_civil) + parseInt(credItem.messing_off) + parseInt(credItem.messing_cad) + parseInt(credItem.incidentials) + parseInt(credItem.rank_pay) + parseInt(credItem.pol) + parseInt(credItem.ship_modelling);
                   }
                 );
                 debitItems.forEach(debitItem =>
                   {
-                      totalExpense += parseFloat(debitItem.cash || debitItem.bank) + parseInt(debitItem.ta_off) + parseInt(debitItem.ta_da_civil) + parseInt(debitItem.messing_off) + parseInt(debitItem.messing_cad) + parseInt(debitItem.incidentials) + parseInt(debitItem.rank_pay) + parseInt(debitItem.pol) + parseInt(debitItem.ship_modelling);
+                      totalExpense += parseInt(debitItem.ta_off) + parseInt(debitItem.ta_da_civil) + parseInt(debitItem.messing_off) + parseInt(debitItem.messing_cad) + parseInt(debitItem.incidentials) + parseInt(debitItem.rank_pay) + parseInt(debitItem.pol) + parseInt(debitItem.ship_modelling);
                   }
                 );
                 const balance = totalIncome - totalExpense;

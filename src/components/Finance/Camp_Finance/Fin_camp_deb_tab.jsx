@@ -61,19 +61,24 @@ function Tablegrid({ data, loading,campid, total_deb,grandtotal,balancesheet}) {
       width: 200,
       
     },
-    
     {
-      title: "Cash",
-      dataIndex: "cash",
-      key: "cash",
-      width: 160,
+      title: "Incidentals",
+      dataIndex: "incidentials",
+      key: "incidentals",
+      width: 200,
     },
-    {
-      title: "Bank",
-      dataIndex: "bank",
-      key: "bank",
-      width: 160,
-    },
+    // {
+    //   title: "Cash",
+    //   dataIndex: "cash",
+    //   key: "cash",
+    //   width: 160,
+    // },
+    // {
+    //   title: "Bank",
+    //   dataIndex: "bank",
+    //   key: "bank",
+    //   width: 160,
+    // },
     {
       title: "TA/DA Officers/Cadets",
       dataIndex: "ta_off",
