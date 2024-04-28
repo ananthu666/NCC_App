@@ -295,15 +295,20 @@ const styles = {
     },
     closebtn: {
         margin: "20px",
-        padding: "10px",
-        fontSize: "30px",
+        // padding: "10px",
+        fontSize: "13px",
+        fontWeight: "bold",
         color: "white",
         backgroundColor: "red",
-        borderRadius: "10px",
+        borderRadius: "14px",
         cursor: "pointer",
-        
+        width:"10%",
         position: "absolute",
-        right: "0"
+        right: "200px",
+        top:"-10px",
+        height:"5%",
+        textAlign:"center",
+        justifyContent:"center"
 
     }
 };

@@ -211,6 +211,13 @@ const CadetForm=({camp_id,camp_day})=>
           >
             <Input />
           </Form.Item>
+          <Form.Item
+            name="rank_pay"
+            label="Rank Pay"
+            rules={[{ required: false}]}
+          >
+            <Input />
+          </Form.Item>
           {/* ************************************** */}
           <Form.Item>
             <Button htmlType="submit" >
@@ -223,13 +230,6 @@ const CadetForm=({camp_id,camp_day})=>
             <Button style={styles.powerbtn } onClick={addtomaincamp} >
              Initial Credits
             </Button>
-          </Form.Item>
-          <Form.Item
-            name="rank_pay"
-            label="Rank Pay"
-            rules={[{ required: false}]}
-          >
-            <Input />
           </Form.Item>
           <Form.Item
             name="ta_da_civil"
@@ -303,5 +303,6 @@ const styles={
     marginBottom: '10px',
     position :'fixed',
     right: '70px',
+    top: '10px',
   }
 }
