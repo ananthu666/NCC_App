@@ -28,29 +28,27 @@ const { Option } = Select;
 
 const CadetForm=({camp_id,camp_day})=>
 {
-  console.log(camp_id);
-  console.log('camp_day',camp_day);
   const addtomaincamp = async () => {
     const formValues = form1.getFieldsValue();
     const data = {camp_bal:{
       vrno: formValues.vrno||1,
       towhom: formValues.towhom||'ananthu',
-      onwhataccount: formValues.onwhataccount||'onwhataccount',
+      onwhataccount: formValues.onwhataccount||'Bank',
       cash: formValues.cash||'0',
       bank: formValues.bank||'0',
-      ta_off: formValues.ta_off||'1200',
-      messing_off: formValues.messing_off||'3000',
-      messing_cad: formValues.messing_cad||'208',
-      incidentials: formValues.incidentials||'430',
-      rank_pay: formValues.rank_pay||'190',
-      ta_da_civil: formValues.ta_da_civil||'540',
-      pol: formValues.pol||'783',
-      security_depo: formValues.security_depo||'security_depo',
-      suspense: formValues.suspense||'suspense',
-      initials_of_off: formValues.initials_of_off||'initials_of_off',
+      ta_off: formValues.ta_off||'0',
+      messing_off: formValues.messing_off||'0',
+      messing_cad: formValues.messing_cad||'0',
+      incidentials: formValues.incidentials||'0',
+      rank_pay: formValues.rank_pay||'0',
+      ta_da_civil: formValues.ta_da_civil||'0',
+      pol: formValues.pol||'0',
+      security_depo: formValues.security_depo||'0',
+      suspense: formValues.suspense||'0',
+      initials_of_off: formValues.initials_of_off||'0',
       camp_id: camp_id,
-      ship_modelling: formValues.ship_modelling||'432',
-      mode_of_payment: formValues.mode_of_payment||'mode_of_payment',
+      ship_modelling: formValues.ship_modelling||'0',
+      mode_of_payment: formValues.mode_of_payment||'Bank',
       day_count:camp_day,
       date: new Date().toLocaleDateString(),
       }
@@ -81,7 +79,7 @@ const CadetForm=({camp_id,camp_day})=>
   // add to database ****************************************
     const addcampcredit = async () => {
       const formValues = form1.getFieldsValue();
-      console.log(formValues);
+      
       try {
         // Assuming you have a Firestore reference named citiesRef
         const cadetsRef = collection(database, "camp_credit");
@@ -90,22 +88,22 @@ const CadetForm=({camp_id,camp_day})=>
         const data = {
           vrno: formValues.vrno||1,
           towhom: formValues.towhom||'ananthu',
-          onwhataccount: formValues.onwhataccount||'onwhataccount',
+          onwhataccount: formValues.onwhataccount||'Bank Account',
           cash: formValues.cash||'0',
           bank: formValues.bank||'0',
-          ta_off: formValues.ta_off||'1200',
-          messing_off: formValues.messing_off||'3000',
-          messing_cad: formValues.messing_cad||'208',
-          incidentials: formValues.incidentials||'430',
-          rank_pay: formValues.rank_pay||'190',
-          ta_da_civil: formValues.ta_da_civil||'540',
-          pol: formValues.pol||'783',
-          security_depo: formValues.security_depo||'security_depo',
-          suspense: formValues.suspense||'suspense',
-          initials_of_off: formValues.initials_of_off||'initials_of_off',
+          ta_off: formValues.ta_off||'0',
+          messing_off: formValues.messing_off||'0',
+          messing_cad: formValues.messing_cad||'0',
+          incidentials: formValues.incidentials||'0',
+          rank_pay: formValues.rank_pay||'0',
+          ta_da_civil: formValues.ta_da_civil||'0',
+          pol: formValues.pol||'0',
+          security_depo: formValues.security_depo||'0',
+          suspense: formValues.suspense||'0',
+          initials_of_off: formValues.initials_of_off||'0',
           camp_id: camp_id,
-          ship_modelling: formValues.ship_modelling||'432',
-          mode_of_payment: formValues.mode_of_payment||'mode_of_payment',
+          ship_modelling: formValues.ship_modelling||'0',
+          mode_of_payment: formValues.mode_of_payment||'Bank',
           day_count:camp_day,
           date: new Date().toLocaleDateString(),
           

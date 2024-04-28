@@ -6,11 +6,12 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { database } from "../../../../firebase";
 import { doc, deleteDoc,query,collection,where,getDocs, } from "firebase/firestore";
 import BalanceSheet from "../Unit_Finance/Balance_sheet";
-function Tablegrid({ data, loading, camp_id,camp_day ,total_cred,grandtotal,closebal}) {
+function Tablegrid({ data, loading, camp_id,camp_day ,total_cred,grandtotal,balancesheet}) {
   // console.log("!!!!!!!!!!data", data);
   // console.log("!!!!!!!!!!index", camp_id);
   // console.log("!!!!!!!!!!total_cred", total_cred);
   // console.log("!!!!!!!!!!grandtotal", grandtotal);
+  // console.log("!!!!!!!!!!balsheet", balancesheet);
   
 
   const fetch_close = async () => {
@@ -40,7 +41,7 @@ function Tablegrid({ data, loading, camp_id,camp_day ,total_cred,grandtotal,clos
   }, []);
   //
 
-  console.log("!!!!!!!!!!closebal", closebal);
+  
   const [searchText, setSearchText] = useState("");
   const handleDelete = async (id) => {
     try {
@@ -268,7 +269,7 @@ function Tablegrid({ data, loading, camp_id,camp_day ,total_cred,grandtotal,clos
         showSizeChanger="false"
       />
       <div className="">
-        <BalanceSheet retrievedData={total_cred} grandtotal={grandtotal} />
+        <BalanceSheet retrievedData={total_cred} grandtotal={grandtotal} bal={balancesheet} />
       </div>
     </div>
   );

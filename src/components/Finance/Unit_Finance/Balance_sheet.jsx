@@ -1,122 +1,10 @@
-// import React from "react";
-// import { useLocation } from 'react-router-dom';
-// const BalanceSheet = ({ retrievedData }) => {
-//   // const location = useLocation();
-//   // const { camp_name, credit_data,debit_data } = location.state || {};
-//   // console.log("camp name *",camp_name);
-//   // console.log("credit data*",credit_data);
-//   // console.log("debit data*",debit_data);
-//   console.log("retrieved data",retrievedData);
-
-//   const columns = [
-
-//     "Balance",
-//     "Cash",
-//     "Bank",
-//     "TA/DA Officers/Cadets",
-//     "Messing Officers",
-//     "Messing Cadets",
-//     "Incidentals",
-//     "Rank pay/Honorarium",
-    
-//     "TA/DA Civilians",
-//     "POL",
-//     "Ship Modelling",
-//   ];
-
-//   // Function to filter data until yesterday
-//   // const getDataUntilYesterday = (data) => {
-//   //   const today = new Date();
-//   //   today.setHours(0, 0, 0, 0); // Set to the beginning of today
-//   //   return data.filter(item => new Date(item.date) < today);
-//   // }
-
-//   // // Function to filter today's data
-//   // const getTodayData = (data) => {
-//   //   const today = new Date();
-//   //   today.setHours(0, 0, 0, 0); // Set to the beginning of today
-//   //   return data.filter(item => new Date(item.date) >= today);
-//   // }
-
-//   // // Define the columns you want to sum
-//   // const columnsToSum = ["cash", "bank","ta_off", "ta_da_civil", "messing_off", "messing_cad", "incidentials", "rank_pay" ,"pol", "ship_modelling"];
-
-//   // Calculate the sum of each column for data until yesterday
-//   // const yesterdayData = getDataUntilYesterday(retrievedData);
-//   // const yesterdaySums = {};
-//   // columnsToSum.forEach(column => {
-//   //   yesterdaySums[column] = yesterdayData.reduce((accumulator, item) => accumulator + (parseInt(item[column]) || 0), 0);
-//   // });
-
-//   // // Calculate the sum of each column for today's data
-//   // const todayData = getTodayData(retrievedData);
-//   // const todaySums = {};
-//   // columnsToSum.forEach(column => {
-//   //   todaySums[column] = todayData.reduce((accumulator, item) => accumulator + (parseInt(item[column]) || 0), 0);
-//   // });
-
-//   // Construct the list
-//   const data = [
-//     {
-//       Balance: "Total",
-//       // retrievedData: retrievedData values in retrievedData should come here
-//     },
-//     {
-//       Balance: "Grand Total", // You can adjust this label as needed
-//       // ...yesterdaySums
-//     },
-//     {
-//       Balance: "Col Total", // You can adjust this label as needed
-//       // ...todaySums
-//     }
-//     // Add more objects to the list if needed
-//   ];
-
-//   // console.log(data);
-  
-//   return (
-//     <div className="flex gap-3 bg-white h-full w-full m-3 rounded-lg p-2 ">
-//       <div className="container mx-auto">
-//         <table className="min-w-full rounded-lg overflow-hidden">
-//           <thead>
-//             <tr>
-//               {columns.map((column, index) => (
-//                 <th key={index} className="px-4 py-2 text-sm">
-//                   {column}
-//                 </th>
-//               ))}
-//             </tr>
-//           </thead>
-//           <tbody>
-//             {data.map((row, index) => (
-//               <tr key={index} className="">
-//                 {Object.values(row).map((value, index) => (
-//                   <td key={index} className="border  px-4 py-2">
-//                     {value}
-//                   </td>
-//                 ))}
-//               </tr>
-//             ))}
-//           </tbody>
-//         </table>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default BalanceSheet;
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { collection, getDocs, where } from "firebase/firestore";
 import { database } from "../../../../firebase";
-import { doc, deleteDoc, collection, getDocs,where } from "firebase/firestore";
-import { useEffect,useState } from "react";
 
-
-const BalanceSheet = ({ retrievedData,grandtotal }) => {
-  // console.log("retrieved data", retrievedData);
-  // console.log("grandtotal", grandtotal);
-  const [closebal,setClosebal]=useState([]);
-
-
+const BalanceSheet = ({ retrievedData, grandtotal, bal }) => {
+  const [closebal, setClosebal] = useState([]);
+  
   const columns = [
     "Balance",
     "Cash",
@@ -130,53 +18,52 @@ const BalanceSheet = ({ retrievedData,grandtotal }) => {
     "POL",
     "Ship Modelling",
   ];
-  const fetchclose=async()=>
-  {
-    
-    try{
-      const querySnapshot = await getDocs(
-        collection(database, "camp_in_out"),
-        where("camp_day", "==", "Day_3")
-      );
-      
 
-      let closedata=[];
-      querySnapshot.forEach((doc) => {
-        closedata.push(doc.data());
-      });
-      console.log("]]]]]",closedata);
-      
-    }
-    catch(error)
-    {
-      console.log("error",error);
-    }
-  }
-useEffect(() =>
-{
-  fetchclose();
-}
-,[]);
-console.log("close",closebal);
+  useEffect(() => {
+    const fetchClose = async () => {
+      try {
+        const querySnapshot = await getDocs(
+          collection(database, "camp_in_out"),
+          where("camp_day", "==", "Day_3")
+        );
+
+        let closedata = [];
+        querySnapshot.forEach((doc) => {
+          closedata.push(doc.data());
+        });
+        
+        setClosebal(closedata);
+      } catch (error) {
+        console.log("Error fetching closing data:", error);
+      }
+    };
+
+    fetchClose();
+  }, []);
+
   // Construct the list
   const data = [
+    {
+      Balance: "Opening Balance",
+      ...bal["opening_balance"],
+    },
     {
       Balance: "Total",
       ...retrievedData,
     },
     {
-      Balance: "Grand Total", // You can adjust this label as needed
-       ...grandtotal,
+      Balance: "Grand Total",
+      ...grandtotal,
     },
     {
-      Balance: "Col Total", // You can adjust this label as needed
-      // ...closebal,
-    }
+      Balance: "Closing Balance",
+      ...bal["closing_balance"],
+    },
     // Add more objects to the list if needed
   ];
 
   return (
-    <div className="flex gap-3 bg-white h-full w-full m-3 rounded-lg p-2 ">
+    <div className="flex gap-3 bg-white h-full w-full m-3 rounded-lg p-2">
       <div className="container mx-auto">
         <table className="min-w-full rounded-lg overflow-hidden">
           <thead>
@@ -191,9 +78,9 @@ console.log("close",closebal);
           <tbody>
             {data.map((row, index) => (
               <tr key={index} className="">
-                {Object.keys(row).map((key, index) => (
-                  <td key={index} className="border  px-4 py-2">
-                    {row[key]}
+                {columns.map((column, columnIndex) => (
+                  <td key={columnIndex} className="border px-4 py-2">
+                    {row[column] !== undefined ? row[column] : ""}
                   </td>
                 ))}
               </tr>

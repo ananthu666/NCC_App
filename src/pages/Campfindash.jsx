@@ -24,6 +24,10 @@ function Campfindash() {
     const [openingbalance , setOpeningbalance] = useState({});
     const { camp_name } = location.state || {}; 
     
+    const balsheet = location.state.balancesheet || {};
+    
+    
+    
     const fetchopebal = async () => {
         try {
             const q = query(
@@ -35,7 +39,7 @@ function Campfindash() {
             querySnapshot.forEach((doc) => {
                 val.push(doc.data()); 
             });
-            // console.log("val",val[0].camp_bal)
+            
             let totalopb = { Cash: 0, Bank: 0, 'TA/DA Officers/Cadets': 0, 'Messing Officers': 0, 'Messing Cadets': 0, Incidentals: 0, 'Rank pay/Honorarium': 0, 'TA/DA Civilians': 0, POL: 0, 'Ship Modelling': 0 };
             
                 totalopb.Cash += parseFloat(val[0].camp_bal.cash || 0);
@@ -48,7 +52,7 @@ function Campfindash() {
                 totalopb['TA/DA Civilians'] += parseInt(val[0].camp_bal.ta_da_civil);
                 totalopb.POL += parseInt(val[0].camp_bal.pol);
                 totalopb['Ship Modelling'] += parseInt(val[0].camp_bal.ship_modelling);
-                console.log("totalopb",totalopb);
+                
             setOpeningbalance(totalopb);
             
         } catch (error) {
@@ -58,10 +62,12 @@ function Campfindash() {
     }
 
     useEffect(() => {
-         fetchopebal();
+        //  fetchopebal();
     }, []);
+
+    
     const handletheclose = async () => {
-        console.log("closing balance", grandtotal);
+        
         
     
         try {
@@ -73,30 +79,19 @@ function Campfindash() {
     
             const querySnapshot = await getDocs(q);
             const docRef = querySnapshot.docs[0].ref;
-            // get data
-            const val=[];
-            querySnapshot.forEach((doc) => {
-                val.push(doc.data());
-            });
-            console.log("val----",val[0].opening_bal);
-            // for each value of opening_bal -  grand_total
-            let closingbal = { Cash: 0, Bank: 0, 'TA/DA Officers/Cadets': 0, 'Messing Officers': 0, 'Messing Cadets': 0, Incidentals: 0, 'Rank pay/Honorarium': 0, 'TA/DA Civilians': 0, POL: 0, 'Ship Modelling': 0 };
-            for (let key in val[0].opening_bal) {
-                closingbal[key] = val[0].opening_bal[key] - grandtotal[key];
-            }
-            console.log("closingbal",closingbal);
             
-            await updateDoc(docRef, { closing_bal: closingbal });
+            
+            await updateDoc(docRef, { closing_bal: grandtotal });
             console.log("Closing balance updated successfully!");
         } catch (error) {
             console.error("Error updating closing balance:", error);
         }
     };
     
-    console.log("camp_name",camp_name.camp_day);
+    
     useEffect(() => {
         const fetchinout = async () => {
-            console.log("helo");
+            
             try {
                 const q = query(
                     collection(database, "camp_in_out"),
@@ -106,21 +101,15 @@ function Campfindash() {
     
                 const querySnapshot = await getDocs(q);
                 const docRef = querySnapshot.docs[0].ref;
-                console.log("querySnapshot", querySnapshot.docs[0].data());
-                // querySnapshot.forEach((doc) => {
-                //     // doc.data() is never undefined for query doc snapshots
-                //     console.log(doc.id, " => ", doc.data());
-                // });
+                
+                
                 if(querySnapshot.docs[0].data().opening_bal==0){
                     await updateDoc(docRef, { opening_bal: openingbalance });
                     
                     console.log("Opening balance updated successfully!");
                     
                 }
-                // if(closingbalance.length<0 && querySnapshot.docs[0].data().closing_bal==0){
-                //     await updateDoc(docRef, { closing_bal: grandtotal });
-                //     console.log("Closing balance updated successfully!");
-                // }
+             
             } catch (error) {
                 console.error("Error fetching credits:", error);
                 
@@ -129,7 +118,7 @@ function Campfindash() {
     
         fetchinout();
     
-    }, []); // Empty dependency array means the effect runs only once
+    }, []); 
     
     const fetch_cred = async () => {
         try {
@@ -196,7 +185,7 @@ function Campfindash() {
         };
         fetchData();
     }, []);
-    // console.log("====grandtotal", grandtotal)
+    
     useEffect(() => {
         let totalcredited = { Cash: 0, Bank: 0, 'TA/DA Officers/Cadets': 0, 'Messing Officers': 0, 'Messing Cadets': 0, Incidentals: 0, 'Rank pay/Honorarium': 0, 'TA/DA Civilians': 0, POL: 0, 'Ship Modelling': 0 };
         let totaldebited = { Cash: 0, Bank: 0, 'TA/DA Officers/Cadets': 0, 'Messing Officers': 0, 'Messing Cadets': 0, Incidentals: 0, 'Rank pay/Honorarium': 0, 'TA/DA Civilians': 0, POL: 0, 'Ship Modelling': 0 };
@@ -237,9 +226,8 @@ function Campfindash() {
         setGrandtotal(grandt);
         
     }, [credit_data, debit_data]);
-    // console.log('totalDebited',totalDebited);
-    // console.log('totalCredited',totalCredited);
-    // console.log('grandtotal',grandtotal);
+    
+    
 
     const [activeComponent, setActiveComponent] = useState('Finance_cred');
 
@@ -250,9 +238,9 @@ function Campfindash() {
     const renderFinanceComponent = () => {
         switch (activeComponent) {
             case 'Finance_cred':
-                return <Finance_cred camp_id={index} camp_day={camp_name.camp_day} data={credit_data} total_cred={totalCredited} grandtotal={grandtotal} />;
+                return <Finance_cred camp_id={index} camp_day={camp_name.camp_day} data={credit_data} total_cred={totalCredited} grandtotal={grandtotal} balancesheet={balsheet}/>;
             case 'Finance_deb':
-                return <Finance_deb camp_id={index} camp_day={camp_name.camp_day}  data={debit_data} total_deb={totalDebited}  grandtotal={grandtotal} />;
+                return <Finance_deb camp_id={index} camp_day={camp_name.camp_day}  data={debit_data} total_deb={totalDebited}  grandtotal={grandtotal} balancesheet={balsheet}/>;
             case 'Finance_add_cred':
                 return <Finance_add_cred camp_id={index} camp_day={camp_name.camp_day} />;
             case 'Finance_add_deb':

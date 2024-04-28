@@ -6,7 +6,7 @@ import { List } from "antd";
 import { useEffect } from "react";
 import { collection, query, where, onSnapshot,setDoc,doc } from "firebase/firestore";
 import { database } from "../../firebase";
-
+import Processdata from "./Closbalcal";
 
 
 const CampFinDay = () => {
@@ -16,23 +16,57 @@ const [cred_data,setCreddata] = useState();
 const [debit_data,setDebitdata]=useState();
 const [data, setData] = useState([]);
 const [newdata, setnewdata] = useState([]);
+const [inout, setinout] = useState([]);
 const [day, setday] = useState("");
 const location = useLocation();
 const camp = location.state;
-// console.log('camp',camp);
-let sum=0;
-try
-{
-  sum=parseInt(camp.camp_bal.cash)+parseInt(camp.camp_bal.bank)+parseInt(camp.camp_bal.ta_off)+parseInt(camp.camp_bal.ta_da_civil)+parseInt(camp.camp_bal.messing_off)+parseInt(camp.camp_bal.messing_cad)+parseInt(camp.camp_bal.incidentials)+parseInt(camp.camp_bal.rank_pay)+parseInt(camp.camp_bal.pol)+parseInt(camp.camp_bal.ship_modelling);
-  
+const [Balance, setBalance] = useState({});
 
-}
-catch(e)
-{
-  console.log("error",e);
-}
 
-// console.log('campsum',sum);
+let  sum=0;
+if(camp.camp_bal!={})
+    sum=parseInt(camp.camp_bal.cash)+parseInt(camp.camp_bal.bank)+parseInt(camp.camp_bal.ta_off)+parseInt(camp.camp_bal.ta_da_civil)+parseInt(camp.camp_bal.messing_off)+parseInt(camp.camp_bal.messing_cad)+parseInt(camp.camp_bal.incidentials)+parseInt(camp.camp_bal.rank_pay)+parseInt(camp.camp_bal.pol)+parseInt(camp.camp_bal.ship_modelling);
+const fetalldays=async()=>
+{
+  try {
+        
+    
+    const q = query(collection(database, "camp_in_out"), where("camp_name", "==", camp.camp_name));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const inoutData = [];
+      querySnapshot.forEach((doc) => {
+        const ino = {
+          id: doc.id,
+          ...doc.data(),
+        };
+
+        inoutData.push(ino);
+      });
+      
+      
+      setinout(inoutData);
+    });
+
+    // Cleanup function
+    return () => {
+      unsubscribe();
+    };
+  } catch (error) {
+    console.error("Error fetching cadets:", error);
+    
+  }
+}
+useEffect(() => {
+  fetalldays();
+}, []);
+useEffect(() => {
+  // Processdata(inout,camp.camp_bal)
+  setBalance(Processdata(inout,camp.camp_bal));
+}, [inout]);
+
+
+
+
 const fetch_cred =async()=>{
     try {
         
@@ -48,8 +82,7 @@ const fetch_cred =async()=>{
     
             creditsData.push(cadet);
           });
-          // console.log("realtime",cred_data);
-          // console.log("cadet",cadetsData.campid);
+          
           
           setCreddata(creditsData);
         });
@@ -79,8 +112,6 @@ const fetch_debit =async()=>{
     
             debitsData.push(cadet);
           });
-          // console.log("realtime",debit_data);
-          // console.log("cadet",cadetsData.campid);
           
           setDebitdata(debitsData);
         });
@@ -99,17 +130,16 @@ useEffect(()=>{
     fetch_cred();
     fetch_debit();
 },[]);
-// console.log("realtime cred",cred_data);
-// console.log("realtime deb",debit_data);
+
 
 
 const writeprevdata = async (index) => {
-  // console.log("---",index);
+  
   const newdata={
     camp_day: index,
     date: camp.camp_date,
-    opening_bal:0,
-    closing_bal:0,
+    opening_bal:{},
+    closing_bal:{},
     camp_name:camp.camp_name,
   }
   try {
@@ -124,67 +154,52 @@ const writeprevdata = async (index) => {
 };
 
 // ##########################################
-  //   console.log(data.camp_name);
-  // function for data
+  
   useEffect(() => {
     const fetchAndProcessData = async () => {
         try {
-            await fetch_cred();
-            await fetch_debit();
+           
             
             const dataList = [];
 
             // Merge credit and debit data into a single array
             const mergedData = [...cred_data, ...debit_data];
 
-            // Filter out duplicate day counts
             const uniqueDayCounts = [...new Set(mergedData.map(item => item.day_count))];
-
+            
             // Process data for unique day counts
-            uniqueDayCounts.forEach(dayCount => {
-                const credItem = cred_data.find(item => item.day_count === dayCount);
-                const debitItem = debit_data.find(item => item.day_count === dayCount);
-
-                if (credItem && debitItem) {
-                    // Calculate total income and total expense
-                    const totalIncome = parseFloat(credItem.cash || credItem.bank) + parseInt(credItem.ta_off) + parseInt(credItem.ta_da_civil) + parseInt(credItem.messing_off) + parseInt(credItem.messing_cad) + parseInt(credItem.incidentials) + parseInt(credItem.rank_pay) + parseInt(credItem.pol) + parseInt(credItem.ship_modelling);
-                    const totalExpense = parseFloat(debitItem.cash || debitItem.bank) + parseInt(debitItem.ta_off) + parseInt(debitItem.ta_da_civil) + parseInt(debitItem.messing_off) + parseInt(debitItem.messing_cad) + parseInt(debitItem.incidentials) + parseInt(debitItem.rank_pay) + parseInt(debitItem.pol) + parseInt(debitItem.ship_modelling);
-                    const balance = totalIncome - totalExpense;
-
-                    dataList.push({
-                        camp_day: dayCount,
-                        date: credItem.date,
-                        total_expense: totalExpense,
-                        total_income: totalIncome,
-                        balance: balance
-                    });
-                } else if (credItem) {
-                    // If only credit data is available
-                    const totalIncome = parseFloat(credItem.cash || credItem.bank) + parseInt(credItem.ta_off) + parseInt(credItem.ta_da_civil) + parseInt(credItem.messing_off) + parseInt(credItem.messing_cad) + parseInt(credItem.incidentials) + parseInt(credItem.rank_pay) + parseInt(credItem.pol) + parseInt(credItem.ship_modelling);
-                    dataList.push({
-                        camp_day: dayCount,
-                        date: credItem.date,
-                        total_expense: 0,
-                        total_income: totalIncome,
-                        balance: totalIncome
-                    });
-                } else if (debitItem) {
-                    // If only debit data is available
-                    const totalExpense = parseFloat(debitItem.cash || debitItem.bank) + parseInt(debitItem.ta_off) + parseInt(debitItem.ta_da_civil) + parseInt(debitItem.messing_off) + parseInt(debitItem.messing_cad) + parseInt(debitItem.incidentials) + parseInt(debitItem.rank_pay) + parseInt(debitItem.pol) + parseInt(debitItem.ship_modelling);
-                    dataList.push({
-                        camp_day: dayCount,
-                        date: debitItem.date,
-                        total_expense: totalExpense,
-                        total_income: 0,
-                        balance: -totalExpense
-                    });
-                }
+            uniqueDayCounts.forEach(item => {
+              let totalIncome=0;
+              let totalExpense=0;
+              
+              
+              const credItems = cred_data.filter(data => data.day_count === item);
+              const debitItems = debit_data.filter(data => data.day_count === item);
+                // console.log("credItem",credItems);
+                credItems.forEach(credItem =>
+                  {
+                     totalIncome += parseFloat(credItem.cash || credItem.bank) + parseInt(credItem.ta_off) + parseInt(credItem.ta_da_civil) + parseInt(credItem.messing_off) + parseInt(credItem.messing_cad) + parseInt(credItem.incidentials) + parseInt(credItem.rank_pay) + parseInt(credItem.pol) + parseInt(credItem.ship_modelling);
+                  }
+                );
+                debitItems.forEach(debitItem =>
+                  {
+                      totalExpense += parseFloat(debitItem.cash || debitItem.bank) + parseInt(debitItem.ta_off) + parseInt(debitItem.ta_da_civil) + parseInt(debitItem.messing_off) + parseInt(debitItem.messing_cad) + parseInt(debitItem.incidentials) + parseInt(debitItem.rank_pay) + parseInt(debitItem.pol) + parseInt(debitItem.ship_modelling);
+                  }
+                );
+                const balance = totalIncome - totalExpense;
+                dataList.push({
+                  camp_day: item,
+                  date: credItems[0].date,
+                  total_expense: totalExpense,
+                  total_income: totalIncome,
+                  balance: balance
+              });
+               
             });
 
-            // Update state with processed data
             
-            dataList.push(newdata);
             setData(dataList);
+            
         } catch (error) {
             console.error("Error fetching and processing data:", error);
         }
@@ -250,10 +265,16 @@ const writeprevdata = async (index) => {
     const dataList={
       camp_day: `Day_${values.value1}`,
       date: values.value2,
+      total_expense: 0,
+      total_income: 0,
+      balance: 0
       
   };
-  // console.log("data",data);
-  setnewdata(dataList);
+  
+  const pr=[...data];
+  pr.push(dataList);
+  setData(pr);
+  
 
 
   
@@ -262,26 +283,19 @@ const writeprevdata = async (index) => {
   };
   const handleClick = (index) => {
     console.log(`Card clicked with name: ${index.camp_day}`);
-    // console.log(`Camp: ${camp.camp_name}`);
-    // const campNameWithUnderscore = index.camp_day.replace(/\s/g, '_');
     
-    // Filter cred_data and debit_data based on day_count
-    // console.log('cred_data', cred_data);
-    // console.log('debit_data', debit_data);
-    // const dayCount = (index.camp_day.split(' ')[1]); // Extract the integer value from the string
-    // console.log('day_count', dayCount);
     const filteredCredData = cred_data.filter(item => item.day_count === index.camp_day);
 
     const filteredDebitData = debit_data.filter(item => item.day_count === index.camp_day); 
-    console.log("filteredCredData", filteredCredData);
-    console.log("filteredDebitData", filteredDebitData);
+    
     navigate(`/campfin/${camp.camp_name}/${index.camp_day}`, {
-      state: { camp_name: index, credit_data: filteredCredData, debit_data: filteredDebitData },
+      state: { camp_name: index, credit_data: filteredCredData, debit_data: filteredDebitData,balancesheet:Balance[index.camp_day] },
     });
 };
 
 
-// console.log(data);
+
+
   return (
     <div className="flex w-full h-full">
       <SideBar />

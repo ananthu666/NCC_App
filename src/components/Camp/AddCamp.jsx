@@ -43,7 +43,7 @@ const CadetForm=()=>
           camp_area: formValues.camp_area ,
           camp_date: formValues.camp_date.format("DD-MM-YYYY") ,
           
-  
+          camp_bal:{},
           camp_commander: formValues.camp_commander,
           camp_assistant: formValues.camp_assistant,
           
