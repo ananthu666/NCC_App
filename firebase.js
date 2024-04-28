@@ -16,14 +16,25 @@ import {getFirestore} from "firebase/firestore";
 // };
 
 //username a@gmail.com //pwd:123123
+// const firebaseConfig = {
+//   apiKey: "AIzaSyArdMbwbg9B9hYB8UndlksBFRwiWY_-Tzc",
+//   authDomain: "nccdb-35c3a.firebaseapp.com",
+//   databaseURL: "https://nccdb-35c3a-default-rtdb.firebaseio.com",
+//   projectId: "nccdb-35c3a",
+//   storageBucket: "nccdb-35c3a.appspot.com",
+//   messagingSenderId: "810942646892",
+//   appId: "1:810942646892:web:4396b6200b0a7dbe9b2649"
+// };
+
+// jithin 
 const firebaseConfig = {
-  apiKey: "AIzaSyArdMbwbg9B9hYB8UndlksBFRwiWY_-Tzc",
-  authDomain: "nccdb-35c3a.firebaseapp.com",
-  databaseURL: "https://nccdb-35c3a-default-rtdb.firebaseio.com",
-  projectId: "nccdb-35c3a",
-  storageBucket: "nccdb-35c3a.appspot.com",
-  messagingSenderId: "810942646892",
-  appId: "1:810942646892:web:4396b6200b0a7dbe9b2649"
+  apiKey: "AIzaSyB3Fx_5-HxATToHAOqYKj4DW_G35_GcndQ",
+  authDomain: "nccproject-39b05.firebaseapp.com",
+  projectId: "nccproject-39b05",
+  storageBucket: "nccproject-39b05.appspot.com",
+  messagingSenderId: "378815748605",
+  appId: "1:378815748605:web:1670128145020b24d2a194",
+  measurementId: "G-87LGX6FE18"
 };
 
 const app = initializeApp(firebaseConfig);
