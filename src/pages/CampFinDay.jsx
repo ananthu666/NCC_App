@@ -20,7 +20,18 @@ const [day, setday] = useState("");
 const location = useLocation();
 const camp = location.state;
 // console.log('camp',camp);
-const sum=parseInt(camp.camp_bal.cash)+parseInt(camp.camp_bal.bank)+parseInt(camp.camp_bal.ta_off)+parseInt(camp.camp_bal.ta_da_civil)+parseInt(camp.camp_bal.messing_off)+parseInt(camp.camp_bal.messing_cad)+parseInt(camp.camp_bal.incidentials)+parseInt(camp.camp_bal.rank_pay)+parseInt(camp.camp_bal.pol)+parseInt(camp.camp_bal.ship_modelling);
+let sum=0;
+try
+{
+  sum=parseInt(camp.camp_bal.cash)+parseInt(camp.camp_bal.bank)+parseInt(camp.camp_bal.ta_off)+parseInt(camp.camp_bal.ta_da_civil)+parseInt(camp.camp_bal.messing_off)+parseInt(camp.camp_bal.messing_cad)+parseInt(camp.camp_bal.incidentials)+parseInt(camp.camp_bal.rank_pay)+parseInt(camp.camp_bal.pol)+parseInt(camp.camp_bal.ship_modelling);
+  
+
+}
+catch(e)
+{
+  console.log("error",e);
+}
+
 // console.log('campsum',sum);
 const fetch_cred =async()=>{
     try {

@@ -71,7 +71,7 @@ function App() {
           </HashRouter> */}
           <AuthState>
             <DataState>
-              <BrowserRouter>
+            <HashRouter>
                 <Routes>
                   <Route exact path="/" element={<Login />} />
                   <Route element={<PrivateRoute />}>
@@ -124,7 +124,7 @@ function App() {
                     <Route path="/bulk_import" element={<ImportExcelData />} />
                   </Route>
                 </Routes>
-              </BrowserRouter>
+                </HashRouter>
             </DataState>
             {/* <BrowserRouter>
               <Routes>
